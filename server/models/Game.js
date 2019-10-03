@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema();
 
-const GameSchema = new Schema({
+const GameSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -10,24 +9,69 @@ const GameSchema = new Schema({
     type: String,
     required: true,
   },
-  expired: {
-    type: Boolean,
-  },
   players: [
     {
       player: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'player',
       },
-      position: {
+      rank: {
         type: Number,
       },
     },
   ],
-  date: {
+  maxNumberOfRounds: {
+    type: Number,
+  },
+  rounds: [
+    {
+      roundNumber: {
+        type: Number,
+        required: true,
+      },
+      inProgress: {
+        type: Boolean,
+        required: true,
+      },
+      duration: {
+        type: Date,
+        default: Date.now,
+      },
+      winner: {
+        player: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'player',
+        },
+      },
+      playerScores: [
+        {
+          player: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'player',
+          },
+          roundScore: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
+    },
+  ],
+  hideScores: {
+    type: Boolean,
+    default: false,
+  },
+  startTime: {
     type: Date,
     default: Date.now,
   },
+  endTime: {
+    type: Date,
+    default: Date.now,
+  },
+  expired: {
+    type: Boolean,
+  },
 });
 
-module.exports = mongoose.model('games', GameSchema);
+module.exports = Game = mongoose.model('game', GameSchema);

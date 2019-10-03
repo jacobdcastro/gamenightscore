@@ -1,29 +1,41 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const PlayerSchema = new Schema({
-  username: {
+const PlayerSchema = new mongoose.Schema({
+  isGamemaster: {
+    type: Boolean,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
-  score: {
+  pin: {
     type: Number,
     required: true,
   },
-  online: {
+  totalScore: {
+    type: Number,
+    required: true,
+  },
+  connected: {
     type: Boolean,
   },
   game: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  isGamemaster: {
-    type: Boolean,
-  },
-  time: {
-    type: Date,
-    default: Date.now,
-  },
+  roundsPlayed: [
+    {
+      round: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'player',
+      },
+      roundScore: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
-module.exports = mongoose.model('players', PlayerSchema);
+module.exports = Player = mongoose.model('player', PlayerSchema);
