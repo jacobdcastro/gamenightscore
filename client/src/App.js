@@ -1,18 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Landing from './components/layout/Landing';
-// import setAuthToken from './utils/setAuthToken';
-import './App.css';
-
-// if (localStorage.token) {
-//   setAuthToken(localStorage.token);
-// }
+import CreateGame from './components/CreateGame';
+import './styles/App.sass';
 
 const App = () => {
   return (
     <Router>
-      <Route exact to="/" component />
-      <Switch></Switch>
+      <Switch>
+        <Route to="/" component={Landing} />
+        <Route to="/create-game" component={CreateGame} />
+        {/* <Route to="/join-game" component={JoinGame} /> */}
+      </Switch>
     </Router>
   );
 };
