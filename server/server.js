@@ -22,7 +22,6 @@ app.get('/', (req, res) => res.send('GameNight Score API Running Properly!'));
 
 // Define routes
 app.use('/api/games', require('./routes/api/games'));
-app.use('/api/players', require('./routes/api/players'));
 
 const PORT = process.env.PORT || 1111;
 
