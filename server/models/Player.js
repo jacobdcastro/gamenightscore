@@ -20,22 +20,18 @@ const PlayerSchema = new mongoose.Schema({
   connected: {
     type: Boolean,
   },
-  game: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
   roundsPlayed: [
     {
-      round: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'player',
-      },
       roundScore: {
         type: Number,
         required: true,
+      },
+      round: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Round',
       },
     },
   ],
 });
 
-module.exports = Player = mongoose.model('player', PlayerSchema);
+module.exports = PlayerSchema;

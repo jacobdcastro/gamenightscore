@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const PlayerSchema = require('./Player');
+const RoundSchema = require('./Round');
 
 const GameSchema = new mongoose.Schema({
   title: {
@@ -9,54 +11,12 @@ const GameSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  players: [
-    {
-      player: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'player',
-      },
-      rank: {
-        type: Number,
-      },
-    },
-  ],
+  players: [PlayerSchema],
   maxNumberOfRounds: {
     type: Number,
+    default: null,
   },
-  rounds: [
-    {
-      roundNumber: {
-        type: Number,
-        required: true,
-      },
-      inProgress: {
-        type: Boolean,
-        required: true,
-      },
-      duration: {
-        type: Date,
-        default: Date.now,
-      },
-      winner: {
-        player: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'player',
-        },
-      },
-      playerScores: [
-        {
-          player: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'player',
-          },
-          roundScore: {
-            type: Number,
-            required: true,
-          },
-        },
-      ],
-    },
-  ],
+  rounds: [RoundSchema],
   hideScores: {
     type: Boolean,
     default: false,
@@ -74,4 +34,6 @@ const GameSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Game = mongoose.model('game', GameSchema);
+// GameSchema.methods.addPlayer(function(playerId) {});
+
+module.exports = Game = mongoose.model('Game', GameSchema);
