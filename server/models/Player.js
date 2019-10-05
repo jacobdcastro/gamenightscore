@@ -22,13 +22,17 @@ const PlayerSchema = new mongoose.Schema({
   },
   roundsPlayed: [
     {
-      roundScore: {
-        type: Number,
-        required: true,
-      },
       round: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Round',
+      },
+      roundNumber: {
+        type: Number,
+        required: true,
+      },
+      roundScore: {
+        type: Number,
+        required: true,
       },
     },
   ],

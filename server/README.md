@@ -14,3 +14,7 @@
 - After response w/ JWT + gameId is recieved, redirected to private route /create-player with form
 - Fill out form for name and pin (to re-login easier)
 - On submit, send POST request to api/players/new
+
+5. In between "end round" and "new round", players submit all scores.
+
+- Cannot add new round if not all players have submitted score

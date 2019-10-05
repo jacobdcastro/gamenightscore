@@ -18,10 +18,8 @@ const RoundSchema = new mongoose.Schema({
     default: Date.now,
   },
   winner: {
-    player: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Player',
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player',
   },
   playerScores: [
     {

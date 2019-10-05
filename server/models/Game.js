@@ -16,6 +16,10 @@ const GameSchema = new mongoose.Schema({
     type: Number,
     default: null,
   },
+  currentRound: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Round',
+  },
   rounds: [RoundSchema],
   hideScores: {
     type: Boolean,
