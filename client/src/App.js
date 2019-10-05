@@ -1,18 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Landing from './components/layout/Landing';
-import CreateGame from './components/CreateGame';
-import './styles/App.sass';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import Landing from './components/pages/Landing';
+import CreateGame from './components/pages/CreateGame';
+import JoinGame from './components/pages/JoinGame';
+import AppWrapper from './styles/App.sty.js';
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route to="/" component={Landing} />
-        <Route to="/create-game" component={CreateGame} />
-        {/* <Route to="/join-game" component={JoinGame} /> */}
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <AppWrapper>
+        <Switch>
+          <Route exact path="/create-game" component={CreateGame} />
+          <Route exact path="/join-game" component={JoinGame} />
+          <Route exact path="/" component={Landing} />
+        </Switch>
+      </AppWrapper>
+    </BrowserRouter>
   );
 };
 
