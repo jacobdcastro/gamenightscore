@@ -181,21 +181,7 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
 
     let newPlayer = game.players.find(p => p.name === name);
 
-    const payload = {
-      player: {
-        id: newPlayer._id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      config.get('jwtsecret'),
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token, player: newPlayer });
-      }
-    );
+    res.json({ player: newPlayer });
   } catch (error) {
     console.log('Server error');
     res.status(500).send('Error with the server. Big oops.');
