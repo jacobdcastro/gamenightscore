@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createGame } from '../../redux/actions/games';
+import PropTypes from 'prop-types';
 
-const CreateGame = () => {
+import CreateGameWrapper from '../../styles/pages/CreateGame.sty';
+
+const CreateGame = ({ createGame, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     title: '',
     password: '',
@@ -10,19 +16,35 @@ const CreateGame = () => {
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
   const onChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
-  const onSubmit = () => {
-    // perform redux action with axios request
+  const onSubmit = e => {
+    e.preventDefault();
+    createGame(formData);
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/create-player" />;
+  }
 
   return (
-    <div id="createGamePage">
-      <h1>Create a game.</h1>
+    <CreateGameWrapper>
+      <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+      <h1>Create a new game!</h1>
+      <p>
+        Once you create this game, it will be live on the server for players to
+        join in!
+      </p>
+      <p>
+        Other people will need the game title and password to join. Make it
+        easy, memorable, and sharable.
+      </p>
 
       <form id="creatGameForm" onSubmit={e => onSubmit(e)}>
-        <div>
+        <div className="textInput">
           <label htmlFor="title">Title of Game</label>
           <input
             id="title"
@@ -31,13 +53,14 @@ const CreateGame = () => {
             placeholder="Title"
             value={title}
             onChange={e => onChange(e)}
+            required
           />
           <small>
             Can be anything, to be honest. Your friends need it to login.
           </small>
         </div>
-        <div>
-          <label htmlFor="password">Game password</label>
+        <div className="textInput">
+          <label htmlFor="password">Password</label>
           <input
             id="password"
             type="text"
@@ -45,14 +68,14 @@ const CreateGame = () => {
             placeholder="Password"
             value={password}
             onChange={e => onChange(e)}
+            required
           />
           <small>
-            Please use a password that isn't one you use on other accounts. It
-            will be used for your friends to join the game and will be displayed
-            on game dashboard.
+            Do not use a password you use on other accounts. It will displayed
+            on game dashboard for others to see.
           </small>
         </div>
-        <div>
+        <div className="numInput">
           <label htmlFor="maxNumberOfRounds">How many rounds?</label>
           <input
             id="maxNumberOfRounds"
@@ -63,23 +86,42 @@ const CreateGame = () => {
             onChange={e => onChange(e)}
             min="1"
             max="50"
+            size="2"
           />
           <small>Game will automatically end after this many rounds. </small>
         </div>
-        <div>
-          <label htmlFor="hideScores">Hide Scores?</label>
-          <input
-            id="hideScores"
-            type="checkbox"
-            name="hideScores"
-            value={hideScores}
-            onChange={e => onChange(e)}
-          />
-          <small>Scores will be hidden from players until end of game.</small>
+        <div className="checkInput">
+          <div className="container">
+            <input
+              id="hideScores"
+              type="checkbox"
+              name="hideScores"
+              checked={hideScores}
+              onChange={e => onChange(e)}
+            />
+            <span class="checkmark"></span>
+            <label htmlFor="hideScores">Hide Scores?</label>
+          </div>
+          <small>
+            If checked, scores will be hidden from players until end of game.
+          </small>
         </div>
+        <button type="submit">Create Game</button>
       </form>
-    </div>
+    </CreateGameWrapper>
   );
 };
 
-export default CreateGame;
+CreateGame.propTypes = {
+  createGame: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.games.isAuthenticated,
+});
+
+export default connect(
+  mapStateToProps,
+  { createGame }
+)(CreateGame);
