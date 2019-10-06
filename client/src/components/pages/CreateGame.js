@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 import CreateGameWrapper from '../../styles/pages/CreateGame.sty';
 
+// TODO why tf is there a token in there already?
+
 const CreateGame = ({ createGame, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     title: '',
