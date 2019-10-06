@@ -87,7 +87,7 @@ router.post(
 );
 
 // @route   POST api/games/join
-// @desc    Create new player in a game
+// @desc    Join a game
 // access   Public
 router.get(
   '/join',
@@ -118,6 +118,8 @@ router.get(
         return res.status(404).send('Title is incorrect');
       } else if (gameByTitle && !gameByPassword) {
         return res.status(401).send('Password is incorrect');
+      } else if (gameByTitle && gameByPassword && game.players.length === 8) {
+        return res.status(401).send('Game is full!');
       } else if (game) {
         const payload = {
           game: {
@@ -334,7 +336,9 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 // @route   PUT api/games/:game_id/endGame
 // @desc    End a game
 // access   Private
-router.put(':game_id/endGame', auth, async (req, res) => {});
+router.put(':game_id/endGame', auth, async (req, res) => {
+  // TODO change game to expired
+});
 
 // @route   PUT api/games/:game_id/players/:player_id/postScore
 // @desc    Edit/adjust player score (in case of mistake)
