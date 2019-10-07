@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createGame } from '../../redux/actions/games';
+import { createGame } from '../../redux/actions/game';
+import { setInitPlayerState } from '../../redux/actions/player';
 import PropTypes from 'prop-types';
 
 import CreateGameWrapper from '../../styles/pages/CreateGame.sty';
 
 // TODO why tf is there a token in there already?
 
-const CreateGame = ({ createGame, isAuthenticated }) => {
+const CreateGame = ({ createGame, setInitPlayerState, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     title: '',
     password: '',
@@ -26,6 +27,7 @@ const CreateGame = ({ createGame, isAuthenticated }) => {
   const onSubmit = e => {
     e.preventDefault();
     createGame(formData);
+    setInitPlayerState(/* gameId for /api/auth jwt generation*/ true); // ! TODO boolean value for isGamemaster
   };
 
   if (isAuthenticated) {
@@ -34,6 +36,9 @@ const CreateGame = ({ createGame, isAuthenticated }) => {
 
   return (
     <CreateGameWrapper>
+      <Link className="backLink" to="/">
+        &#8592; Back
+      </Link>
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
       <h1>Create a new game!</h1>
       <p>
@@ -45,7 +50,7 @@ const CreateGame = ({ createGame, isAuthenticated }) => {
         easy, memorable, and sharable.
       </p>
 
-      <form id="creatGameForm" onSubmit={e => onSubmit(e)}>
+      <form id="createGameForm" onSubmit={e => onSubmit(e)}>
         <div className="textInput">
           <label htmlFor="title">Title of Game</label>
           <input
@@ -55,7 +60,6 @@ const CreateGame = ({ createGame, isAuthenticated }) => {
             placeholder="Title"
             value={title}
             onChange={e => onChange(e)}
-            required
           />
           <small>
             Can be anything, to be honest. Your friends need it to login.
@@ -116,14 +120,15 @@ const CreateGame = ({ createGame, isAuthenticated }) => {
 
 CreateGame.propTypes = {
   createGame: PropTypes.func.isRequired,
+  setInitPlayerState: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.games.isAuthenticated,
+  isAuthenticated: state.player.isAuthenticated,
 });
 
 export default connect(
   mapStateToProps,
-  { createGame }
+  { createGame, setInitPlayerState }
 )(CreateGame);

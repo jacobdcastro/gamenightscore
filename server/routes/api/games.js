@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
-const _ = require('lodash');
+// const _ = require('lodash');
 
 const Game = require('../../models/Game');
 
@@ -62,23 +62,7 @@ router.post(
       await game.rounds.push(firstRound); // add new round to [Rounds] to create id
       game.currentRound = game.rounds[0]._id; // grab first round id and set as currentRound
       await game.save(); // save it all
-
-      const payload = {
-        game: {
-          id: game._id,
-        },
-      };
-
-      // once new game is created, return jwt to game creator so they can properly create player in private route
-      jwt.sign(
-        payload,
-        config.get('jwtsecret'),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token, game });
-        }
-      );
+      res.json(game);
     } catch (error) {
       console.log('Server error');
       res.status(500).send('Error with the server. Big oops.');
@@ -86,10 +70,10 @@ router.post(
   }
 );
 
-// @route   POST api/games/join
+// @route   GET api/games/join
 // @desc    Join a game
 // access   Public
-router.get(
+router.post(
   '/join',
   [
     check('title', 'Title is required')
@@ -121,21 +105,7 @@ router.get(
       } else if (gameByTitle && gameByPassword && game.players.length === 8) {
         return res.status(401).send('Game is full!');
       } else if (game) {
-        const payload = {
-          game: {
-            id: game._id,
-          },
-        };
-
-        jwt.sign(
-          payload,
-          config.get('jwtsecret'),
-          { expiresIn: 360000 },
-          (err, token) => {
-            if (err) throw err;
-            res.json({ token, game });
-          }
-        );
+        res.json(game);
       } else {
         console.log('Something went wrong...');
         res.status(500).send('Error with the server. Big oops.');

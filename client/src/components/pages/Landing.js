@@ -9,7 +9,7 @@ const Landing = () => {
       <h2>
         A Web App for keeping score for
         <br />
-        <span class="dutchBlitzLogo">Dutch Blitz</span>
+        <span className="dutchBlitzLogo">Dutch Blitz</span>
       </h2>
 
       <p>
