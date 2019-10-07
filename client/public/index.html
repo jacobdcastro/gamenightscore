@@ -20,6 +20,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Dutch Blitz Scorekeeper</title>
+    <!-- <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+    <script>
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
+
+      var pusher = new Pusher('6628d6b098ee46dde33a', {
+        cluster: 'us3',
+        forceTLS: true,
+      });
+
+      var channel = pusher.subscribe('GameNight Score');
+      channel.bind('my-event', function(data) {
+        alert(JSON.stringify(data));
+      });
+    </script> -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
