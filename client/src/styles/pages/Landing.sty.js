@@ -3,11 +3,12 @@ import styled from 'styled-components';
 const LandingWrapper = styled.div`
   position: absolute;
   top: 0;
-  background-color: #00559f;
+  background-color: ${props => props.theme.blue};
   text-align: center;
   color: white;
   height: 100%;
-  padding: 0 20px;
+  padding: 0 0px;
+  width: 100vw;
 
   h2 {
     margin-top: 25px;
@@ -37,13 +38,13 @@ const LandingWrapper = styled.div`
       color: white;
       text-decoration: none;
       text-transform: uppercase;
-      border: 3px solid #faed24;
+      border: 3px solid ${props => props.theme.yellow};
     }
     .createGame {
-      background-color: #168f45;
+      background-color: ${props => props.theme.green};
     }
     .joinGame {
-      background-color: #ef4423;
+      background-color: ${props => props.theme.orange};
     }
   }
 `;

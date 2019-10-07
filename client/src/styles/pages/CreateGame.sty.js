@@ -3,15 +3,26 @@ import styled from 'styled-components';
 const CreateGameWrapper = styled.div`
   position: absolute;
   top: 0;
-  background-color: #00559f;
+  background-color: ${props => props.theme.blue};
   text-align: center;
   color: white;
   min-height: 100vh;
   /* height: 100%; */
   padding: 20px 20px 50px;
 
+  .backLink {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    color: ${props => props.theme.orange};
+    background-color: white;
+    text-decoration: none;
+  }
+
   h1 {
-    margin-top: 5px;
+    margin-top: 15px;
   }
 
   .dutchBlitzLogo {
