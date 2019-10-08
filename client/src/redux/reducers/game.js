@@ -4,40 +4,43 @@ import {
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
   GET_ALL_GAMES,
+  GET_GAME_DATA,
+  // GET_GAME_DATA_FAIL,
 } from '../types';
 
 const initialState = {
   loading: true,
-  gameId: localStorage.getItem('gameId'),
 };
 
 export default function(state = initialState, action) {
-  const { type, payload } = action;
+  const gameData = action.payload;
 
-  switch (type) {
+  switch (action.type) {
     case CREATE_GAME_SUCCESS:
-      localStorage.setItem('gameId', payload.game._id);
+      localStorage.setItem('gameId', gameData._id);
       return {
-        ...state,
-        ...payload, // spread payload includes game + token
+        ...gameData,
         loading: false,
       };
     case JOIN_GAME_SUCCESS:
-      localStorage.setItem('gameId', payload.game._id);
+      localStorage.setItem('gameId', gameData._id);
       return {
-        ...state,
-        ...payload, // spread payload includes game + token
+        ...gameData,
         loading: false,
       };
     case CREATE_GAME_FAIL:
     case JOIN_GAME_FAIL:
       return {
         ...state,
-        ...payload,
+        ...gameData,
         loading: false,
       };
+    case GET_GAME_DATA:
+      return {
+        ...gameData,
+      };
     case GET_ALL_GAMES:
-      return { ...state, payload, loading: false };
+      return { ...state, gameData, loading: false };
     default:
       return state;
   }

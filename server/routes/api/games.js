@@ -10,6 +10,36 @@ const Game = require('../../models/Game');
 
 // TODO 1. add checks to see if game is expired. Deny write access if it is
 
+// @route   POST api/games/auth
+// @desc    Get JWT for init player state
+// access   Public
+router.post('/auth', async (req, res) => {
+  const { gameId, isGamemaster } = req.body;
+  console.log(`Here is the req body:`, req.body);
+
+  try {
+    const payload = {
+      gameId: gameId,
+      isGamemaster: isGamemaster,
+    };
+
+    // once new game is created, return jwt to game creator so they can properly create player in private route
+    jwt.sign(
+      payload,
+      config.get('jwtsecret'),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        console.log({ token, ...payload });
+        res.status(200).json({ token, ...payload });
+      }
+    );
+  } catch (error) {
+    console.log('Server error');
+    res.status(500).send('Error with the server. Big oops.');
+  }
+});
+
 // @route   POST api/games/new
 // @desc    Create new game
 // access   Public
@@ -25,7 +55,7 @@ router.post(
     ).isLength({ min: 6 }),
     check(
       'maxNumberOfRounds',
-      'Please chose at least one round and at most 50'
+      'Please choose at least one round and at most 50'
     ).isLength({ min: 1, max: 50 }),
   ],
   async (req, res) => {
@@ -35,15 +65,6 @@ router.post(
     }
 
     const { title, password, maxNumberOfRounds, hideScores } = req.body;
-    // create empty first round skeleton
-    const firstRound = {
-      roundNumber: 1,
-      inProgress: false,
-      startTime: null,
-      endTime: null,
-      winner: null,
-      playerScores: [],
-    };
 
     try {
       // create game skeleton
@@ -59,6 +80,16 @@ router.post(
         endTime: null,
         expired: false,
       });
+
+      // create empty first round skeleton
+      const firstRound = {
+        roundNumber: 1,
+        inProgress: false,
+        startTime: null,
+        endTime: null,
+        winner: null,
+        playerScores: [],
+      };
       await game.rounds.push(firstRound); // add new round to [Rounds] to create id
       game.currentRound = game.rounds[0]._id; // grab first round id and set as currentRound
       await game.save(); // save it all
@@ -129,6 +160,11 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
   if (game.expired)
     return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
 
+  if (game.players.length === 8)
+    return res
+      .status(405)
+      .json({ errors: [{ msg: 'Already 8 players in this game' }] });
+
   // make sure username is unique
   const playerWithSameName = game.players.find(p => p.name === name);
 
@@ -153,7 +189,7 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
 
     let newPlayer = game.players.find(p => p.name === name);
 
-    res.json({ player: newPlayer });
+    res.json(newPlayer);
   } catch (error) {
     console.log('Server error');
     res.status(500).send('Error with the server. Big oops.');
@@ -307,7 +343,23 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 // @desc    End a game
 // access   Private
 router.put(':game_id/endGame', auth, async (req, res) => {
-  // TODO change game to expired
+  router.get('/:game_id', async (req, res) => {
+    const game = await Game.findById(req.params.game_id);
+    let round = game.rounds.id(game.currentRound);
+
+    // check for any players who haven't submitted scores
+    if (round.playerScores.length !== game.players.length)
+      res.status(406).send('Not all players have submitted their scores');
+
+    try {
+      game.expired = true;
+      game.save();
+      res.json(game);
+    } catch (error) {
+      console.log('Server Error', error);
+      res.status(500).send('Error with server. Big oops.');
+    }
+  });
 });
 
 // @route   PUT api/games/:game_id/players/:player_id/postScore
@@ -329,19 +381,11 @@ router.get('/', async (req, res) => {
 });
 
 // @route   GET api/games/:game_id
-// @desc    Search single game
+// @desc    Get single game data
 // access   Public
 router.get('/:game_id', async (req, res) => {
-  const game = await Game.findById(req.params.game_id);
-  let round = game.rounds.id(game.currentRound);
-
-  // check for any players who haven't submitted scores
-  if (round.playerScores.length !== game.players.length)
-    res.status(406).send('Not all players have submitted their scores');
-
   try {
-    game.expired = true;
-    game.save();
+    const game = await Game.findById(req.params.game_id);
     res.json(game);
   } catch (error) {
     console.log('Server Error', error);

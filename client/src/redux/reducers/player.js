@@ -2,6 +2,7 @@ import {
   CREATE_PLAYER_SUCCESS,
   CREATE_PLAYER_FAIL,
   SET_INIT_PLAYER_STATE,
+  SET_INIT_PLAYER_STATE_FAIL,
 } from '../types';
 
 const initialState = {
@@ -17,20 +18,21 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case SET_INIT_PLAYER_STATE:
+      localStorage.setItem('token', payload.token);
       return {
         ...state,
         ...payload,
-        token: localStorage.getItem('token'),
-        isAuthenticated: localStorage.getItem('token') ? true : false,
+        isAuthenticated: true,
+        loading: false,
       };
     case CREATE_PLAYER_SUCCESS:
-      localStorage.setItem('gameId', payload.game._id);
       return {
         ...state,
         ...payload,
         isCreated: true,
         loading: false,
       };
+    case SET_INIT_PLAYER_STATE_FAIL:
     case CREATE_PLAYER_FAIL:
       return {
         ...state,

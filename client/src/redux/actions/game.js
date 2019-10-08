@@ -6,7 +6,7 @@ import {
   CREATE_GAME_FAIL,
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
-  SET_INIT_PLAYER_STATE,
+  GET_GAME_DATA,
 } from '../types';
 
 const config = {
@@ -26,6 +26,7 @@ export const createGame = formData => async dispatch => {
   });
 
   try {
+    // res expects game data
     const res = await axios.post('/api/games/new', body, config);
 
     dispatch({
@@ -36,14 +37,13 @@ export const createGame = formData => async dispatch => {
     dispatch({
       type: CREATE_GAME_FAIL,
       payload: {
-        msg: error.response.statusText,
-        status: error.response.status,
+        error,
       },
     });
   }
 };
 
-export const joinGame = (formData, isGamemaster) => async dispatch => {
+export const joinGame = formData => async dispatch => {
   const { title, password } = formData;
 
   const body = JSON.stringify({
@@ -68,4 +68,15 @@ export const joinGame = (formData, isGamemaster) => async dispatch => {
       },
     });
   }
+};
+
+export const getGameData = gameId => async dispatch => {
+  try {
+    const res = await axios.get(`api/games/${gameId}`);
+
+    dispatch({
+      type: GET_GAME_DATA,
+      payload: res.data,
+    });
+  } catch (error) {}
 };

@@ -12,12 +12,21 @@ const config = {
   },
 };
 
-export const setInitPlayerState = isGamemaster => async dispatch => {
+export const setInitPlayerState = initData => async dispatch => {
+  const { gameId, isGamemaster } = initData;
+
+  const body = JSON.stringify({
+    gameId,
+    isGamemaster,
+  });
+
   try {
-    const res = await axios.get('/api/auth');
+    const res = await axios.post('/api/games/auth', body, config);
+    console.log(res.data);
+
     dispatch({
       type: SET_INIT_PLAYER_STATE,
-      payload: { msg: 'Player state initialized', isGamemaster },
+      payload: res.data,
     });
   } catch (error) {
     dispatch({
@@ -38,7 +47,11 @@ export const createPlayer = formData => async dispatch => {
   });
 
   try {
-    const res = await axios.post(`/${gameId}/newPlayer`, body, config);
+    const res = await axios.post(
+      `/api/games/${gameId}/newPlayer`,
+      body,
+      config
+    );
 
     dispatch({
       type: CREATE_PLAYER_SUCCESS,
@@ -48,8 +61,7 @@ export const createPlayer = formData => async dispatch => {
     dispatch({
       type: CREATE_PLAYER_FAIL,
       payload: {
-        msg: error.response.statusText,
-        status: error.response.status,
+        error,
       },
     });
   }

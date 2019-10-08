@@ -9,7 +9,13 @@ import CreateGameWrapper from '../../styles/pages/CreateGame.sty';
 
 // TODO why tf is there a token in there already?
 
-const CreateGame = ({ createGame, setInitPlayerState, isAuthenticated }) => {
+const CreateGame = ({
+  createGame,
+  setInitPlayerState,
+  gameId,
+  isAuthenticated,
+}) => {
+  console.log(gameId);
   const [formData, setFormData] = useState({
     title: '',
     password: '',
@@ -27,12 +33,11 @@ const CreateGame = ({ createGame, setInitPlayerState, isAuthenticated }) => {
   const onSubmit = e => {
     e.preventDefault();
     createGame(formData);
-    setInitPlayerState(/* gameId for /api/auth jwt generation*/ true); // ! TODO boolean value for isGamemaster
   };
 
-  if (isAuthenticated) {
-    return <Redirect to="/create-player" />;
-  }
+  if (gameId) setInitPlayerState({ gameId, isGamemaster: true });
+
+  if (isAuthenticated) return <Redirect to="/create-player" />;
 
   return (
     <CreateGameWrapper>
@@ -105,7 +110,7 @@ const CreateGame = ({ createGame, setInitPlayerState, isAuthenticated }) => {
               checked={hideScores}
               onChange={e => onChange(e)}
             />
-            <span class="checkmark"></span>
+            <span className="checkmark"></span>
             <label htmlFor="hideScores">Hide Scores?</label>
           </div>
           <small>
@@ -122,10 +127,12 @@ CreateGame.propTypes = {
   createGame: PropTypes.func.isRequired,
   setInitPlayerState: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  gameId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.player.isAuthenticated,
+  gameId: state.game._id,
 });
 
 export default connect(

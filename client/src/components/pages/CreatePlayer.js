@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createPlayer } from '../../redux/actions/player';
+import { getGameData } from '../../redux/actions/game';
 import PropTypes from 'prop-types';
 
 import CreatePlayerWrapper from '../../styles/pages/CreatePlayer.sty.js';
 
 const CreatePlayer = ({
   createPlayer,
+  getGameData,
   gameId,
   isGamemaster,
   isCreated,
@@ -31,7 +33,8 @@ const CreatePlayer = ({
   };
 
   if (isAuthenticated && isCreated) {
-    return <Redirect to="/" />;
+    getGameData(gameId);
+    return <Redirect to={`/${gameId}`} />;
   }
 
   return (
@@ -82,17 +85,19 @@ CreatePlayer.propTypes = {
   isCreated: PropTypes.bool.isRequired,
   gameId: PropTypes.string.isRequired,
   createPlayer: PropTypes.func.isRequired,
+  getGameData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.player.isAuthenticated,
   isGamemaster: state.player.isGamemaster,
-  gameId: state.game.gameId,
   isCreated: state.player.isCreated,
+  gameId: state.game._id,
   createPlayer,
+  getGameData,
 });
 
 export default connect(
   mapStateToProps,
-  { createPlayer }
+  { createPlayer, getGameData }
 )(CreatePlayer);

@@ -7,7 +7,12 @@ import PropTypes from 'prop-types';
 
 import JoinGameWrapper from '../../styles/pages/JoinGame.sty.js';
 
-const JoinGame = ({ joinGame, setInitPlayerState, isAuthenticated }) => {
+const JoinGame = ({
+  joinGame,
+  setInitPlayerState,
+  gameId,
+  isAuthenticated,
+}) => {
   const [formData, setFormData] = useState({
     title: '',
     password: '',
@@ -21,8 +26,9 @@ const JoinGame = ({ joinGame, setInitPlayerState, isAuthenticated }) => {
   const onSubmit = e => {
     e.preventDefault();
     joinGame(formData);
-    setInitPlayerState(false); // boolean value for isGamemaster
   };
+
+  if (gameId) setInitPlayerState({ gameId, isGamemaster: false });
 
   if (isAuthenticated) {
     return <Redirect to="/create-player" />;
@@ -81,10 +87,12 @@ JoinGame.propTypes = {
   joinGame: PropTypes.func.isRequired,
   setInitPlayerState: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  gameId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.player.isAuthenticated,
+  gameId: state.game._id,
 });
 
 export default connect(
