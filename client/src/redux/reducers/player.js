@@ -3,6 +3,7 @@ import {
   CREATE_PLAYER_FAIL,
   SET_INIT_PLAYER_STATE,
   SET_INIT_PLAYER_STATE_FAIL,
+  GET_PLAYER_DATA_SUCCESS,
 } from '../types';
 
 const initialState = {
@@ -26,11 +27,16 @@ export default function(state = initialState, action) {
         loading: false,
       };
     case CREATE_PLAYER_SUCCESS:
+      localStorage.setItem('playerId', payload._id);
       return {
         ...state,
         ...payload,
         isCreated: true,
         loading: false,
+      };
+    case GET_PLAYER_DATA_SUCCESS:
+      return {
+        ...payload,
       };
     case SET_INIT_PLAYER_STATE_FAIL:
     case CREATE_PLAYER_FAIL:

@@ -36,11 +36,8 @@ export default function(state = initialState, action) {
         loading: false,
       };
     case GET_GAME_DATA:
-      return {
-        ...gameData,
-      };
     case GET_ALL_GAMES:
-      return { ...state, gameData, loading: false };
+      return { ...gameData, loading: false };
     default:
       return state;
   }

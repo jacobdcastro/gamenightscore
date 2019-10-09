@@ -30,11 +30,12 @@ const CreatePlayer = ({
   const onSubmit = e => {
     e.preventDefault();
     createPlayer(formData);
+    console.log(formData);
   };
 
   if (isAuthenticated && isCreated) {
     getGameData(gameId);
-    return <Redirect to={`/${gameId}`} />;
+    return <Redirect to="/lobby" />;
   }
 
   return (

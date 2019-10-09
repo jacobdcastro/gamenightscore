@@ -15,8 +15,8 @@ const AppRoutes = ({ currentGameId }) => {
     <Switch>
       <Route exact path="/create-game" component={CreateGame} />
       <Route exact path="/join-game" component={JoinGame} />
-      <PrivateRoute exact path="/create-player" component={CreatePlayer} />
-      <PrivateRoute exact path={`/${currentGameId}`} component={Lobby} />
+      <Route exact path="/create-player" component={CreatePlayer} />
+      <Route exact path="/lobby" component={Lobby} />
       <Route exact path="/" component={Landing} />
     </Switch>
   );

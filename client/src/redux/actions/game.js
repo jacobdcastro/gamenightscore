@@ -78,5 +78,7 @@ export const getGameData = gameId => async dispatch => {
       type: GET_GAME_DATA,
       payload: res.data,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };

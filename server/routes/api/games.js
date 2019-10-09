@@ -15,7 +15,6 @@ const Game = require('../../models/Game');
 // access   Public
 router.post('/auth', async (req, res) => {
   const { gameId, isGamemaster } = req.body;
-  console.log(`Here is the req body:`, req.body);
 
   try {
     const payload = {
@@ -30,7 +29,6 @@ router.post('/auth', async (req, res) => {
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        console.log({ token, ...payload });
         res.status(200).json({ token, ...payload });
       }
     );
