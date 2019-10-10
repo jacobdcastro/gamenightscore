@@ -20,6 +20,9 @@ const PlayerSchema = new mongoose.Schema({
   connected: {
     type: Boolean,
   },
+  deck: {
+    type: String,
+  },
   roundsPlayed: [
     {
       round: {

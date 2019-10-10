@@ -67,13 +67,13 @@ router.post(
     try {
       // create game skeleton
       const game = new Game({
-        title: title,
-        password: password,
+        title,
+        password,
         players: [],
-        maxNumberOfRounds: maxNumberOfRounds,
+        maxNumberOfRounds,
         currentRound: null,
         rounds: [],
-        hideScores: hideScores,
+        hideScores,
         startTime: null,
         endTime: null,
         expired: false,
@@ -150,7 +150,7 @@ router.post(
 // @desc    Create new player in a game
 // access   Private
 router.post('/:game_id/newPlayer', auth, async (req, res) => {
-  let { isGamemaster, name, pin } = req.body;
+  let { isGamemaster, name, pin, deck } = req.body;
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
 
@@ -176,6 +176,7 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
     pin,
     totalScore: 0,
     connected: true,
+    deck,
     roundsPlayed: [],
   };
 
