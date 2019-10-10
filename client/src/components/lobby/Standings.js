@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PlayerListing from './PlayerListing';
+import StandingsWrapper from '../../styles/lobby/Standings.sty.js';
 
 const Standings = ({ players, hideScores }) => {
   if (players) {
     return (
-      <div id="standings">
+      <StandingsWrapper id="standings">
         {players.map((player, index) => (
           <PlayerListing key={index} data={player} />
         ))}
-      </div>
+      </StandingsWrapper>
     );
   } else {
     return <h1>loading...</h1>;

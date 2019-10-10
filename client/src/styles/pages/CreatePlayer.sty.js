@@ -55,6 +55,55 @@ const CreatePlayerWrapper = styled.div`
         padding: 10px;
         border-radius: 5px;
       }
+      input[type='password'] {
+        padding: 10px;
+        border-radius: 5px;
+      }
+    }
+
+    .deckBtns {
+      display: flex;
+      flex-wrap: wrap;
+
+      div {
+        height: 95px;
+        width: 95px;
+        border-radius: 15px;
+        background-color: white;
+
+        img {
+          height: 100%;
+          width: auto;
+        }
+        svg {
+          .blue {
+            fill: ${props => props.theme.blue};
+          }
+          .green {
+            fill: ${props => props.theme.green};
+          }
+          .orange {
+            fill: ${props => props.theme.orange};
+          }
+          .yellow {
+            fill: ${props => props.theme.yellow};
+          }
+        }
+        label {
+          display: none;
+        }
+        input {
+          position: absolute;
+          display: hidden;
+          opacity: 0;
+          height: 95px;
+          width: 95px;
+          background-color: ${props => props.theme.orange};
+        }
+        input:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 `;
