@@ -7,6 +7,10 @@ import {
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
   GET_GAME_DATA,
+  START_ROUND,
+  START_ROUND_FAIL,
+  END_ROUND,
+  END_ROUND_FAIL,
 } from '../types';
 
 const config = {
@@ -79,6 +83,24 @@ export const getGameData = gameId => async dispatch => {
       payload: res.data,
     });
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const startRound = actionData => async dispatch => {
+  const { gameId, startTime } = actionData;
+  const body = { startTime };
+  try {
+    const res = await axios.put(`/${gameId}/startRound`, body, config);
+    dispatch({
+      type: START_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: START_ROUND_FAIL,
+      payload: error,
+    });
     console.log(error);
   }
 };

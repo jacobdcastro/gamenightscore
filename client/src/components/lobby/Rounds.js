@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PlayerListing from './PlayerListing';
+import RoundLising from './RoundListing';
 
 const Rounds = ({ rounds }) => {
   if (rounds) {
     return (
       <div id="rounds">
         {rounds.map((round, index) => (
-          <PlayerListing key={index} data={round} />
+          <RoundLising key={index} data={round} />
         ))}
       </div>
     );

@@ -330,6 +330,9 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     // 4. update playerScores in Round document
     round.playerScores.push({ player: playerId, roundScore });
 
+    // 5. sort players array based on standings
+    game.players.sort((a, b) => a.totalScore - b.totalScore);
+
     await game.save();
     res.json(game);
   } catch (error) {

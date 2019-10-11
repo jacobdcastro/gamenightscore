@@ -9,7 +9,7 @@ const Standings = ({ players, hideScores }) => {
     return (
       <StandingsWrapper id="standings">
         {players.map((player, index) => (
-          <PlayerListing key={index} data={player} />
+          <PlayerListing key={index} data={player} pos={index} />
         ))}
       </StandingsWrapper>
     );

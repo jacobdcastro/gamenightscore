@@ -2,12 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const RoundListing = ({ roundNumber, inProgress, winner, playerScores }) => {
-  // const totalRoundScore += playerScores.
+  let totalRoundScore;
+
   return (
     <div className="roundListing">
       <h3>{roundNumber}</h3>
       <div>
         <p>Winner: {winner}</p>
+      </div>
+      <div className="totalScore">
+        <span>Score:</span>
+        <h3>{totalRoundScore}</h3>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StandingsWrapper = styled.div`
+const RoundsWrapper = styled.div`
   background-color: ${props => props.theme.yellow};
   padding: 25px;
 
@@ -70,4 +70,4 @@ const StandingsWrapper = styled.div`
   }
 `;
 
-export default StandingsWrapper;
+export default RoundsWrapper;

@@ -6,6 +6,10 @@ import {
   GET_ALL_GAMES,
   GET_GAME_DATA,
   // GET_GAME_DATA_FAIL,
+  START_ROUND,
+  START_ROUND_FAIL,
+  END_ROUND,
+  END_ROUND_FAIL,
 } from '../types';
 
 const initialState = {
