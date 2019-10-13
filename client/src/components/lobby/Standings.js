@@ -5,22 +5,18 @@ import PlayerListing from './PlayerListing';
 import StandingsWrapper from '../../styles/lobby/Standings.sty.js';
 
 const Standings = ({ players, hideScores }) => {
-  if (players) {
-    return (
-      <StandingsWrapper id="standings">
-        {players.map((player, index) => (
-          <PlayerListing key={index} data={player} pos={index} />
-        ))}
-      </StandingsWrapper>
-    );
-  } else {
-    return <h1>loading...</h1>;
-  }
+  return (
+    <StandingsWrapper id="standings">
+      {players.map((player, index) => (
+        <PlayerListing key={index} data={player} pos={index} />
+      ))}
+    </StandingsWrapper>
+  );
 };
 
 Standings.propTypes = {
-  players: PropTypes.array,
-  hideScores: PropTypes.bool,
+  players: PropTypes.array.isRequired,
+  hideScores: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

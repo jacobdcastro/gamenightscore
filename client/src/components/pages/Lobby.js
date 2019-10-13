@@ -13,6 +13,7 @@ const Lobby = ({
   isGamemaster,
   isLoading,
   players,
+  rounds,
   getGameData,
   getPlayerData,
 }) => {
@@ -25,7 +26,15 @@ const Lobby = ({
   if (players) {
     const playerData = players.find(p => p._id === localStorage.playerId);
     getPlayerData(playerData);
-    console.log(playerData);
+  }
+
+  let pageViewComponent;
+  // wait for rounds/players to load before rendering page view component
+  if (rounds && players) {
+    if (pageView) pageViewComponent = <Rounds />;
+    else pageViewComponent = <Standings />;
+  } else {
+    pageViewComponent = <h2>Loading...</h2>;
   }
 
   return (
@@ -49,13 +58,14 @@ const Lobby = ({
           <h2 className="roundsBtn">Rounds</h2>
         </div>
       </div>
-      <Standings />
-      <Rounds />
+
+      {pageViewComponent}
+
       <button onClick={() => getGameData(localStorage.gameId)}>
         Update Game State
       </button>
       {/* {isGamemaster && <GMFooter />} */}
-      <GMFooter />
+      {rounds && players && <GMFooter />}
     </LobbyWrapper>
   );
 };
@@ -63,6 +73,7 @@ const Lobby = ({
 Lobby.propTypes = {
   isLoading: PropTypes.bool,
   players: PropTypes.array,
+  rounds: PropTypes.array,
   getGameData: PropTypes.func.isRequired,
   getPlayerData: PropTypes.func.isRequired,
   isGamemaster: PropTypes.bool,
@@ -71,6 +82,7 @@ Lobby.propTypes = {
 const mapStateToProps = state => ({
   isLoading: state.game.isLoading,
   players: state.game.players,
+  rounds: state.game.rounds,
   isGamemaster: state.player.isGamemaster,
 });
 

@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RoundListing = ({ roundNumber, inProgress, winner, playerScores }) => {
+const RoundListing = ({ data }) => {
+  const { roundNumber, inProgress, winner, playerScores } = data;
   let totalRoundScore;
 
   return (
     <div className="roundListing">
-      <h3>{roundNumber}</h3>
+      <h3>Round: {roundNumber}</h3>
       <div>
-        <p>Winner: {winner}</p>
+        <p>Winner: {winner ? winner : 'No winner declared!'}</p>
       </div>
       <div className="totalScore">
-        <span>Score:</span>
+        <span>Round Total:</span>
         <h3>{totalRoundScore}</h3>
       </div>
     </div>

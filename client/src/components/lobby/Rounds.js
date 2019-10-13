@@ -1,24 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import RoundLising from './RoundListing';
+import RoundListing from './RoundListing';
+import RoundsWrapper from '../../styles/lobby/Rounds.sty.js';
 
 const Rounds = ({ rounds }) => {
-  if (rounds) {
-    return (
-      <div id="rounds">
-        {rounds.map((round, index) => (
-          <RoundLising key={index} data={round} />
-        ))}
-      </div>
-    );
-  } else {
-    return <h1>loading...</h1>;
-  }
+  return (
+    <RoundsWrapper id="rounds">
+      {rounds.map((round, index) => {
+        return <RoundListing key={index} data={round} />;
+      })}
+    </RoundsWrapper>
+  );
 };
 
 Rounds.propTypes = {
-  rounds: PropTypes.array,
+  rounds: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({

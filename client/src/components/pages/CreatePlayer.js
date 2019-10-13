@@ -71,7 +71,7 @@ const CreatePlayer = ({
 
       <form id="joinGameForm" onSubmit={e => onSubmit(e)}>
         <div className="textInput">
-          <label htmlFor="title">Title of Game</label>
+          <label htmlFor="title">Your Username</label>
           <input
             id="name"
             type="text"
@@ -81,7 +81,7 @@ const CreatePlayer = ({
             onChange={e => onChange(e)}
             required
           />
-          <small>How do you want to be known?</small>
+          <small>How do you want to be known for this game?</small>
         </div>
         <div className="textInput">
           <label htmlFor="pin">Pin</label>
