@@ -4,7 +4,7 @@ const RoundsWrapper = styled.div`
   background-color: ${props => props.theme.yellow};
   padding: 25px;
 
-  .playerListing {
+  .roundListing {
     display: flex;
     flex-direction: row;
     align-items: center;
