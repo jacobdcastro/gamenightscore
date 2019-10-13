@@ -258,10 +258,11 @@ router.put('/:game_id/startRound', auth, async (req, res) => {
 
     currentRound.inProgress = true;
     currentRound.startTime = startTime;
+    console.log(game);
 
     await game.save();
     console.log(currentRound);
-    res.json('Begin!');
+    res.json(game);
   } catch (error) {
     console.log('Server Error', error);
     res.status(500).send('Error with server. Big oops.');
@@ -289,8 +290,7 @@ router.put('/:game_id/endRound', auth, async (req, res) => {
     currentRound.winner = winner;
 
     await game.save();
-    const msg = `Congrats, ${winner.name} has won round ${currentRound.roundNumber}!!!`;
-    res.json({ game, msg });
+    res.json(game);
   } catch (error) {
     console.log('Server Error', error);
     res.status(500).send('Error with server. Big oops.');
