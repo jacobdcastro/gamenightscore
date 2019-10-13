@@ -41,6 +41,8 @@ export default function(state = initialState, action) {
       };
     case GET_GAME_DATA:
     case GET_ALL_GAMES:
+    case START_ROUND:
+    case END_ROUND:
       return { ...gameData, loading: false };
     default:
       return state;

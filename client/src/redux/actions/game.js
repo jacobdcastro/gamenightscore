@@ -89,9 +89,9 @@ export const getGameData = gameId => async dispatch => {
 
 export const startRound = actionData => async dispatch => {
   const { gameId, startTime } = actionData;
-  const body = { startTime };
+  const body = JSON.stringify({ startTime });
   try {
-    const res = await axios.put(`/${gameId}/startRound`, body, config);
+    const res = await axios.put(`api/games/${gameId}/startRound`, body, config);
     dispatch({
       type: START_ROUND,
       payload: res.data,
@@ -99,6 +99,24 @@ export const startRound = actionData => async dispatch => {
   } catch (error) {
     dispatch({
       type: START_ROUND_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const endRound = actionData => async dispatch => {
+  const { gameId, endTime, winnerId } = actionData;
+  const body = JSON.stringify({ endTime, winnerId });
+  try {
+    const res = await axios.put(`api/games/${gameId}/endRound`, body, config);
+    dispatch({
+      type: END_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: END_ROUND_FAIL,
       payload: error,
     });
     console.log(error);
