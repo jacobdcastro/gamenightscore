@@ -11,6 +11,8 @@ import {
   START_ROUND_FAIL,
   END_ROUND,
   END_ROUND_FAIL,
+  ADD_NEW_ROUND,
+  ADD_NEW_ROUND_FAIL,
 } from '../types';
 
 const config = {
@@ -117,6 +119,23 @@ export const endRound = actionData => async dispatch => {
   } catch (error) {
     dispatch({
       type: END_ROUND_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const newRound = actionData => async dispatch => {
+  const { gameId } = actionData;
+  try {
+    const res = await axios.get(`api/games/${gameId}/newRound`, config);
+    dispatch({
+      type: ADD_NEW_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADD_NEW_ROUND_FAIL,
       payload: error,
     });
     console.log(error);

@@ -64,8 +64,8 @@ const Lobby = ({
       <button onClick={() => getGameData(localStorage.gameId)}>
         Update Game State
       </button>
-      {/* {isGamemaster && <GMFooter />} */}
-      {rounds && players && <GMFooter />}
+
+      {rounds && players && isGamemaster && <GMFooter />}
     </LobbyWrapper>
   );
 };
