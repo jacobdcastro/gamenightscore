@@ -82,11 +82,14 @@ router.post(
       // create empty first round skeleton
       const firstRound = {
         roundNumber: 1,
-        inProgress: false,
         startTime: null,
         endTime: null,
         winner: null,
         playerScores: [],
+        inProgress: false,
+        finished: false,
+        allScoresSubmitted: false,
+        newRoundReady: false,
       };
       await game.rounds.push(firstRound); // add new round to [Rounds] to create id
       game.currentRound = game.rounds[0]._id; // grab first round id and set as currentRound
@@ -195,10 +198,10 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
   }
 });
 
-// @route   POST api/games/:game_id/newRound
+// @route   GET api/games/:game_id/newRound
 // @desc    Add new round to game ("go to next round")
 // access   Private
-router.post('/:game_id/newRound', auth, async (req, res) => {
+router.get('/:game_id/newRound', auth, async (req, res) => {
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
   let round = game.rounds.id(game.currentRound);
@@ -221,11 +224,14 @@ router.post('/:game_id/newRound', auth, async (req, res) => {
 
   const roundData = {
     roundNumber: round.roundNumber + 1,
-    inProgress: false,
     startTime: null,
     endTime: null,
     winner: null,
     playerScores, // array of player id's and scores
+    inProgress: false,
+    finished: false,
+    allScoresSubmitted: false,
+    newRoundReady: false,
   };
 
   try {
@@ -234,7 +240,7 @@ router.post('/:game_id/newRound', auth, async (req, res) => {
     game.currentRound = newCurrentRound._id;
 
     await game.save();
-    res.json(newCurrentRound);
+    res.json(game);
   } catch (error) {
     console.log('Server Error', error);
     res.status(500).send('Error with server. Big oops.');

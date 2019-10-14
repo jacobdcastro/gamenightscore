@@ -5,10 +5,6 @@ const RoundSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  inProgress: {
-    type: Boolean,
-    required: true,
-  },
   startTime: {
     type: Date,
     default: Date.now,
@@ -33,6 +29,22 @@ const RoundSchema = new mongoose.Schema({
       },
     },
   ],
+  inProgress: {
+    type: Boolean,
+    required: true,
+  },
+  finished: {
+    type: Boolean,
+    required: true,
+  },
+  allScoresSubmitted: {
+    type: Boolean,
+    required: true,
+  },
+  newRoundReady: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = RoundSchema;
