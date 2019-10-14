@@ -23,6 +23,7 @@ const Lobby = ({
     getGameData(localStorage.gameId);
   }, []);
 
+  // TODO duplicate for rounds
   if (players) {
     const playerData = players.find(p => p._id === localStorage.playerId);
     getPlayerData(playerData);
