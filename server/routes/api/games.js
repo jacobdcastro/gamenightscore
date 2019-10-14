@@ -311,7 +311,7 @@ router.put('/:game_id/endRound', auth, async (req, res) => {
   const { endTime, winnerId } = req.body;
   const game = await Game.findById(gameId);
 
-  // if game is expired, deny acces
+  // if game is expired, deny access
   if (game.expired)
     return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
 
