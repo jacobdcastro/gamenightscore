@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createPlayer } from '../../redux/actions/player';
 import { getGameData } from '../../redux/actions/game';
 import PropTypes from 'prop-types';
 
+// TODO add deck selection
+
 import CreatePlayerWrapper from '../../styles/pages/CreatePlayer.sty.js';
-// import blueWell from '../../assets/deck-icons/expansion-pack/blue-well.svg';
-// import greenBucket from '../../assets/deck-icons/expansion-pack/green-bucket.svg';
-// import orangeHoe from '../../assets/deck-icons/expansion-pack/orange-hoe.svg';
-// import yellowWagon from '../../assets/deck-icons/expansion-pack/yellow-wagon.svg';
-// import blueHoe from '../../assets/deck-icons/original-pack/blue-hoe.svg';
-// import greenWell from '../../assets/deck-icons/original-pack/green-well.svg';
-// import orangeWagon from '../../assets/deck-icons/original-pack/orange-wagon.svg';
-// import yellowBucket from '../../assets/deck-icons/original-pack/yellow-bucket.svg';
 
 const CreatePlayer = ({
   createPlayer,
@@ -30,17 +24,11 @@ const CreatePlayer = ({
     pin: '',
     deck: '',
   });
-
-  // const [deckSelector, setDeckSelector] = useState({
-  //   blueHoe: 'unselected',
-  //   greenWell: 'unselected',
-  //   orangeWagon: 'unselected',
-  //   yellowBucket: 'unselected',
-  //   blueWell: 'unselected',
-  //   greenBucket: 'unselected',
-  //   orangeHoe: 'unselected',
-  //   yellowWagon: 'unselected',
-  // }); // options: "selected", "unselected", "taken"
+  // useEffect(() => {
+  //   if (localStorage.gameId && localStorage.token) {
+  //     getGameData(localStorage.gameId);
+  //   }
+  // }, []);
 
   const { name, pin } = formData;
 
@@ -53,10 +41,6 @@ const CreatePlayer = ({
     createPlayer(formData);
     console.log(formData);
   };
-
-  // const handleDeckSelection = deck => {
-  //   setDeckSelector((deckSelector[deck] = 'selected'));
-  // };
 
   if (isAuthenticated && isCreated) {
     getGameData(gameId);
@@ -99,83 +83,7 @@ const CreatePlayer = ({
             pin!
           </small>
         </div>
-        {/* <div className="deckBtns">
-          <div onClick={() => handleDeckSelection('blueHoe')} id="blueHoe">
-            <img
-              src={blueHoe}
-              title="Select this deck"
-              alt="blue hoe dutch blitz icon"
-            />
-          </div>
 
-          <div onClick={() => handleDeckSelection('greenWell')} id="greenWell">
-            <img
-              src={greenWell}
-              title="Select this deck"
-              alt="green well icon"
-            />
-          </div>
-
-          <div
-            onClick={() => handleDeckSelection('orangeWagon')}
-            id="orangeWagon"
-          >
-            <img
-              src={orangeWagon}
-              title="Select this deck"
-              alt="orange wagon icon"
-            />
-          </div>
-
-          <div
-            onClick={() => handleDeckSelection('yellowBucket')}
-            id="yellowBucket"
-          >
-            <img
-              src={yellowBucket}
-              title="Select this deck"
-              alt="yellow bucket icon"
-            />
-          </div>
-
-          <div onClick={() => handleDeckSelection('blueWell')} id="blueWell">
-            <img
-              src={blueWell}
-              title="Select this deck"
-              alt="blue well dutch blitz icon"
-            />
-          </div>
-
-          <div
-            onClick={() => handleDeckSelection('greenBucket')}
-            id="greenBucket"
-          >
-            <img
-              src={greenBucket}
-              title="Select this deck"
-              alt="green bucket icon"
-            />
-          </div>
-
-          <div onClick={() => handleDeckSelection('orangeHoe')} id="orangeHoe">
-            <img
-              src={orangeHoe}
-              title="Select this deck"
-              alt="orange hoe icon"
-            />
-          </div>
-
-          <div
-            onClick={() => handleDeckSelection('yellowWagon')}
-            id="yellowWagon"
-          >
-            <img
-              src={yellowWagon}
-              title="Select this deck"
-              alt="yellow wagon icon"
-            />
-          </div>
-        </div> */}
         <button type="submit">Enter Game Lobby</button>
       </form>
     </CreatePlayerWrapper>
@@ -183,10 +91,10 @@ const CreatePlayer = ({
 };
 
 CreatePlayer.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  isGamemaster: PropTypes.bool.isRequired,
-  isCreated: PropTypes.bool.isRequired,
-  gameId: PropTypes.string.isRequired,
+  isAuthenticated: PropTypes.bool,
+  isGamemaster: PropTypes.bool,
+  isCreated: PropTypes.bool,
+  gameId: PropTypes.string,
   createPlayer: PropTypes.func.isRequired,
   getGameData: PropTypes.func.isRequired,
 };

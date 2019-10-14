@@ -1,8 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import LandingWrapper from '../../styles/pages/Landing.sty';
 
 const Landing = () => {
+  // const { token, gameId, playerId } = localStorage;
+  // if (token) {
+  //   if (gameId && !playerId) return <Redirect to="/create-player" />;
+  //   if (gameId && playerId) return <Redirect to="/lobby" />;
+  //   if (!gameId && !playerId) return <Redirect to="/create-game" />;
+  // }
+
   return (
     <LandingWrapper>
       <h1>GamenightScore</h1>

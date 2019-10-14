@@ -1,30 +1,34 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { startRound, endRound, newRound } from '../../redux/actions/game';
+import {
+  startRound,
+  endRound,
+  newRound,
+} from '../../redux/actions/currentRound';
 
 const GamemasterFooter = ({
-  currentRoundId,
+  currentRound,
   rounds,
   players,
   startRound,
   endRound,
 }) => {
   const [winner, setWinner] = useState('');
+  // use redux for roundCycle
   const [roundCycle, setRoundCycle] = useState({
     inProgress: false,
     finished: false,
     allScoresSubmitted: false,
     newRoundReady: false,
   });
+
   const {
     inProgress,
     finished,
     allScoresSubmitted,
     newRoundReady,
   } = roundCycle;
-  let currentRoundData = rounds.find(r => r._id === currentRoundId);
-  console.log(currentRoundData);
 
   // object is added to in _roundActions()
   let actionData = {
@@ -74,7 +78,7 @@ const GamemasterFooter = ({
 
       {/* 3. Select Winner Button */}
       {!inProgress && finished && (
-        <div>
+        <Fragment>
           <p>Select the winner!</p>
           {players.map(p => (
             <button key={p._id} onClick={() => setWinner(p._id)}>
@@ -82,8 +86,10 @@ const GamemasterFooter = ({
             </button>
           ))}
           <button onClick={() => runEndRoundAction()}>Submit Winner</button>
-        </div>
+        </Fragment>
       )}
+
+      {/* ? 3.5. Let gamemaster submit their score here */}
 
       {/* 4. Wait for all players to submit scores */}
       {newRoundReady && !allScoresSubmitted && (
@@ -92,8 +98,6 @@ const GamemasterFooter = ({
           <p>Waiting for all players to submit their scores...</p>
         </Fragment>
       )}
-
-      {/* ? 4.5. Let gamemaster submit their score here */}
 
       {/* 5. Create/Go to next round */}
       {newRoundReady && allScoresSubmitted && (
@@ -104,7 +108,7 @@ const GamemasterFooter = ({
 };
 
 GamemasterFooter.propTypes = {
-  currentRoundId: PropTypes.string.isRequired,
+  currentRound: PropTypes.object.isRequired,
   rounds: PropTypes.array.isRequired,
   players: PropTypes.array.isRequired,
   startRound: PropTypes.func.isRequired,
@@ -112,7 +116,7 @@ GamemasterFooter.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  currentRoundId: state.game.currentRound,
+  currentRound: state.currentRound,
   rounds: state.game.rounds,
   players: state.game.players,
 });

@@ -31,12 +31,19 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...payload,
+        token: localStorage.token,
         isCreated: true,
         loading: false,
+        isAuthenticated: true,
       };
     case GET_PLAYER_DATA_SUCCESS:
       return {
+        ...state,
         ...payload,
+        token: localStorage.token,
+        isCreated: true,
+        loading: false,
+        isAuthenticated: true,
       };
     case SET_INIT_PLAYER_STATE_FAIL:
     case CREATE_PLAYER_FAIL:

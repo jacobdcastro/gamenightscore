@@ -18,11 +18,9 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case GET_CURRENT_ROUND_DATA:
-      localStorage.setItem('token', payload.token);
       return {
         ...state,
         ...payload,
-        isAuthenticated: true,
         loading: false,
       };
     default:

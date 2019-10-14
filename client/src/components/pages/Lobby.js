@@ -3,35 +3,46 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getGameData } from '../../redux/actions/game';
 import { getPlayerData } from '../../redux/actions/player';
+import { getCurrentRoundData } from '../../redux/actions/currentRound';
 
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
+import SubmitScore from '../lobby/SubmitScore';
 import GMFooter from '../lobby/GamemasterFooter';
 
 const Lobby = ({
   isGamemaster,
   isLoading,
-  players,
-  rounds,
+  game,
+  currentRound,
   getGameData,
   getPlayerData,
+  getCurrentRoundData,
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
+  const { players, rounds } = game;
 
   useEffect(() => {
     getGameData(localStorage.gameId);
   }, []);
 
-  // TODO duplicate for rounds
-  if (players) {
-    const playerData = players.find(p => p._id === localStorage.playerId);
-    getPlayerData(playerData);
-  }
+  const updateLowerState = () => {
+    if (players) {
+      const playerData = players.find(p => p._id === localStorage.playerId);
+      getPlayerData(playerData);
+    }
+    if (rounds) {
+      const currentRoundData = rounds.find(r => r._id === game.currentRound);
+      getCurrentRoundData(currentRoundData);
+    }
+  };
+
+  // if (players && rounds) updateLowerState();
 
   let pageViewComponent;
   // wait for rounds/players to load before rendering page view component
-  if (rounds && players) {
+  if (players && rounds) {
     if (pageView) pageViewComponent = <Rounds />;
     else pageViewComponent = <Standings />;
   } else {
@@ -62,9 +73,16 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      <button onClick={() => getGameData(localStorage.gameId)}>
+      <button
+        onClick={() => {
+          getGameData(localStorage.gameId);
+          updateLowerState();
+        }}
+      >
         Update Game State
       </button>
+
+      {/* {!currentRound.inProgress && currentRound.finished && <SubmitScore />} */}
 
       {rounds && players && isGamemaster && <GMFooter />}
     </LobbyWrapper>
@@ -73,21 +91,22 @@ const Lobby = ({
 
 Lobby.propTypes = {
   isLoading: PropTypes.bool,
-  players: PropTypes.array,
-  rounds: PropTypes.array,
+  game: PropTypes.object,
+  currentRound: PropTypes.object,
+  isGamemaster: PropTypes.bool,
   getGameData: PropTypes.func.isRequired,
   getPlayerData: PropTypes.func.isRequired,
-  isGamemaster: PropTypes.bool,
+  getCurrentRoundData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isLoading: state.game.isLoading,
-  players: state.game.players,
-  rounds: state.game.rounds,
+  game: state.game,
+  currentRound: state.currentRound,
   isGamemaster: state.player.isGamemaster,
 });
 
 export default connect(
   mapStateToProps,
-  { getGameData, getPlayerData }
+  { getGameData, getPlayerData, getCurrentRoundData }
 )(Lobby);

@@ -2,12 +2,12 @@ import axios from 'axios';
 import {
   GET_CURRENT_ROUND_DATA,
   // GET_CURRENT_ROUND_DATA_FAIL,
-  // START_ROUND,
-  // START_ROUND_FAIL,
-  // END_ROUND,
-  // END_ROUND_FAIL,
-  // ADD_NEW_ROUND,
-  // ADD_NEW_ROUND_FAIL,
+  START_ROUND,
+  START_ROUND_FAIL,
+  END_ROUND,
+  END_ROUND_FAIL,
+  ADD_NEW_ROUND,
+  ADD_NEW_ROUND_FAIL,
 } from '../types';
 
 const config = {
@@ -16,12 +16,68 @@ const config = {
   },
 };
 
-export const setInitCurrentRoundState = initData => async dispatch => {
-  const { currentRoundId } = initData;
+export const getCurrentRoundData = currentRoundData => async dispatch => {
+  console.log(currentRoundData);
 
   try {
-    // todo
+    dispatch({
+      type: GET_CURRENT_ROUND_DATA,
+      payload: currentRoundData,
+    });
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const startRound = actionData => async dispatch => {
+  const { gameId, startTime } = actionData;
+  const body = JSON.stringify({ startTime });
+  try {
+    const res = await axios.put(`api/games/${gameId}/startRound`, body, config);
+    dispatch({
+      type: START_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: START_ROUND_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const endRound = actionData => async dispatch => {
+  const { gameId, endTime, winnerId } = actionData;
+  const body = JSON.stringify({ endTime, winnerId });
+  try {
+    const res = await axios.put(`api/games/${gameId}/endRound`, body, config);
+    dispatch({
+      type: END_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: END_ROUND_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const newRound = actionData => async dispatch => {
+  const { gameId } = actionData;
+  try {
+    const res = await axios.get(`api/games/${gameId}/newRound`, config);
+    dispatch({
+      type: ADD_NEW_ROUND,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADD_NEW_ROUND_FAIL,
+      payload: error,
+    });
     console.log(error);
   }
 };

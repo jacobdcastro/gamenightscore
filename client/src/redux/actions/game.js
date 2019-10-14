@@ -7,12 +7,6 @@ import {
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
   GET_GAME_DATA,
-  START_ROUND,
-  START_ROUND_FAIL,
-  END_ROUND,
-  END_ROUND_FAIL,
-  ADD_NEW_ROUND,
-  ADD_NEW_ROUND_FAIL,
 } from '../types';
 
 const config = {
@@ -85,59 +79,6 @@ export const getGameData = gameId => async dispatch => {
       payload: res.data,
     });
   } catch (error) {
-    console.log(error);
-  }
-};
-
-export const startRound = actionData => async dispatch => {
-  const { gameId, startTime } = actionData;
-  const body = JSON.stringify({ startTime });
-  try {
-    const res = await axios.put(`api/games/${gameId}/startRound`, body, config);
-    dispatch({
-      type: START_ROUND,
-      payload: res.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: START_ROUND_FAIL,
-      payload: error,
-    });
-    console.log(error);
-  }
-};
-
-export const endRound = actionData => async dispatch => {
-  const { gameId, endTime, winnerId } = actionData;
-  const body = JSON.stringify({ endTime, winnerId });
-  try {
-    const res = await axios.put(`api/games/${gameId}/endRound`, body, config);
-    dispatch({
-      type: END_ROUND,
-      payload: res.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: END_ROUND_FAIL,
-      payload: error,
-    });
-    console.log(error);
-  }
-};
-
-export const newRound = actionData => async dispatch => {
-  const { gameId } = actionData;
-  try {
-    const res = await axios.get(`api/games/${gameId}/newRound`, config);
-    dispatch({
-      type: ADD_NEW_ROUND,
-      payload: res.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ADD_NEW_ROUND_FAIL,
-      payload: error,
-    });
     console.log(error);
   }
 };
