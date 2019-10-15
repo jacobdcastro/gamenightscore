@@ -39,6 +39,15 @@ const LobbyWrapper = styled.div`
       border-top: 7px solid ${props => props.theme.blue};
     }
   }
+
+  #submitScore {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 300px;
+    background-color: ${props => props.theme.orange};
+  }
 `;
 
 export default LobbyWrapper;

@@ -6,6 +6,8 @@ import {
   START_ROUND_FAIL,
   END_ROUND,
   END_ROUND_FAIL,
+  SET_WINNER,
+  SET_WINNER_FAIL,
   ADD_NEW_ROUND,
   ADD_NEW_ROUND_FAIL,
 } from '../types';
@@ -16,18 +18,18 @@ const config = {
   },
 };
 
-export const getCurrentRoundData = currentRoundData => async dispatch => {
-  console.log(currentRoundData);
+// export const getCurrentRoundData = currentRoundData => async dispatch => {
+//   console.log(currentRoundData);
 
-  try {
-    dispatch({
-      type: GET_CURRENT_ROUND_DATA,
-      payload: currentRoundData,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+//   try {
+//     dispatch({
+//       type: GET_CURRENT_ROUND_DATA,
+//       payload: currentRoundData,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const startRound = actionData => async dispatch => {
   const { gameId, startTime } = actionData;
@@ -48,8 +50,8 @@ export const startRound = actionData => async dispatch => {
 };
 
 export const endRound = actionData => async dispatch => {
-  const { gameId, endTime, winnerId } = actionData;
-  const body = JSON.stringify({ endTime, winnerId });
+  const { gameId, endTime } = actionData;
+  const body = JSON.stringify({ endTime });
   try {
     const res = await axios.put(`api/games/${gameId}/endRound`, body, config);
     dispatch({
@@ -59,6 +61,28 @@ export const endRound = actionData => async dispatch => {
   } catch (error) {
     dispatch({
       type: END_ROUND_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const setWinner = actionData => async dispatch => {
+  const { gameId, winnerId } = actionData;
+  const body = JSON.stringify({ winnerId });
+  try {
+    const res = await axios.put(
+      `/api/games/${gameId}/setRoundWinner`,
+      body,
+      config
+    );
+    dispatch({
+      type: SET_WINNER,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SET_WINNER_FAIL,
       payload: error,
     });
     console.log(error);

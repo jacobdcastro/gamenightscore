@@ -4,31 +4,27 @@ import { connect } from 'react-redux';
 import {
   startRound,
   endRound,
+  setWinner,
   newRound,
 } from '../../redux/actions/currentRound';
 
 const GamemasterFooter = ({
-  currentRound,
   rounds,
   players,
+  currentRoundId,
   startRound,
   endRound,
+  setWinner,
 }) => {
-  const [winner, setWinner] = useState('');
-  // use redux for roundCycle
-  const [roundCycle, setRoundCycle] = useState({
-    inProgress: false,
-    finished: false,
-    allScoresSubmitted: false,
-    newRoundReady: false,
-  });
+  const [winner, setWinnerState] = useState('');
 
+  const currentRound = rounds.find(r => r._id === currentRoundId);
   const {
     inProgress,
     finished,
     allScoresSubmitted,
     newRoundReady,
-  } = roundCycle;
+  } = currentRound;
 
   // object is added to in _roundActions()
   let actionData = {
@@ -37,19 +33,24 @@ const GamemasterFooter = ({
 
   const runStartRoundAction = () => {
     actionData.startTime = Date.now();
-    setRoundCycle({ inProgress: true });
     startRound(actionData);
     console.log('Round Start!');
   };
 
   const runEndRoundAction = () => {
-    actionData.winnerId = winner;
     endRound(actionData);
-    // setRoundCycle({ newRoundReady: true });
     console.log('Round Ended!');
   };
 
-  const setUpNewRound = () => {};
+  const submitWinner = () => {
+    actionData.winnerId = winner;
+    setWinner(actionData);
+    console.log(`${winner} has won!`);
+  };
+
+  const initNextRound = () => {
+    newRound(actionData);
+  };
 
   return (
     <div id="gamemasterFooter">
@@ -66,10 +67,7 @@ const GamemasterFooter = ({
           className="endBtn"
           onClick={() => {
             actionData.endTime = Date.now();
-            setRoundCycle({
-              inProgress: false,
-              finished: true,
-            });
+            runEndRoundAction();
           }}
         >
           End Round
@@ -77,19 +75,21 @@ const GamemasterFooter = ({
       )}
 
       {/* 3. Select Winner Button */}
-      {!inProgress && finished && (
+      {!inProgress && finished && !newRoundReady && (
         <Fragment>
           <p>Select the winner!</p>
           {players.map(p => (
-            <button key={p._id} onClick={() => setWinner(p._id)}>
+            <button key={p._id} onClick={() => setWinnerState(p._id)}>
               {p.name}
             </button>
           ))}
-          <button onClick={() => runEndRoundAction()}>Submit Winner</button>
+          <button onClick={() => submitWinner()}>Submit Winner</button>
         </Fragment>
       )}
 
-      {/* ? 3.5. Let gamemaster submit their score here */}
+      {/* ? 3.1. Let gamemaster submit their score here */}
+
+      {/* 3.2 gamemaster can submit scores for other players not online */}
 
       {/* 4. Wait for all players to submit scores */}
       {newRoundReady && !allScoresSubmitted && (
@@ -101,27 +101,29 @@ const GamemasterFooter = ({
 
       {/* 5. Create/Go to next round */}
       {newRoundReady && allScoresSubmitted && (
-        <button onClick={() => setUpNewRound()}>Next round!</button>
+        <button onClick={() => initNextRound()}>Next round!</button>
       )}
     </div>
   );
 };
 
 GamemasterFooter.propTypes = {
-  currentRound: PropTypes.object.isRequired,
   rounds: PropTypes.array.isRequired,
   players: PropTypes.array.isRequired,
+  currentRoundId: PropTypes.string.isRequired,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
+  setWinner: PropTypes.func.isRequired,
+  newRound: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  currentRound: state.currentRound,
   rounds: state.game.rounds,
   players: state.game.players,
+  currentRoundId: state.game.currentRound,
 });
 
 export default connect(
   mapStateToProps,
-  { startRound, endRound, newRound }
+  { startRound, endRound, setWinner, newRound }
 )(GamemasterFooter);

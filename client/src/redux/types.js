@@ -34,5 +34,8 @@ export const START_ROUND_FAIL = 'START_ROUND_FAIL';
 export const END_ROUND = 'END_ROUND';
 export const END_ROUND_FAIL = 'END_ROUND_FAIL';
 
+export const SET_WINNER = 'SET_WINNER';
+export const SET_WINNER_FAIL = 'SET_WINNER_FAIL';
+
 export const ADD_NEW_ROUND = 'ADD_NEW_ROUND';
 export const ADD_NEW_ROUND_FAIL = 'ADD_NEW_ROUND_FAIL';

@@ -308,7 +308,7 @@ router.put('/:game_id/startRound', auth, async (req, res) => {
 // access   Private
 router.put('/:game_id/endRound', auth, async (req, res) => {
   const gameId = req.params.game_id;
-  const { endTime, winnerId } = req.body;
+  const { endTime } = req.body;
   const game = await Game.findById(gameId);
 
   // if game is expired, deny access
@@ -317,11 +317,36 @@ router.put('/:game_id/endRound', auth, async (req, res) => {
 
   try {
     const currentRound = game.rounds.id(game.currentRound);
-    const winner = game.players.id(winnerId);
 
     currentRound.inProgress = false;
-    currentRound.endTime = Date.now();
-    currentRound.winner = winner;
+    currentRound.finished = true;
+    currentRound.endTime = endTime;
+
+    await game.save();
+    res.json(game);
+  } catch (error) {
+    console.log('Server Error', error);
+    res.status(500).send('Error with server. Big oops.');
+  }
+});
+
+// @route   PUT api/games/:game_id/setRoundWinner
+// @desc    Set winner in round data
+// access   Private
+router.put('/:game_id/setRoundWinner', auth, async (req, res) => {
+  const gameId = req.params.game_id;
+  const { winnerId } = req.body;
+  const game = await Game.findById(gameId);
+
+  // if game is expired, deny access
+  if (game.expired)
+    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+
+  try {
+    const currentRound = game.rounds.id(game.currentRound);
+
+    currentRound.winner = winnerId;
+    currentRound.newRoundReady = true;
 
     await game.save();
     res.json(game);
@@ -366,6 +391,11 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 
     // 5. sort players array based on standings
     game.players.sort((a, b) => a.totalScore - b.totalScore);
+
+    // 6. check if all players have submitted scores
+    if (game.players.length === round.playerScores.length) {
+      round.allScoresSubmitted = true;
+    }
 
     await game.save();
     res.json(game);

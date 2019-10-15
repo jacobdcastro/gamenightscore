@@ -13,17 +13,17 @@ const initialState = {
   loading: true,
 };
 
-export default function(state = initialState, action) {
-  const { type, payload } = action;
+// export default function(state = initialState, action) {
+//   const { type, payload } = action;
 
-  switch (type) {
-    case GET_CURRENT_ROUND_DATA:
-      return {
-        ...state,
-        ...payload,
-        loading: false,
-      };
-    default:
-      return state;
-  }
-}
+//   switch (type) {
+//     case GET_CURRENT_ROUND_DATA:
+//       return {
+//         ...state,
+//         ...payload,
+//         loading: false,
+//       };
+//     default:
+//       return state;
+//   }
+// }

@@ -1,29 +1,54 @@
-// import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import { submitPlayerScore } from '../../redux/actions/player';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { submitPlayerScore } from '../../redux/actions/player';
 
-// const SubmitScore = ({ roundNumber, submitPlayerScore }) => {
-//   const [roundScore, setRoundScore] = useState(0);
+const SubmitScore = ({ roundData, playerId, submitPlayerScore }) => {
+  const [roundScore, setRoundScore] = useState(0);
+  const { roundNumber } = roundData;
 
-//   return (
-//     <div>
-//       <form>
-//         <label>Submit score for round {roundNumber}</label>
-//       </form>
-//     </div>
-//   );
-// };
+  const handleChange = e => {
+    setRoundScore(e.target.value);
+  };
 
-// SubmitScore.propTypes = {
-//   submitPlayerScore: PropTypes.func.isRequired,
-// };
+  const handleSubmit = e => {
+    e.preventDefault();
+    // TODO add redux action for submitting player scores
+    // submitPlayerScore()
+  };
 
-// const mapStateToProps = state => {
-//   roundNumber: state.currentRound.roundNumber;
-// };
+  return (
+    <div id="submitScore">
+      <form onSubmit={e => handleSubmit(e)}>
+        <label htmlFor="scoreSubmission">
+          {playerId === roundData.winner
+            ? `Congrats! You won round ${roundNumber}! Submit your score.`
+            : `Submit score for round ${roundNumber}`}
+        </label>
+        <input
+          id="scoreSubmission"
+          name="roundScore"
+          type="number"
+          value={roundScore}
+          onChange={e => handleChange(e)}
+        />
+        <button type="submit">Submit Score</button>
+      </form>
+    </div>
+  );
+};
 
-// export default connect(
-//   null,
-//   { submitPlayerScore }
-// )(SubmitScore);
+SubmitScore.propTypes = {
+  roundData: PropTypes.object,
+  playerId: PropTypes.string.isRequired,
+  submitPlayerScore: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  playerId: state.player._id,
+});
+
+export default connect(
+  mapStateToProps,
+  { submitPlayerScore }
+)(SubmitScore);
