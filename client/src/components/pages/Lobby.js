@@ -9,6 +9,7 @@ import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
 import SubmitScore from '../lobby/SubmitScore';
 import GMFooter from '../lobby/GamemasterFooter';
+import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 
 const Lobby = ({
   isGamemaster,
@@ -48,8 +49,9 @@ const Lobby = ({
     <LobbyWrapper>
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
       <div className="currentRound">
-        <h2>Current Round: 1</h2>
-        <p>Waiting on Gamemaster to start round...</p>
+        {currentRoundData && (
+          <CurrentRoundHeader roundData={currentRoundData} players={players} />
+        )}
       </div>
       <div className="pageViewMenu">
         <div
