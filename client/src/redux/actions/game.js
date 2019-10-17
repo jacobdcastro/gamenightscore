@@ -7,6 +7,8 @@ import {
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
   GET_GAME_DATA,
+  SUBMIT_PLAYER_SCORE,
+  SUBMIT_PLAYER_SCORE_FAIL,
 } from '../types';
 
 const config = {
@@ -79,6 +81,32 @@ export const getGameData = gameId => async dispatch => {
       payload: res.data,
     });
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const submitPlayerScore = actionData => async dispatch => {
+  const { gameId, playerId, roundScore } = actionData;
+
+  const body = JSON.stringify({ roundScore });
+
+  try {
+    const res = await axios.put(
+      `/api/games/${gameId}/players/${playerId}/postScore`,
+      body,
+      config
+    );
+    console.log('hi');
+
+    dispatch({
+      type: SUBMIT_PLAYER_SCORE,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SUBMIT_PLAYER_SCORE_FAIL,
+      payload: error,
+    });
     console.log(error);
   }
 };

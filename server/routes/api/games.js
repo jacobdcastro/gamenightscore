@@ -369,6 +369,9 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
   if (game.expired)
     return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
 
+  if (!playerId)
+    return res.status(401).json({ errors: [{ msg: 'phantom request...' }] });
+
   try {
     const { currentRound } = game;
 
@@ -377,7 +380,7 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     const round = await game.rounds.id(currentRound);
 
     // 2. add total score
-    player.totalScore += roundScore;
+    player.totalScore += parseInt(roundScore);
 
     // 3. update roundsPlayed array
     player.roundsPlayed.push({
@@ -390,7 +393,7 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     round.playerScores.push({ player: playerId, roundScore });
 
     // 5. sort players array based on standings
-    game.players.sort((a, b) => a.totalScore - b.totalScore);
+    game.players.sort((a, b) => b.totalScore - a.totalScore);
 
     // 6. check if all players have submitted scores
     if (game.players.length === round.playerScores.length) {

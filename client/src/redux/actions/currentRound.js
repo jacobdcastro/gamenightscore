@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  GET_CURRENT_ROUND_DATA,
+  // GET_CURRENT_ROUND_DATA,
   // GET_CURRENT_ROUND_DATA_FAIL,
   START_ROUND,
   START_ROUND_FAIL,
@@ -91,6 +91,7 @@ export const setWinner = actionData => async dispatch => {
 
 export const newRound = actionData => async dispatch => {
   const { gameId } = actionData;
+  console.log('hi');
   try {
     const res = await axios.get(`api/games/${gameId}/newRound`, config);
     dispatch({

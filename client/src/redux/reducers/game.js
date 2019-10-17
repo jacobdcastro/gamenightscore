@@ -14,6 +14,8 @@ import {
   ADD_NEW_ROUND_FAIL,
   SET_WINNER,
   SET_WINNER_FAIL,
+  SUBMIT_PLAYER_SCORE,
+  SUBMIT_PLAYER_SCORE_FAIL,
 } from '../types';
 
 const initialState = {
@@ -44,6 +46,7 @@ export default function(state = initialState, action) {
     case END_ROUND:
     case SET_WINNER:
     case ADD_NEW_ROUND:
+    case SUBMIT_PLAYER_SCORE:
       return {
         ...gameData,
         loading: false,
@@ -55,10 +58,11 @@ export default function(state = initialState, action) {
     case END_ROUND_FAIL:
     case SET_WINNER_FAIL:
     case ADD_NEW_ROUND_FAIL:
+    case SUBMIT_PLAYER_SCORE_FAIL:
       return {
         ...state,
-        ...gameData,
         loading: false,
+        error: gameData,
       };
 
     default:

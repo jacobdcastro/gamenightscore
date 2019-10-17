@@ -15,6 +15,7 @@ const GamemasterFooter = ({
   startRound,
   endRound,
   setWinner,
+  newRound,
 }) => {
   const [winner, setWinnerState] = useState('');
 
