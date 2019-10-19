@@ -15,7 +15,6 @@ const CreateGame = ({
   gameId,
   isAuthenticated,
 }) => {
-  console.log(gameId);
   const [formData, setFormData] = useState({
     title: '',
     password: '',

@@ -1,8 +1,10 @@
+// require('dotenv').config();
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getGameData } from '../../redux/actions/game';
 import { getPlayerData } from '../../redux/actions/player';
+import Pusher from 'pusher-js';
 
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
@@ -23,6 +25,16 @@ const Lobby = ({
 
   useEffect(() => {
     getGameData(localStorage.gameId);
+    const pusher = new Pusher('50eaff733e0fbc1bba46', {
+      cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+      encrypted: false,
+    });
+
+    const channel = pusher.subscribe('games');
+    console.log(channel);
+    channel.bind('inserted', () => getGameData(localStorage.gameId));
+    channel.bind('deleted', () => getGameData(localStorage.gameId));
+    channel.bind('updated', () => getGameData(localStorage.gameId));
   }, []);
 
   const updatePlayerState = () => {
@@ -70,12 +82,7 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      <button
-        onClick={() => {
-          getGameData(localStorage.gameId);
-          updatePlayerState();
-        }}
-      >
+      <button onClick={() => getGameData(localStorage.gameId)}>
         Update Game State
       </button>
 

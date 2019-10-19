@@ -14,7 +14,7 @@ const RoundListing = ({ data, players }) => {
     <div className="roundListing">
       <h3>Round: {roundNumber}</h3>
       <div>
-        <p>Winner: {winner ? winnerName.name : 'No winner yet...'}</p>
+        <p>{winner ? `Winner: ${winnerName.name}` : 'No winner yet...'}</p>
       </div>
       <div className="totalScore">
         <span>Round Total:</span>

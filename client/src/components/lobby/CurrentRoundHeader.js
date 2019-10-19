@@ -4,7 +4,6 @@ const CurrentRoundHeader = ({ roundData, players }) => {
   const { inProgress, finished, allScoresSubmitted, newRoundReady } = roundData;
   let currentRoundWinner;
   currentRoundWinner = players.find(p => p._id === roundData.winner);
-  console.log(currentRoundWinner);
 
   return (
     <div>
