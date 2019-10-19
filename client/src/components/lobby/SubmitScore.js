@@ -5,7 +5,6 @@ import { submitPlayerScore } from '../../redux/actions/game';
 
 const SubmitScore = ({ roundData, playerId, gameId, submitPlayerScore }) => {
   const [roundScore, setRoundScore] = useState(0);
-  const [playerScoreSubmitted, setPlayerScoreSubmitted] = useState(false);
   const { roundNumber } = roundData;
 
   const handleChange = e => {
@@ -16,37 +15,27 @@ const SubmitScore = ({ roundData, playerId, gameId, submitPlayerScore }) => {
     e.preventDefault();
     const actionData = { gameId, playerId, roundScore };
     submitPlayerScore(actionData);
-    setPlayerScoreSubmitted(true);
   };
 
-  const currentRoundIsScored = roundData.playerScores.find(
-    p => p.player === playerId
+  return (
+    <div id="submitScore">
+      <form onSubmit={e => handleSubmit(e)}>
+        <label htmlFor="scoreSubmission">
+          {playerId === roundData.winner
+            ? `Congrats! You won round ${roundNumber}! Submit your score.`
+            : `Submit score for round ${roundNumber}`}
+        </label>
+        <input
+          id="scoreSubmission"
+          name="roundScore"
+          type="number"
+          value={roundScore}
+          onChange={e => handleChange(e)}
+        />
+        <button type="submit">Submit Score</button>
+      </form>
+    </div>
   );
-  if (currentRoundIsScored) console.log(playerScoreSubmitted);
-
-  if (roundData.finished && !playerScoreSubmitted) {
-    return (
-      <div id="submitScore">
-        <form onSubmit={e => handleSubmit(e)}>
-          <label htmlFor="scoreSubmission">
-            {playerId === roundData.winner
-              ? `Congrats! You won round ${roundNumber}! Submit your score.`
-              : `Submit score for round ${roundNumber}`}
-          </label>
-          <input
-            id="scoreSubmission"
-            name="roundScore"
-            type="number"
-            value={roundScore}
-            onChange={e => handleChange(e)}
-          />
-          <button type="submit">Submit Score</button>
-        </form>
-      </div>
-    );
-  } else {
-    return <div />;
-  }
 };
 
 SubmitScore.propTypes = {

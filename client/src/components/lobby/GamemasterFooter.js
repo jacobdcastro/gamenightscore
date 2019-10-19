@@ -7,17 +7,22 @@ import {
   setWinner,
   newRound,
 } from '../../redux/actions/currentRound';
+import { submitPlayerScore } from '../../redux/actions/game';
+import GamemasterFooterWrapper from '../../styles/lobby/Gamemaster.sty.js';
 
 const GamemasterFooter = ({
   rounds,
   players,
+  playerId,
   currentRoundId,
+  currentRoundIsScored,
   startRound,
   endRound,
   setWinner,
   newRound,
 }) => {
   const [winner, setWinnerState] = useState('');
+  const [roundScore, setRoundScore] = useState(0);
 
   const currentRound = rounds.find(r => r._id === currentRoundId);
   const {
@@ -25,9 +30,10 @@ const GamemasterFooter = ({
     finished,
     allScoresSubmitted,
     newRoundReady,
+    roundNumber,
   } = currentRound;
 
-  // object is added to in _roundActions()
+  // object is added to/manipulated in _RoundAction()'s
   let actionData = {
     gameId: localStorage.gameId,
   };
@@ -49,12 +55,22 @@ const GamemasterFooter = ({
     console.log(`${winner} has won!`);
   };
 
+  const handleChange = e => {
+    setRoundScore(e.target.value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    actionData = { playerId, roundScore };
+    submitPlayerScore(actionData);
+  };
+
   const initNextRound = () => {
     newRound(actionData);
   };
 
   return (
-    <div id="gamemasterFooter">
+    <GamemasterFooterWrapper id="gamemasterFooter">
       {/* 1. Start Round Button */}
       {!inProgress && !finished && (
         <button className="startBtn" onClick={() => runStartRoundAction()}>
@@ -89,6 +105,23 @@ const GamemasterFooter = ({
       )}
 
       {/* ? 3.1. Let gamemaster submit their score here */}
+      {currentRound.winner && currentRoundIsScored && (
+        <form onSubmit={e => handleSubmit(e)}>
+          <label htmlFor="scoreSubmission">
+            {playerId === winner
+              ? `Congrats! You won round ${roundNumber}! Submit your score.`
+              : `Submit score for round ${roundNumber}`}
+          </label>
+          <input
+            id="scoreSubmission"
+            name="roundScore"
+            type="number"
+            value={roundScore}
+            onChange={e => handleChange(e)}
+          />
+          <button type="submit">Submit Score</button>
+        </form>
+      )}
 
       {/* 3.2 gamemaster can submit scores for other players not online */}
 
@@ -104,14 +137,16 @@ const GamemasterFooter = ({
       {newRoundReady && allScoresSubmitted && (
         <button onClick={() => initNextRound()}>Next round!</button>
       )}
-    </div>
+    </GamemasterFooterWrapper>
   );
 };
 
 GamemasterFooter.propTypes = {
   rounds: PropTypes.array.isRequired,
   players: PropTypes.array.isRequired,
+  playerId: PropTypes.string.isRequired,
   currentRoundId: PropTypes.string.isRequired,
+  currentRoundIsScored: PropTypes.bool,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
   setWinner: PropTypes.func.isRequired,
@@ -121,6 +156,7 @@ GamemasterFooter.propTypes = {
 const mapStateToProps = state => ({
   rounds: state.game.rounds,
   players: state.game.players,
+  playerId: state.player._id,
   currentRoundId: state.game.currentRound,
 });
 

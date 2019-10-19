@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CurrentRoundHeader = ({ roundData, players }) => {
+const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
   const { inProgress, finished, allScoresSubmitted, newRoundReady } = roundData;
   let currentRoundWinner;
   currentRoundWinner = players.find(p => p._id === roundData.winner);
@@ -24,7 +24,7 @@ const CurrentRoundHeader = ({ roundData, players }) => {
           <br />
           {roundData.winner && `${currentRoundWinner.name} has won.`}
           <br />
-          Please enter your score below.
+          {!currentRoundIsScored && 'Please enter your score below.'}
         </p>
       )}
       {newRoundReady && allScoresSubmitted && (
