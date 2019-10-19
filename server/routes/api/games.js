@@ -38,28 +38,26 @@ router.post('/auth/sign', async (req, res) => {
   }
 });
 
-// @route   POST api/games/auth/verify
-// @desc    Verify JWT
+// @route   POST api/games/auth/pusher
+// @desc    Authenticate connected to pusher presence channel
 // access   Public
-router.post('/auth/verify', async (req, res) => {
-  const { gameId, isGamemaster } = req.body;
+router.post('/auth/pusher', async (req, res) => {
+  const { socket_id, channel_name } = req.body;
 
   try {
-    const payload = {
-      gameId: gameId,
-      isGamemaster: isGamemaster,
+    const presenceData = {
+      user_id: 'unique_user_id',
+      user_info: {
+        name: 'Mr Channels',
+        twitter_id: '@pusher',
+      },
     };
-
-    // once new game is created, return jwt to game creator so they can properly create player in private route
-    jwt.sign(
-      payload,
-      config.get('jwtsecret'),
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.status(200).json({ token, ...payload });
-      }
+    const auth = await pusher.authenticate(
+      socket_id,
+      channel_name,
+      presenceData
     );
+    res.send(auth);
   } catch (error) {
     console.log('Server error');
     res.status(500).send('Error with the server. Big oops.');
@@ -180,7 +178,7 @@ router.post(
 // @route   POST api/games/:game_id/newPlayer
 // @desc    Create new player in a game
 // access   Private
-router.post('/:game_id/newPlayer', auth, async (req, res) => {
+router.post('/:game_id/newPlayer', async (req, res) => {
   let { isGamemaster, name, pin, deck } = req.body;
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
@@ -242,20 +240,12 @@ router.get('/:game_id/newRound', auth, async (req, res) => {
   if (round.playerScores.length !== game.players.length)
     res.status(406).send('Not all players have submitted their scores');
 
-  const playerScores = game.players.map(p => {
-    return {
-      id: p._id,
-      name: p.name,
-      roundScore: 0,
-    };
-  });
-
   const roundData = {
     roundNumber: round.roundNumber + 1,
     startTime: null,
     endTime: null,
     winner: null,
-    playerScores, // array of player id's and scores
+    playerScores: [], // array of player id's and scores
     inProgress: false,
     finished: false,
     allScoresSubmitted: false,

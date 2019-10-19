@@ -10,6 +10,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 // Configure pusher to connect
+const channel = 'presence-games';
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
   key: process.env.PUSHER_APP_KEY,
@@ -61,18 +62,18 @@ db.once('open', () => {
       console.log('INSERT TYPE ===================================');
       console.log(change);
       const game = change.fullDocument;
-      pusher.trigger('games', 'inserted', {
+      pusher.trigger(channel, 'inserted', {
         game,
       });
     } else if (change.operationType === 'delete') {
       console.log('DELETE TYPE ===================================');
       console.log(change);
-      pusher.trigger('games', 'deleted', change.documentKey._id);
+      pusher.trigger(channel, 'deleted', change.documentKey._id);
     } else if (change.operationType === 'update') {
       console.log('UPDATE TYPE ===================================');
       console.log(change);
       const { updateDescription } = change;
-      pusher.trigger('games', 'updated', updateDescription);
+      pusher.trigger(channel, 'updated', updateDescription);
     }
   });
 });
