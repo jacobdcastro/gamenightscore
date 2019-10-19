@@ -20,19 +20,6 @@ const config = {
 
 const api_url = process.env.REACT_APP_API_URL;
 
-// export const getCurrentRoundData = currentRoundData => async dispatch => {
-//   console.log(currentRoundData);
-
-//   try {
-//     dispatch({
-//       type: GET_CURRENT_ROUND_DATA,
-//       payload: currentRoundData,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 export const startRound = actionData => async dispatch => {
   const { gameId, startTime } = actionData;
   const body = JSON.stringify({ startTime });
