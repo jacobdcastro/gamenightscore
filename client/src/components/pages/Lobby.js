@@ -17,6 +17,7 @@ const Lobby = ({
   isGamemaster,
   isLoading,
   game,
+  playerId,
   getGameData,
   getPlayerData,
 }) => {
@@ -28,9 +29,10 @@ const Lobby = ({
     const pusher = new Pusher('50eaff733e0fbc1bba46', {
       cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
       encrypted: false,
+      authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
     });
 
-    const channel = pusher.subscribe('games');
+    const channel = pusher.subscribe('presence-games');
     console.log(channel);
     channel.bind('inserted', () => getGameData(localStorage.gameId));
     channel.bind('deleted', () => getGameData(localStorage.gameId));
@@ -43,9 +45,19 @@ const Lobby = ({
   };
 
   let currentRoundData;
+  let currentRoundIsScored;
   if (players && rounds) {
     updatePlayerState();
     currentRoundData = rounds.find(r => r._id === game.currentRound);
+    currentRoundIsScored = currentRoundData.playerScores.find(
+      p => p.player === playerId
+    );
+  }
+
+  let roundFinished;
+  if (currentRoundData) {
+    roundFinished = currentRoundData.finished;
+    // roundStarted = currentRoundData;
   }
 
   let pageViewComponent;
@@ -86,9 +98,16 @@ const Lobby = ({
         Update Game State
       </button>
 
-      {currentRoundData && <SubmitScore roundData={currentRoundData} />}
+      {roundFinished && !currentRoundIsScored && !isGamemaster && (
+        <SubmitScore
+          roundData={currentRoundData}
+          currentRoundIsScored={currentRoundIsScored}
+        />
+      )}
 
-      {rounds && players && isGamemaster && <GMFooter />}
+      {rounds && players && isGamemaster && (
+        <GMFooter currentRoundIsScored={currentRoundIsScored} />
+      )}
     </LobbyWrapper>
   );
 };
@@ -99,12 +118,14 @@ Lobby.propTypes = {
   isGamemaster: PropTypes.bool,
   getGameData: PropTypes.func.isRequired,
   getPlayerData: PropTypes.func.isRequired,
+  playerId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   isLoading: state.game.isLoading,
   game: state.game,
   isGamemaster: state.player.isGamemaster,
+  playerId: state.player._id,
 });
 
 export default connect(

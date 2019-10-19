@@ -25,12 +25,19 @@ const JoinGameWrapper = styled.div`
     margin-top: 15px;
   }
 
+  p {
+    margin: auto;
+    max-width: 600px;
+  }
+
   .dutchBlitzLogo {
     font-size: 4rem;
     margin: 15px auto 8px;
   }
 
   form {
+    max-width: 800px;
+    margin: auto;
     margin-top: 10px;
     div {
       text-align: left;
@@ -55,6 +62,23 @@ const JoinGameWrapper = styled.div`
         padding: 10px;
         border-radius: 5px;
       }
+    }
+
+    button {
+      margin: 15px;
+      padding: 10px 0;
+      width: 80%;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 3px solid #faed24;
+      background-color: #168f45;
+    }
+    button:hover {
+      cursor: pointer;
     }
   }
 `;

@@ -24,11 +24,12 @@ const CreatePlayer = ({
     pin: '',
     deck: '',
   });
-  // useEffect(() => {
-  //   if (localStorage.gameId && localStorage.token) {
-  //     getGameData(localStorage.gameId);
-  //   }
-  // }, []);
+
+  useEffect(() => {
+    if (localStorage.gameId && localStorage.token) {
+      getGameData(localStorage.gameId);
+    }
+  }, []);
 
   const { name, pin } = formData;
 

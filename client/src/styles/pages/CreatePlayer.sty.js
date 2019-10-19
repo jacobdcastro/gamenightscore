@@ -31,6 +31,8 @@ const CreatePlayerWrapper = styled.div`
   }
 
   form {
+    max-width: 800px;
+    margin: auto;
     margin-top: 10px;
     div {
       text-align: left;
@@ -104,6 +106,23 @@ const CreatePlayerWrapper = styled.div`
           cursor: pointer;
         }
       }
+    }
+
+    button {
+      margin: 15px;
+      padding: 10px 0;
+      width: 80%;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 3px solid #faed24;
+      background-color: #168f45;
+    }
+    button:hover {
+      cursor: pointer;
     }
   }
 `;

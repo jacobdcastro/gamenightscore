@@ -3,12 +3,12 @@ import styled from 'styled-components';
 const CreateGameWrapper = styled.div`
   position: absolute;
   top: 0;
+  left: 0;
   background-color: ${props => props.theme.blue};
   text-align: center;
   color: white;
   min-height: 100vh;
-  /* height: 100%; */
-  padding: 20px 20px 50px;
+  width: 100vw;
 
   .backLink {
     position: absolute;
@@ -31,6 +31,8 @@ const CreateGameWrapper = styled.div`
   }
 
   form {
+    max-width: 800px;
+    margin: auto;
     margin-top: 10px;
     div {
       text-align: left;

@@ -57,9 +57,7 @@ const JoinGame = ({
             onChange={e => onChange(e)}
             required
           />
-          <small>
-            Can be anything, to be honest. Your friends need it to login.
-          </small>
+          <small>This is case sensitive!</small>
         </div>
         <div className="textInput">
           <label htmlFor="password">Password</label>
@@ -72,12 +70,9 @@ const JoinGame = ({
             onChange={e => onChange(e)}
             required
           />
-          <small>
-            Do not use a password you use on other accounts. It will displayed
-            on game dashboard for others to see.
-          </small>
+          <small>This is also case sensitive!</small>
         </div>
-        <button type="submit">Create Game</button>
+        <button type="submit">Join Game</button>
       </form>
     </JoinGameWrapper>
   );
