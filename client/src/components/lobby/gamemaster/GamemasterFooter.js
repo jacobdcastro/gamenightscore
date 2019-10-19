@@ -6,9 +6,9 @@ import {
   endRound,
   setWinner,
   newRound,
-} from '../../redux/actions/currentRound';
-import { submitPlayerScore } from '../../redux/actions/game';
-import GamemasterFooterWrapper from '../../styles/lobby/Gamemaster.sty.js';
+} from '../../../redux/actions/currentRound';
+import { submitPlayerScore } from '../../../redux/actions/game';
+import GamemasterFooterWrapper from '../../../styles/lobby/Gamemaster.sty.js';
 
 const GamemasterFooter = ({
   rounds,
@@ -20,6 +20,7 @@ const GamemasterFooter = ({
   endRound,
   setWinner,
   newRound,
+  submitPlayerScore,
 }) => {
   const [winner, setWinnerState] = useState('');
   const [roundScore, setRoundScore] = useState(0);
@@ -61,7 +62,9 @@ const GamemasterFooter = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    actionData = { playerId, roundScore };
+    actionData.playerId = playerId;
+    actionData.roundScore = roundScore;
+    console.log(actionData);
     submitPlayerScore(actionData);
   };
 
@@ -105,7 +108,7 @@ const GamemasterFooter = ({
       )}
 
       {/* ? 3.1. Let gamemaster submit their score here */}
-      {currentRound.winner && currentRoundIsScored && (
+      {currentRound.winner && !currentRoundIsScored && (
         <form onSubmit={e => handleSubmit(e)}>
           <label htmlFor="scoreSubmission">
             {playerId === winner
@@ -151,6 +154,7 @@ GamemasterFooter.propTypes = {
   endRound: PropTypes.func.isRequired,
   setWinner: PropTypes.func.isRequired,
   newRound: PropTypes.func.isRequired,
+  submitPlayerScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -162,5 +166,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { startRound, endRound, setWinner, newRound }
+  { startRound, endRound, setWinner, newRound, submitPlayerScore }
 )(GamemasterFooter);

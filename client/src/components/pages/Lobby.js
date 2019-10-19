@@ -10,7 +10,7 @@ import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
 import SubmitScore from '../lobby/SubmitScore';
-import GMFooter from '../lobby/GamemasterFooter';
+import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 
 const Lobby = ({
@@ -94,9 +94,9 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      <button onClick={() => getGameData(localStorage.gameId)}>
+      {/* <button onClick={() => getGameData(localStorage.gameId)}>
         Update Game State
-      </button>
+      </button> */}
 
       {roundFinished && !currentRoundIsScored && !isGamemaster && (
         <SubmitScore
