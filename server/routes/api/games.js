@@ -189,6 +189,7 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
   if (game.expired)
     return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
 
+  // check if game is full
   if (game.players.length === 8)
     return res
       .status(405)
@@ -196,7 +197,6 @@ router.post('/:game_id/newPlayer', auth, async (req, res) => {
 
   // make sure username is unique
   const playerWithSameName = game.players.find(p => p.name === name);
-
   if (playerWithSameName) {
     return res.status(400).json({ errors: [{ msg: 'Name taken' }] });
   }
