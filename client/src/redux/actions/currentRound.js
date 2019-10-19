@@ -18,6 +18,8 @@ const config = {
   },
 };
 
+const api_url = process.env.REACT_APP_API_URL;
+
 // export const getCurrentRoundData = currentRoundData => async dispatch => {
 //   console.log(currentRoundData);
 
@@ -35,7 +37,11 @@ export const startRound = actionData => async dispatch => {
   const { gameId, startTime } = actionData;
   const body = JSON.stringify({ startTime });
   try {
-    const res = await axios.put(`api/games/${gameId}/startRound`, body, config);
+    const res = await axios.put(
+      `${api_url}/${gameId}/startRound`,
+      body,
+      config
+    );
     dispatch({
       type: START_ROUND,
       payload: res.data,
@@ -53,7 +59,7 @@ export const endRound = actionData => async dispatch => {
   const { gameId, endTime } = actionData;
   const body = JSON.stringify({ endTime });
   try {
-    const res = await axios.put(`api/games/${gameId}/endRound`, body, config);
+    const res = await axios.put(`${api_url}/${gameId}/endRound`, body, config);
     dispatch({
       type: END_ROUND,
       payload: res.data,
@@ -72,7 +78,7 @@ export const setWinner = actionData => async dispatch => {
   const body = JSON.stringify({ winnerId });
   try {
     const res = await axios.put(
-      `/api/games/${gameId}/setRoundWinner`,
+      `${api_url}/${gameId}/setRoundWinner`,
       body,
       config
     );
@@ -93,7 +99,7 @@ export const newRound = actionData => async dispatch => {
   const { gameId } = actionData;
   console.log('hi');
   try {
-    const res = await axios.get(`api/games/${gameId}/newRound`, config);
+    const res = await axios.get(`${api_url}/${gameId}/newRound`, config);
     dispatch({
       type: ADD_NEW_ROUND,
       payload: res.data,

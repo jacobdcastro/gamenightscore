@@ -17,6 +17,8 @@ const config = {
   },
 };
 
+const api_url = process.env.REACT_APP_API_URL;
+
 export const createGame = formData => async dispatch => {
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
@@ -29,7 +31,7 @@ export const createGame = formData => async dispatch => {
 
   try {
     // res expects game data
-    const res = await axios.post('/api/games/new', body, config);
+    const res = await axios.post(`${api_url}/new`, body, config);
 
     dispatch({
       type: CREATE_GAME_SUCCESS,
@@ -54,7 +56,7 @@ export const joinGame = formData => async dispatch => {
   });
 
   try {
-    const res = await axios.post('/api/games/join', body, config);
+    const res = await axios.post(`${api_url}/join`, body, config);
 
     dispatch({
       type: JOIN_GAME_SUCCESS,
@@ -74,7 +76,7 @@ export const joinGame = formData => async dispatch => {
 
 export const getGameData = gameId => async dispatch => {
   try {
-    const res = await axios.get(`api/games/${gameId}`);
+    const res = await axios.get(`${api_url}/${gameId}`);
 
     dispatch({
       type: GET_GAME_DATA,
@@ -92,7 +94,7 @@ export const submitPlayerScore = actionData => async dispatch => {
 
   try {
     const res = await axios.put(
-      `/api/games/${gameId}/players/${playerId}/postScore`,
+      `${api_url}/${gameId}/players/${playerId}/postScore`,
       body,
       config
     );

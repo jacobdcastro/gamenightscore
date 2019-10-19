@@ -13,6 +13,8 @@ const config = {
   },
 };
 
+const api_url = process.env.REACT_APP_API_URL;
+
 export const setInitPlayerState = initData => async dispatch => {
   const { gameId, isGamemaster } = initData;
 
@@ -22,7 +24,7 @@ export const setInitPlayerState = initData => async dispatch => {
   });
 
   try {
-    const res = await axios.post('/api/games/auth/sign', body, config);
+    const res = await axios.post(`${api_url}/auth/sign`, body, config);
     console.log(res.data);
 
     dispatch({
@@ -50,7 +52,7 @@ export const createPlayer = formData => async dispatch => {
 
   try {
     const res = await axios.post(
-      `/api/games/${gameId}/newPlayer`,
+      `${api_url}/${gameId}/newPlayer`,
       body,
       config
     );
@@ -75,17 +77,6 @@ export const getPlayerData = playerData => async dispatch => {
     await dispatch({
       type: GET_PLAYER_DATA_SUCCESS,
       payload: playerData,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const submitPlayerScore = data => async dispatch => {
-  const { gameId, playerId, roundScore } = data;
-  try {
-    await dispatch({
-      // type: asdfkjl;
     });
   } catch (error) {
     console.log(error);
