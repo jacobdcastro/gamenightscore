@@ -149,7 +149,7 @@ GamemasterFooter.propTypes = {
   players: PropTypes.array.isRequired,
   playerId: PropTypes.string.isRequired,
   currentRoundId: PropTypes.string.isRequired,
-  currentRoundIsScored: PropTypes.bool,
+  currentRoundIsScored: PropTypes.object,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
   setWinner: PropTypes.func.isRequired,
