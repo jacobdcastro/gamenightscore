@@ -26,18 +26,18 @@ const Lobby = ({
 
   useEffect(() => {
     getGameData(localStorage.gameId);
-    const pusher = new Pusher('50eaff733e0fbc1bba46', {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
       cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
       encrypted: false,
-      authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
+      // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
     });
 
-    const channel = pusher.subscribe('presence-games');
+    const channel = pusher.subscribe('games');
     console.log(channel);
     channel.bind('inserted', () => getGameData(localStorage.gameId));
     channel.bind('deleted', () => getGameData(localStorage.gameId));
     channel.bind('updated', () => getGameData(localStorage.gameId));
-  }, []);
+  }, [getGameData]);
 
   const updatePlayerState = () => {
     const playerData = players.find(p => p._id === localStorage.playerId);

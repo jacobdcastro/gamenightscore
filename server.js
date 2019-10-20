@@ -10,7 +10,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 // Configure pusher to connect
-const channel = 'presence-games';
+const channel = 'games';
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
   key: process.env.PUSHER_APP_KEY,
