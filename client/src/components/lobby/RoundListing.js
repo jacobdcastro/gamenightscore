@@ -3,22 +3,28 @@ import PropTypes from 'prop-types';
 
 const RoundListing = ({ data, players }) => {
   const { roundNumber, inProgress, winner, playerScores } = data;
-  let totalRoundScore;
 
-  let winnerName;
-  if (data.winner) {
-    if (data.winner) winnerName = players.find(p => p._id === data.winner);
+  let winnerPlayerData;
+  let winnerRoundData;
+  if (winner) {
+    winnerPlayerData = players.find(p => p._id === winner);
+    winnerRoundData = playerScores.find(p => p.player === winner);
   }
 
   return (
     <div className="roundListing">
-      <h3>Round: {roundNumber}</h3>
+      <h3>Rd: {roundNumber}</h3>
       <div>
-        <p>{winner ? `Winner: ${winnerName.name}` : 'No winner yet...'}</p>
+        <p>
+          {winner && !inProgress
+            ? `Winner: ${winnerPlayerData.name}`
+            : 'No winner yet...'}
+          {!winner && inProgress && `Round currently in progress...`}
+        </p>
       </div>
       <div className="totalScore">
-        <span>Round Total:</span>
-        <h3>{totalRoundScore}</h3>
+        <span>Winner's Score:</span>
+        <h3>{winnerRoundData ? winnerRoundData.roundScore : '?'}</h3>
       </div>
     </div>
   );
