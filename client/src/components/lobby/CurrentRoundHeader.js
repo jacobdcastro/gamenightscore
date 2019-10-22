@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import CurrentRoundHeaderWrapper from '../../styles/lobby/CurrentRoundHeader.sty.js';
 
 const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
   const { inProgress, finished, allScoresSubmitted, newRoundReady } = roundData;
@@ -6,9 +8,12 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
   currentRoundWinner = players.find(p => p._id === roundData.winner);
 
   return (
-    <div>
-      <h2>Current Round: {roundData ? roundData.roundNumber : '...'}</h2>
-
+    <CurrentRoundHeaderWrapper
+      inProgress={inProgress}
+      finished={finished}
+      allScoresSubmitted={allScoresSubmitted}
+      newRoundReady={newRoundReady}
+    >
       {!inProgress && !finished && (
         <p>
           New Round! <br />
@@ -32,8 +37,14 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
           All scores have updated! Waiting on Gamemaster to go to next round...
         </p>
       )}
-    </div>
+    </CurrentRoundHeaderWrapper>
   );
+};
+
+CurrentRoundHeader.propTypes = {
+  roundData: PropTypes.func.isRequired,
+  players: PropTypes.array.isRequired,
+  currentRoundIsScored: PropTypes.object.isRequired,
 };
 
 export default CurrentRoundHeader;

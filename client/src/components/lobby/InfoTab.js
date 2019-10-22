@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import xIcon from '../../assets/x-icon.svg';
 
 const InfoTab = ({ title, password, players, toggleInfoTab }) => {
-  const gamemaster = players.find(p => p.gamemaster === true);
+  console.log(players);
+  const gamemaster = players.find(p => p.isGamemaster === true);
   console.log(gamemaster);
   return (
     <div className="infoTabWrapper">
@@ -17,7 +18,7 @@ const InfoTab = ({ title, password, players, toggleInfoTab }) => {
         />
         <h1>Title: {title}</h1>
         <h1>Password: {password}</h1>
-        {/* <h1>Gamemaster: {gamemaster.name}</h1> */}
+        <h1>Gamemaster: {gamemaster.name}</h1>
         <h1>Total Players: {players.length}</h1>
       </div>
     </div>

@@ -13,7 +13,7 @@ import SubmitScore from '../lobby/SubmitScore';
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import InfoTab from '../lobby/InfoTab';
-import InfoIcon from '../../assets/info-icon.svg';
+import Nav from '../lobby/Nav';
 
 const Lobby = ({
   isGamemaster,
@@ -24,7 +24,7 @@ const Lobby = ({
   getPlayerData,
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
-  const [infoTabIsOpen, toggleInfoTab] = useState(true); //TODO
+  const [infoTabIsOpen, toggleInfoTab] = useState(false);
   const { players, rounds } = game;
 
   useEffect(() => {
@@ -79,13 +79,8 @@ const Lobby = ({
       {currentRoundData && infoTabIsOpen && (
         <InfoTab toggleInfoTab={toggleInfoTab} />
       )}
-      <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
-      <img
-        className="infoIcon"
-        src={InfoIcon}
-        alt="information to view game title and password"
-        onClick={() => toggleInfoTab(true)}
-      />
+
+      <Nav toggleInfoTab={toggleInfoTab} currentRoundData={currentRoundData} />
 
       <div className="currentRound">
         {currentRoundData && (

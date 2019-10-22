@@ -8,13 +8,7 @@ const LobbyWrapper = styled.div`
   text-align: center;
   /* background-color: ${props => props.theme.yellow}; */
 
-  .infoIcon {
-    height: 30px;
-    width: auto;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
+  
 
   .infoTabWrapper {
     transition: 0.5s;
@@ -28,10 +22,12 @@ const LobbyWrapper = styled.div`
     align-items: center;
 
     .infoTab {
+      text-align: left;
       background-color: ${props => props.theme.green};
       width: 80%;
       max-width: 700px;
       margin: auto;
+      padding: 15px;
       height: 300px;
 
       img {
