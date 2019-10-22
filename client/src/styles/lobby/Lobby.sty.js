@@ -8,6 +8,45 @@ const LobbyWrapper = styled.div`
   text-align: center;
   /* background-color: ${props => props.theme.yellow}; */
 
+  .infoIcon {
+    height: 30px;
+    width: auto;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .infoTabWrapper {
+    transition: 0.5s;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .infoTab {
+      background-color: ${props => props.theme.green};
+      width: 80%;
+      max-width: 700px;
+      margin: auto;
+      height: 300px;
+
+      img {
+        height: 30px;
+        width: auto;
+        color: white;
+        font-size: 2rem;
+        float: right;
+        margin: 10px;
+      }
+
+      h1 { color: white; }
+    }
+  }
+
   .pageViewMenu {
     padding: 0;
     margin: 10px 0 0;

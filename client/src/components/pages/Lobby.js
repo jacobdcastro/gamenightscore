@@ -12,6 +12,8 @@ import Rounds from '../lobby/Rounds';
 import SubmitScore from '../lobby/SubmitScore';
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
+import InfoTab from '../lobby/InfoTab';
+import InfoIcon from '../../assets/info-icon.svg';
 
 const Lobby = ({
   isGamemaster,
@@ -22,22 +24,25 @@ const Lobby = ({
   getPlayerData,
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
+  const [infoTabIsOpen, toggleInfoTab] = useState(true); //TODO
   const { players, rounds } = game;
 
   useEffect(() => {
     getGameData(localStorage.gameId);
+
+    // create connection to Pusher
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
       cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
       encrypted: false,
       // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
     });
 
+    // subscribe client to pusher channel, bind to events
     const channel = pusher.subscribe('games');
-    console.log(channel);
     channel.bind('inserted', () => getGameData(localStorage.gameId));
     channel.bind('deleted', () => getGameData(localStorage.gameId));
     channel.bind('updated', () => getGameData(localStorage.gameId));
-  }, [getGameData]);
+  }, []);
 
   const updatePlayerState = () => {
     const playerData = players.find(p => p._id === localStorage.playerId);
@@ -71,7 +76,17 @@ const Lobby = ({
 
   return (
     <LobbyWrapper>
+      {currentRoundData && infoTabIsOpen && (
+        <InfoTab toggleInfoTab={toggleInfoTab} />
+      )}
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+      <img
+        className="infoIcon"
+        src={InfoIcon}
+        alt="information to view game title and password"
+        onClick={() => toggleInfoTab(true)}
+      />
+
       <div className="currentRound">
         {currentRoundData && (
           <CurrentRoundHeader roundData={currentRoundData} players={players} />
