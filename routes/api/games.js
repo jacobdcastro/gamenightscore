@@ -411,6 +411,7 @@ router.put(':game_id/endGame', auth, async (req, res) => {
       res.status(406).send('Not all players have submitted their scores');
 
     try {
+      game.endTime = Date.now();
       game.expired = true;
       game.save();
       res.json(game);
