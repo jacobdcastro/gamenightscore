@@ -21,6 +21,8 @@ const GamemasterFooter = ({
   setWinner,
   newRound,
   submitPlayerScore,
+  toggleNewPlayerPopup,
+  toggleEndGamePopup,
 }) => {
   const [winner, setWinnerState] = useState('');
   const [roundScore, setRoundScore] = useState(0);
@@ -74,23 +76,41 @@ const GamemasterFooter = ({
 
   return (
     <GamemasterFooterWrapper id="gamemasterFooter">
+      <button
+        className="addPlayerBtn"
+        onClick={() => toggleNewPlayerPopup(true)}
+      >
+        Add New Player
+      </button>
+
+      <button className="endGameBtn" onClick={() => toggleEndGamePopup(true)}>
+        Add New Player
+      </button>
+
       {/* 1. Start Round Button */}
       {!inProgress && !finished && (
-        <button className="startBtn" onClick={() => runStartRoundAction()}>
-          Start Round
+        <button
+          className="rndBtn startBtn"
+          onClick={() => runStartRoundAction()}
+        >
+          Start
+          <br />
+          Round
         </button>
       )}
 
       {/* 2. End Round Button */}
       {inProgress && !finished && (
         <button
-          className="endBtn"
+          className="rndBtn endBtn"
           onClick={() => {
             actionData.endTime = Date.now();
             runEndRoundAction();
           }}
         >
-          End Round
+          End
+          <br />
+          Round
         </button>
       )}
 
@@ -155,6 +175,8 @@ GamemasterFooter.propTypes = {
   setWinner: PropTypes.func.isRequired,
   newRound: PropTypes.func.isRequired,
   submitPlayerScore: PropTypes.func.isRequired,
+  toggleNewPlayerPopup: PropTypes.func.isRequired,
+  toggleEndGamePopup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

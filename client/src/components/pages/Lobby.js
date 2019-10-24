@@ -10,10 +10,14 @@ import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
 import SubmitScore from '../lobby/SubmitScore';
-import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import InfoTab from '../lobby/InfoTab';
 import Nav from '../lobby/Nav';
+
+// gamemaster specific components
+import GMFooter from '../lobby/gamemaster/GamemasterFooter';
+import NewPlayerPopup from '../lobby/gamemaster/NewPlayerPopup';
+import EndGamePopup from '../lobby/gamemaster/EndGamePopup';
 
 const Lobby = ({
   isGamemaster,
@@ -25,6 +29,8 @@ const Lobby = ({
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
   const [infoTabIsOpen, toggleInfoTab] = useState(false);
+  const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
+  const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
   const { players, rounds } = game;
 
   useEffect(() => {
@@ -79,12 +85,22 @@ const Lobby = ({
       {currentRoundData && infoTabIsOpen && (
         <InfoTab toggleInfoTab={toggleInfoTab} />
       )}
+      {newPlayerPopupIsOpen && (
+        <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
+      )}
+      {endGamePopupIsOpen && (
+        <EndGamePopup toggleEndGamePopup={toggleEndGamePopup} />
+      )}
 
       <Nav toggleInfoTab={toggleInfoTab} currentRoundData={currentRoundData} />
 
       <div className="currentRound">
         {currentRoundData && (
-          <CurrentRoundHeader roundData={currentRoundData} players={players} />
+          <CurrentRoundHeader
+            roundData={currentRoundData}
+            players={players}
+            currentRoundIsScored={currentRoundIsScored}
+          />
         )}
       </div>
       <div className="pageViewMenu">
@@ -104,10 +120,6 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      {/* <button onClick={() => getGameData(localStorage.gameId)}>
-        Update Game State
-      </button> */}
-
       {roundFinished && !currentRoundIsScored && !isGamemaster && (
         <SubmitScore
           roundData={currentRoundData}
@@ -116,7 +128,11 @@ const Lobby = ({
       )}
 
       {rounds && players && isGamemaster && (
-        <GMFooter currentRoundIsScored={currentRoundIsScored} />
+        <GMFooter
+          currentRoundIsScored={currentRoundIsScored}
+          toggleNewPlayerPopup={toggleNewPlayerPopup}
+          toggleEndGamePopup={toggleEndGamePopup}
+        />
       )}
     </LobbyWrapper>
   );
