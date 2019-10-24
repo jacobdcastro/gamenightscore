@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CurrentRoundHeaderWrapper from '../../styles/lobby/CurrentRoundHeader.sty.js';
 
 const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
   const { inProgress, finished, allScoresSubmitted, newRoundReady } = roundData;
+  const [updated, setUpdated] = useState(false);
+
+  useEffect(() => {
+    setUpdated(true);
+    setTimeout(() => {
+      setUpdated(false);
+    }, 600);
+  }, [roundData]);
+
   let currentRoundWinner;
   currentRoundWinner = players.find(p => p._id === roundData.winner);
 
   return (
-    <CurrentRoundHeaderWrapper
-      inProgress={inProgress}
-      finished={finished}
-      allScoresSubmitted={allScoresSubmitted}
-      newRoundReady={newRoundReady}
-    >
+    <CurrentRoundHeaderWrapper updated={updated}>
       {!inProgress && !finished && (
         <p>
           New Round! <br />
@@ -23,18 +27,19 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
 
       {inProgress && !finished && <p>Round has begun!!!</p>}
 
-      {!inProgress && finished && (
+      {!inProgress && finished && !allScoresSubmitted && (
         <p>
           Round is over!
-          <br />
-          {roundData.winner && `${currentRoundWinner.name} has won.`}
+          {roundData.winner && ` ${currentRoundWinner.name} has won.`}
           <br />
           {!currentRoundIsScored && 'Please enter your score below.'}
         </p>
       )}
       {newRoundReady && allScoresSubmitted && (
         <p>
-          All scores have updated! Waiting on Gamemaster to go to next round...
+          All scores have been submitted!
+          <br />
+          Waiting on Gamemaster to go to next round...
         </p>
       )}
     </CurrentRoundHeaderWrapper>
@@ -42,9 +47,9 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
 };
 
 CurrentRoundHeader.propTypes = {
-  roundData: PropTypes.func.isRequired,
+  roundData: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired,
-  currentRoundIsScored: PropTypes.object.isRequired,
+  currentRoundIsScored: PropTypes.object,
 };
 
 export default CurrentRoundHeader;
