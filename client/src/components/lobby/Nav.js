@@ -30,7 +30,7 @@ const NavWrapper = styled.nav`
 `;
 
 const Nav = ({ currentRoundData, toggleInfoTab }) => {
-  if (currentRoundData) console.log(currentRoundData);
+  // if (currentRoundData) console.log(currentRoundData);
   return (
     <NavWrapper>
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>

@@ -40,7 +40,6 @@ const CreatePlayer = ({
   const onSubmit = e => {
     e.preventDefault();
     createPlayer(formData);
-    console.log(formData);
   };
 
   if (isAuthenticated && isCreated) {
@@ -54,7 +53,7 @@ const CreatePlayer = ({
       <p>Create your player!</p>
       <p>If you're joining a game that's already begun, you can still join.</p>
 
-      <form id="joinGameForm" onSubmit={e => onSubmit(e)}>
+      <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
         <div className="textInput">
           <label htmlFor="title">Your Username</label>
           <input
