@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const RoundsWrapper = styled.div`
   background-color: ${props => props.theme.yellow};
-  padding: 25px;
+  padding: 17px 10px;
 
   .roundListing {
     display: flex;

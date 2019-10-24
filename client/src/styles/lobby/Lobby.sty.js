@@ -8,8 +8,6 @@ const LobbyWrapper = styled.div`
   text-align: center;
   /* background-color: ${props => props.theme.yellow}; */
 
-  
-
   .infoTabWrapper {
     transition: 0.5s;
     height: 100vh;
@@ -56,10 +54,11 @@ const LobbyWrapper = styled.div`
     h2 {
       color: white;
       width: 50vw;
+      margin: 10px auto;
     }
 
     .switch {
-      animation: 0.3s;
+      transition: 0.2s;
     }
 
     .selected {
@@ -82,6 +81,20 @@ const LobbyWrapper = styled.div`
     width: 100vw;
     height: 300px;
     background-color: ${props => props.theme.orange};
+  }
+
+  @keyframes colorNotif {
+    from {
+      background-color: ${props => props.theme.blue};
+    }
+
+    25% {
+      background-color: ${props => props.theme.yellow};
+    }
+    
+    to {
+      background-color: ${props => props.theme.green};      
+    }
   }
 `;
 

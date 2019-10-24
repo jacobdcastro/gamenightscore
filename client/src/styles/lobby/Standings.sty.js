@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StandingsWrapper = styled.div`
   background-color: ${props => props.theme.yellow};
-  padding: 25px;
+  padding: 17px 10px;
 
   .playerListing {
     display: flex;
