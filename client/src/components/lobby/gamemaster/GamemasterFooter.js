@@ -83,9 +83,15 @@ const GamemasterFooter = ({
         Add New Player
       </button>
 
-      <button className="endGameBtn" onClick={() => toggleEndGamePopup(true)}>
-        Add New Player
-      </button>
+      {newRoundReady && allScoresSubmitted ? (
+        <button className="endGameBtn" onClick={() => toggleEndGamePopup(true)}>
+          End Game
+        </button>
+      ) : (
+        <button className="endGameBtn" disabled>
+          End Game
+        </button>
+      )}
 
       {/* 1. Start Round Button */}
       {!inProgress && !finished && (

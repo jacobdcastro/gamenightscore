@@ -9,11 +9,10 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup }) => {
     isGamemaster: false,
     gameId: localStorage.gameId,
     name: '',
-    pin: '',
     deck: '',
   });
 
-  const { name, pin } = formData;
+  const { name } = formData;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,9 +33,11 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup }) => {
           onClick={() => toggleNewPlayerPopup(false)}
         />
 
+        <h1>Create New Player</h1>
+
         <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
           <div className="textInput">
-            <label htmlFor="title">Your Username</label>
+            <label htmlFor="title">Player's Username</label>
             <input
               id="name"
               type="text"
@@ -46,23 +47,7 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup }) => {
               onChange={e => onChange(e)}
               required
             />
-            <small>How do you want to be known for this game?</small>
-          </div>
-          <div className="textInput">
-            <label htmlFor="pin">Pin</label>
-            <input
-              id="pin"
-              type="password"
-              name="pin"
-              placeholder="4-digit PIN"
-              value={pin}
-              onChange={e => onChange(e)}
-              required
-            />
-            <small>
-              If you leave the app, you can come back and sign back in using
-              your pin!
-            </small>
+            <small>Choose the new player's name.</small>
           </div>
 
           <button type="submit">Add New Player</button>

@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createPlayer } from '../../../redux/actions/player';
-import xIcon from '../../../assets/x-icon.svg';
 
-const EndGamePopup = ({ toggleEndGamePopup }) => {
+const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
+  const currentRound = rounds.find(r => r._id === currentRoundId);
+
+  const confirmEnd = () => {
+    // endGame action
+  };
+
   return (
-    <div className="createPlayerPopup">
+    <div className="endGamePopup">
       <div className="popupContainer">
-        <img
-          src={xIcon}
-          title="exit end game popup"
-          alt="exit end game popup"
-          onClick={() => toggleEndGamePopup(false)}
-        />
-
-        <button type="submit">Cancel</button>
-        <button type="submit">End Game</button>
+        <h3>
+          Are you sure you'd like to end the game after{' '}
+          {currentRound.roundNumber} rounds?
+        </h3>
+        <button onClick={() => toggleEndGamePopup(false)}>Cancel</button>
+        <button onClick={() => confirmEnd()}>End Game</button>
       </div>
     </div>
   );
@@ -26,7 +28,12 @@ EndGamePopup.propTypes = {
   toggleEndGamePopup: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+  currentRoundId: state.game.currentRound,
+  rounds: state.game.rounds,
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { createPlayer }
 )(EndGamePopup);

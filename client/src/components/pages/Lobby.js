@@ -29,7 +29,7 @@ const Lobby = ({
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
   const [infoTabIsOpen, toggleInfoTab] = useState(false);
-  const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
+  const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false); //TODO
   const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
   const { players, rounds } = game;
 
