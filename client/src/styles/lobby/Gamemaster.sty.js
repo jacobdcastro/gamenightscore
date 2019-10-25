@@ -40,23 +40,14 @@ const GamemasterFooterWrapper = styled.div`
     border-radius: 8px;
   }
 
-  .createPlayerPopup {
+  .endGameBtn {
     position: absolute;
-    top: 0;
-    height: 100vh;
-    width: 100vw;
-
-    .popupContainer {
-      padding: 10px;
-      background-color: ${props => props.theme.green};
-      img {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-      }
-      form {
-      }
-    }
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+    background-color: ${props => props.theme.orange};
+    border: none;
+    border-radius: 8px;
   }
 `;
 

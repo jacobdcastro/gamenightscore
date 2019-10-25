@@ -41,6 +41,72 @@ const LobbyWrapper = styled.div`
     }
   }
 
+  .createPlayerPopup {
+    transition: 0.5s;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .popupContainer {
+      color: white;
+      padding: 10px;
+      background-color: ${props => props.theme.green};
+      height: 300px;
+      img {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 30px;
+        width: auto;
+      }
+      div {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 15px;
+
+        input {
+          margin: 4px 0;
+          border: 3px solid #ef4423;
+          font-weight: 600;
+          letter-spacing: 1px;
+          font-size: 0.8rem;
+        }
+
+        label {
+          font-weight: 700;
+        }
+
+        input[type='text'] {
+          padding: 10px;
+          border-radius: 5px;
+        }
+      }
+      button {
+        margin: 15px;
+        padding: 10px 0;
+        width: 80%;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: 3px solid ${props => props.theme.yellow};
+        background-color: ${props => props.theme.blue};
+      }
+      button:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
   .pageViewMenu {
     padding: 0;
     margin: 10px 0 0;
