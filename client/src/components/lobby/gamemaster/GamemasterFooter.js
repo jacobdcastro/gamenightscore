@@ -56,7 +56,6 @@ const GamemasterFooter = ({
   };
 
   const initNextRound = () => {
-    // reset all gmCreatedPlayer state
     newRound(actionData);
   };
 
@@ -126,8 +125,6 @@ const GamemasterFooter = ({
           currentRoundData={currentRound}
         />
       )}
-
-      {/* 3.2 gamemaster can submit scores for other players whom they created */}
 
       {/* 4. Wait for all players to submit scores */}
       {newRoundReady && !allScoresSubmitted && (

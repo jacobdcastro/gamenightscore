@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { submitPlayerScore } from '../../../redux/actions/game';
@@ -11,11 +11,11 @@ const ScoreSubmission = ({
   submitPlayerScore,
 }) => {
   const [roundScore, setRoundScore] = useState(0);
-  let [allGmPlayersScored, setAllGmPlayersScored] = useState(false);
-  let [playerBeingScored, setPlayerBeingScored] = useState(playerId);
+  const [allGmPlayersScored, setAllGmPlayersScored] = useState(false);
+  const [playerBeingScored, setPlayerBeingScored] = useState(playerId);
+  let [index, setIndex] = useState(0);
 
   let gmCreatedPlayers = players.filter(p => p.gmCreated === true);
-  console.log(gmCreatedPlayers);
 
   // object is added to/manipulated in handle_()'s
   let actionData = {
@@ -32,21 +32,20 @@ const ScoreSubmission = ({
     e.preventDefault();
     actionData.roundScore = roundScore;
     submitPlayerScore(actionData);
-    if (currentRoundIsScored) i += 1;
+    if (currentRoundIsScored && index < gmCreatedPlayers.length) {
+      setIndex((index += 1));
+    }
+    if (index < gmCreatedPlayers.length) {
+      setPlayerBeingScored(gmCreatedPlayers[index]._id);
+    }
     setRoundScore(0);
   };
-
-  let i = 0;
-  if (currentRoundIsScored) {
-    setPlayerBeingScored(gmCreatedPlayers[i]._id);
-    actionData.playerId = playerBeingScored;
-  }
 
   return (
     <form onSubmit={e => handleScoreSubmit(e)}>
       <label htmlFor="scoreSubmission">
-        {currentRoundIsScored
-          ? `Submit round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[i].name}.`
+        {currentRoundIsScored && index < gmCreatedPlayers.length
+          ? `Submit round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
           : `Submit your score for round ${currentRoundData.roundNumber}`}
       </label>
       <input
