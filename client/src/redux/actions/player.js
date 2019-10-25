@@ -40,13 +40,13 @@ export const setInitPlayerState = initData => async dispatch => {
 };
 
 export const createPlayer = formData => async dispatch => {
-  const { isGamemaster, gameId, name, pin, deck } = formData;
+  const { isGamemaster, gameId, name, gmCreated, deck } = formData;
 
   const body = JSON.stringify({
     isGamemaster,
     gameId,
     name,
-    pin,
+    gmCreated,
     deck,
   });
 

@@ -9,16 +9,16 @@ const PlayerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pin: {
-    type: Number,
-    required: true,
-  },
   totalScore: {
     type: Number,
     required: true,
   },
   connected: {
     type: Boolean,
+  },
+  gmCreated: {
+    type: Boolean,
+    required: true,
   },
   deck: {
     type: String,

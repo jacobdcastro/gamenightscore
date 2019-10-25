@@ -27,7 +27,7 @@ export default function(state = initialState, action) {
         loading: false,
       };
     case CREATE_PLAYER_SUCCESS:
-      localStorage.setItem('playerId', payload._id);
+      if (!payload.gmCreated) localStorage.setItem('playerId', payload._id);
       return {
         ...state,
         ...payload,

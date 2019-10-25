@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { createPlayer } from '../../../redux/actions/player';
 import xIcon from '../../../assets/x-icon.svg';
 
-const NewPlayerPopup = ({ toggleNewPlayerPopup }) => {
+const NewPlayerPopup = ({ toggleNewPlayerPopup, createPlayer }) => {
   const [formData, setFormData] = useState({
     isGamemaster: false,
     gameId: localStorage.gameId,
     name: '',
+    gmCreated: true,
     deck: '',
   });
 
@@ -59,6 +60,7 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup }) => {
 
 NewPlayerPopup.propTypes = {
   toggleNewPlayerPopup: PropTypes.func.isRequired,
+  createPlayer: PropTypes.func.isRequired,
 };
 
 export default connect(

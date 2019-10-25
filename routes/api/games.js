@@ -179,7 +179,7 @@ router.post(
 // @desc    Create new player in a game
 // access   Private
 router.post('/:game_id/newPlayer', async (req, res) => {
-  let { isGamemaster, name, pin, deck } = req.body;
+  let { isGamemaster, name, gmCreated, deck } = req.body;
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
 
@@ -202,9 +202,9 @@ router.post('/:game_id/newPlayer', async (req, res) => {
   const playerData = {
     isGamemaster,
     name,
-    pin,
     totalScore: 0,
     connected: true,
+    gmCreated,
     deck,
     roundsPlayed: [],
   };
