@@ -21,7 +21,7 @@ const CreatePlayer = ({
     isGamemaster,
     gameId,
     name: '',
-    pin: '',
+    gmCreated: false,
     deck: '',
   });
 
@@ -51,7 +51,10 @@ const CreatePlayer = ({
     <CreatePlayerWrapper>
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
       <p>Create your player!</p>
-      <p>If you're joining a game that's already begun, you can still join.</p>
+      <p>
+        If you're joining a game that's already begun, it's all good. You can
+        still join!
+      </p>
 
       <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
         <div className="textInput">
@@ -67,23 +70,6 @@ const CreatePlayer = ({
           />
           <small>How do you want to be known for this game?</small>
         </div>
-        <div className="textInput">
-          <label htmlFor="pin">Pin</label>
-          <input
-            id="pin"
-            type="password"
-            name="pin"
-            placeholder="4-digit PIN"
-            value={pin}
-            onChange={e => onChange(e)}
-            required
-          />
-          <small>
-            If you leave the app, you can come back and sign back in using your
-            pin!
-          </small>
-        </div>
-
         <button type="submit">Enter Game Lobby</button>
       </form>
     </CreatePlayerWrapper>
