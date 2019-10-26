@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { submitPlayerScore } from '../../../redux/actions/game';
+import ScoreForm from '../ScoreForm';
 
 const ScoreSubmission = ({
   playerId,
@@ -24,10 +25,6 @@ const ScoreSubmission = ({
     roundScore,
   };
 
-  const handleChange = e => {
-    setRoundScore(e.target.value);
-  };
-
   const handleScoreSubmit = e => {
     e.preventDefault();
     actionData.roundScore = roundScore;
@@ -43,18 +40,14 @@ const ScoreSubmission = ({
 
   return (
     <form onSubmit={e => handleScoreSubmit(e)}>
-      <label htmlFor="scoreSubmission">
+      <h3>
         {currentRoundIsScored && index < gmCreatedPlayers.length
           ? `Submit round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
           : `Submit your score for round ${currentRoundData.roundNumber}`}
-      </label>
-      <input
-        id="scoreSubmission"
-        name="roundScore"
-        type="number"
-        value={roundScore}
-        onChange={e => handleChange(e)}
-      />
+      </h3>
+
+      <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
+
       <button type="submit">Submit Score</button>
     </form>
   );

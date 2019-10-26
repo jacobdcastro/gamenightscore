@@ -61,6 +61,7 @@ const GamemasterFooter = ({
 
   return (
     <GamemasterFooterWrapper id="gamemasterFooter">
+      {/* Add new player button */}
       <button
         className="addPlayerBtn"
         onClick={() => toggleNewPlayerPopup(true)}
@@ -68,12 +69,13 @@ const GamemasterFooter = ({
         Add New Player
       </button>
 
+      {/* End Game button */}
       {newRoundReady && allScoresSubmitted ? (
         <button className="endGameBtn" onClick={() => toggleEndGamePopup(true)}>
           End Game
         </button>
       ) : (
-        <button className="endGameBtn" disabled>
+        <button className="endGameBtn disabled" disabled>
           End Game
         </button>
       )}
