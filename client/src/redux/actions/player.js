@@ -25,7 +25,6 @@ export const setInitPlayerState = initData => async dispatch => {
 
   try {
     const res = await axios.post(`${api_url}/auth/sign`, body, config);
-    console.log(res.data);
 
     dispatch({
       type: SET_INIT_PLAYER_STATE,
@@ -56,7 +55,6 @@ export const createPlayer = formData => async dispatch => {
       body,
       config
     );
-    console.log(res);
 
     dispatch({
       type: CREATE_PLAYER_SUCCESS,
