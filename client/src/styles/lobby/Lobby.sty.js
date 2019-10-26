@@ -6,6 +6,7 @@ const LobbyWrapper = styled.div`
   top: 0;
   width: 100vw;
   text-align: center;
+  overflow: hidden;
   /* background-color: ${props => props.theme.yellow}; */
 
   .infoTabWrapper {
@@ -123,7 +124,7 @@ const LobbyWrapper = styled.div`
       margin: 10px auto;
     }
 
-    .switch {
+    .switch { 
       transition: 0.2s;
     }
 
@@ -142,11 +143,52 @@ const LobbyWrapper = styled.div`
 
   #submitScore {
     position: absolute;
+    animation: slideUp 1s;
     bottom: 0;
     left: 0;
     width: 100vw;
     height: 300px;
-    background-color: ${props => props.theme.orange};
+    background-color: #444444;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    box-shadow: 0 0px 25px #888;
+
+    h2 {
+      color: white;
+    }
+
+    button:hover {
+    cursor: pointer;
+  }
+
+    label {
+      color: white;
+      text-align: center;
+    }
+
+    .submitScoreBtn {
+      background-color: ${props => props.theme.yellow};
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      margin: 0;
+      font-weight: 600;
+      height: 40px;
+    }
+    .submitScoreBtn:active {
+      height: 40px;
+      margin-top: 4px;
+      border-bottom: 4px solid #0e5b2c;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      bottom: -300px;
+    }
+    to {
+      bottom: 0;
+    }
   }
 
   @keyframes colorNotif {

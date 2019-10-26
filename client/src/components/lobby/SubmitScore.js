@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { submitPlayerScore } from '../../redux/actions/game';
+import ScoreForm from './ScoreForm';
 
 const SubmitScore = ({ roundData, playerId, gameId, submitPlayerScore }) => {
   const [roundScore, setRoundScore] = useState(0);
@@ -19,21 +20,25 @@ const SubmitScore = ({ roundData, playerId, gameId, submitPlayerScore }) => {
 
   return (
     <div id="submitScore">
-      <form onSubmit={e => handleSubmit(e)}>
-        <label htmlFor="scoreSubmission">
-          {playerId === roundData.winner
-            ? `Congrats! You won round ${roundNumber}! Submit your score.`
-            : `Submit score for round ${roundNumber}`}
-        </label>
-        <input
-          id="scoreSubmission"
-          name="roundScore"
-          type="number"
-          value={roundScore}
-          onChange={e => handleChange(e)}
-        />
-        <button type="submit">Submit Score</button>
-      </form>
+      <h2>
+        {playerId === roundData.winner
+          ? `Congrats! You won round ${roundNumber}! Enter your score.`
+          : `Enter score for round ${roundNumber}`}
+      </h2>
+
+      <ScoreForm
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        handleSubmit={handleSubmit}
+      />
+
+      <button
+        className="submitScoreBtn"
+        type="submit"
+        onClick={e => handleSubmit(e)}
+      >
+        Submit Score
+      </button>
     </div>
   );
 };

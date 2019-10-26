@@ -49,6 +49,9 @@ const GamemasterFooterWrapper = styled.div`
     border: none;
     border-radius: 8px;
   }
+  .disabled {
+    background-color: darken(${props => props.theme.orange}, 80);
+  }
 `;
 
 export default GamemasterFooterWrapper;
