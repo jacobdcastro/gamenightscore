@@ -59,19 +59,19 @@ db.once('open', () => {
 
   changeStream.on('change', change => {
     if (change.operationType === 'insert') {
-      console.log('INSERT TYPE ===================================');
-      console.log(change);
+      // console.log('INSERT TYPE ===================================');
+      // console.log(change);
       const game = change.fullDocument;
       pusher.trigger(channel, 'inserted', {
         game,
       });
     } else if (change.operationType === 'delete') {
-      console.log('DELETE TYPE ===================================');
-      console.log(change);
+      // console.log('DELETE TYPE ===================================');
+      // console.log(change);
       pusher.trigger(channel, 'deleted', change.documentKey._id);
     } else if (change.operationType === 'update') {
-      console.log('UPDATE TYPE ===================================');
-      console.log(change);
+      // console.log('UPDATE TYPE ===================================');
+      // console.log(change);
       const { updateDescription } = change;
       pusher.trigger(channel, 'updated', updateDescription);
     }
