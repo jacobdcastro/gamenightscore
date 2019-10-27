@@ -114,6 +114,7 @@ router.post(
         playerScores: [],
         inProgress: false,
         finished: false,
+        allGmPlayersScoresSubmitted: false,
         allScoresSubmitted: false,
         newRoundReady: false,
       };
@@ -248,6 +249,7 @@ router.get('/:game_id/newRound', auth, async (req, res) => {
     playerScores: [], // array of player id's and scores
     inProgress: false,
     finished: false,
+    allGmPlayersScoresSubmitted: false,
     allScoresSubmitted: false,
     newRoundReady: false,
   };
@@ -282,7 +284,6 @@ router.put('/:game_id/startRound', auth, async (req, res) => {
 
     currentRound.inProgress = true;
     currentRound.startTime = startTime;
-    console.log(game);
 
     await game.save();
     console.log(currentRound);
@@ -385,7 +386,14 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     // 5. sort players array based on standings
     game.players.sort((a, b) => b.totalScore - a.totalScore);
 
-    // 6. check if all players have submitted scores
+    // 6. check if gm has submitted all scores for gmCreated players
+    let gmCreatedPlayersIds = [];
+    let playerIds = [];
+    game.players.forEach(p => playerIds.push(p._id));
+    const gmCreatedPlayers = game.players.filter(p => p.gmCreated === true);
+    gmCreatedPlayers.map(p => gmCreatedPlayersIds.push(p._id));
+
+    // 7. check if all players have submitted scores
     if (game.players.length === round.playerScores.length) {
       round.allScoresSubmitted = true;
     }

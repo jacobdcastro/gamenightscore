@@ -37,6 +37,10 @@ const RoundSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  allGmPlayersScoresSubmitted: {
+    type: Boolean,
+    required: true,
+  },
   allScoresSubmitted: {
     type: Boolean,
     required: true,
