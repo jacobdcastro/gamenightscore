@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 const GamemasterFooterWrapper = styled.div`
+  transition: 0.8s;
   position: absolute;
   bottom: 0;
-  height: 130px;
+  height: ${props => (props.newRoundReady ? '300px' : '130px')};
   width: 100%;
   background-color: #444444;
   display: flex;

@@ -30,7 +30,6 @@ const GamemasterFooter = ({
     finished,
     allScoresSubmitted,
     newRoundReady,
-    roundNumber,
   } = currentRound;
 
   // object is added to/manipulated in _RoundAction()'s
@@ -60,7 +59,10 @@ const GamemasterFooter = ({
   };
 
   return (
-    <GamemasterFooterWrapper id="gamemasterFooter">
+    <GamemasterFooterWrapper
+      id="gamemasterFooter"
+      newRoundReady={newRoundReady}
+    >
       {/* Add new player button */}
       <button
         className="addPlayerBtn"
@@ -129,12 +131,12 @@ const GamemasterFooter = ({
       )}
 
       {/* 4. Wait for all players to submit scores */}
-      {newRoundReady && !allScoresSubmitted && (
+      {/* {newRoundReady && !allScoresSubmitted && (
         <Fragment>
           <button disabled>Next round!</button>
           <p>Waiting for all players to submit their scores...</p>
         </Fragment>
-      )}
+      )} */}
 
       {/* 5. Create/Go to next round */}
       {newRoundReady && allScoresSubmitted && (

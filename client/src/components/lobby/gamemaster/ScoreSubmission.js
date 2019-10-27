@@ -39,17 +39,19 @@ const ScoreSubmission = ({
   };
 
   return (
-    <form onSubmit={e => handleScoreSubmit(e)}>
+    <div>
       <h3>
         {currentRoundIsScored && index < gmCreatedPlayers.length
-          ? `Submit round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
-          : `Submit your score for round ${currentRoundData.roundNumber}`}
+          ? `Enter round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
+          : `Enter your score for round ${currentRoundData.roundNumber}`}
       </h3>
 
       <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
 
-      <button type="submit">Submit Score</button>
-    </form>
+      <button type="submit" onClick={e => handleScoreSubmit(e)}>
+        Submit Score
+      </button>
+    </div>
   );
 };
 
