@@ -98,7 +98,6 @@ export const submitPlayerScore = actionData => async dispatch => {
       body,
       config
     );
-    console.log('hi');
 
     dispatch({
       type: SUBMIT_PLAYER_SCORE,
