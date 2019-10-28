@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AppWrapper from './styles/App.sty.js';
 import { ThemeProvider } from 'styled-components';
-import theme from './styles/theme';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { theme } from './styles/theme';
+import { muiTheme } from './styles/theme';
 import AppRoutes from './components/routes/index';
 
 import store from './redux/store';
@@ -17,11 +19,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <AppWrapper>
-            <AppRoutes />
-          </AppWrapper>
-        </ThemeProvider>
+        <MuiThemeProvider theme={muiTheme}>
+          <ThemeProvider theme={theme}>
+            <AppWrapper>
+              <AppRoutes />
+            </AppWrapper>
+          </ThemeProvider>
+        </MuiThemeProvider>
       </BrowserRouter>
     </Provider>
   );
