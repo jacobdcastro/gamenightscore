@@ -108,39 +108,6 @@ const LobbyWrapper = styled.div`
     }
   }
 
-  .pageViewMenu {
-    padding: 0;
-    margin: 10px 0 0;
-    width: 100%;
-    background-color: ${props => props.theme.blue};
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    /* justify-content: space-around; */
-
-    h2 {
-      color: white;
-      width: 50vw;
-      margin: 10px auto;
-    }
-
-    .switch { 
-      transition: 0.2s;
-    }
-
-    .selected {
-      border-bottom: 7px solid ${props => props.theme.orange};
-      border-top: 7px solid ${props => props.theme.orange};
-    }
-    .notSelected:hover {
-      cursor: pointer;
-    }
-    .notSelected {
-      border-bottom: 7px solid ${props => props.theme.blue};
-      border-top: 7px solid ${props => props.theme.blue};
-    }
-  }
-
   #submitScore {
     position: absolute;
     animation: slideUp 1s;

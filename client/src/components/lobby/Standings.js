@@ -1,15 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PlayerListing from './PlayerListing';
+// import PlayerListing from './PlayerListing';
 import StandingsWrapper from '../../styles/lobby/Standings.sty.js';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 const Standings = ({ players, hideScores }) => {
   return (
     <StandingsWrapper id="standings">
-      {players.map((player, index) => (
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Position</TableCell>
+            <TableCell>GM</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Total Score</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {players.map((player, index) => (
+            <TableRow key={index}>
+              {/* <TableCell component="th" scope="row">
+                {player.name}
+              </TableCell> */}
+              <TableCell component="th" scope="row" align="left">
+                {index + 1}
+              </TableCell>
+              <TableCell align="left">{player.isGamemaster}</TableCell>
+              <TableCell align="left">{player.name}</TableCell>
+              <TableCell align="right">{player.totalScore}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {/* {players.map((player, index) => (
         <PlayerListing key={index} data={player} pos={index} />
-      ))}
+      ))} */}
     </StandingsWrapper>
   );
 };

@@ -13,6 +13,7 @@ import SubmitScore from '../lobby/SubmitScore';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import InfoTab from '../lobby/InfoTab';
 import Nav from '../lobby/Nav';
+import PageViewTab from '../lobby/PageViewTab';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
@@ -37,17 +38,17 @@ const Lobby = ({
     getGameData(localStorage.gameId);
 
     // create connection to Pusher
-    const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
-      cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
-      encrypted: false,
-      // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
-    });
+    // const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+    //   cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+    //   encrypted: false,
+    //   // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
+    // });
 
     // subscribe client to pusher channel, bind to events
-    const channel = pusher.subscribe('games');
-    channel.bind('inserted', () => getGameData(localStorage.gameId));
-    channel.bind('deleted', () => getGameData(localStorage.gameId));
-    channel.bind('updated', () => getGameData(localStorage.gameId));
+    // const channel = pusher.subscribe('games');
+    // channel.bind('inserted', () => getGameData(localStorage.gameId));
+    // channel.bind('deleted', () => getGameData(localStorage.gameId));
+    // channel.bind('updated', () => getGameData(localStorage.gameId));
   }, []);
 
   const updatePlayerState = () => {
@@ -103,19 +104,9 @@ const Lobby = ({
           />
         )}
       </div>
+
       <div className="pageViewMenu">
-        <div
-          onClick={() => setPageView(0)}
-          className={`switch ${!pageView ? 'selected' : 'notSelected'}`}
-        >
-          <h2 className="standingsBtn">Standings</h2>
-        </div>
-        <div
-          onClick={() => setPageView(1)}
-          className={`switch ${pageView ? 'selected' : 'notSelected'}`}
-        >
-          <h2 className="roundsBtn">Rounds</h2>
-        </div>
+        <PageViewTab pageView={pageView} setPageView={setPageView} />
       </div>
 
       {pageViewComponent}

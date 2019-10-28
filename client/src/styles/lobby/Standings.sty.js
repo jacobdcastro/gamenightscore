@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StandingsWrapper = styled.div`
-  background-color: ${props => props.theme.yellow};
+  /* background-color: ${props => props.theme.yellow}; */
   padding: 17px 10px;
 
   .playerListing {
@@ -9,7 +9,7 @@ const StandingsWrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: ${props => props.theme.blue};
+    /* background-color: ${props => props.theme.blue}; */
     margin: 15px auto;
     color: white;
     border-radius: 15px;
