@@ -388,10 +388,20 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 
     // 6. check if gm has submitted all scores for gmCreated players
     let gmCreatedPlayersIds = [];
-    let playerIds = [];
-    game.players.forEach(p => playerIds.push(p._id));
+    let gmCreatedPlayersScored = [];
     const gmCreatedPlayers = game.players.filter(p => p.gmCreated === true);
     gmCreatedPlayers.map(p => gmCreatedPlayersIds.push(p._id));
+
+    gmCreatedPlayersIds.forEach(id => {
+      let foundPlayer = round.playerScores.find(
+        p => id.toString() === p.player.toString()
+      );
+      if (foundPlayer) gmCreatedPlayersScored.push(foundPlayer);
+    });
+
+    if (gmCreatedPlayersIds.length === gmCreatedPlayersScored.length) {
+      round.allGmPlayersScoresSubmitted = true;
+    }
 
     // 7. check if all players have submitted scores
     if (game.players.length === round.playerScores.length) {

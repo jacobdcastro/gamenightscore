@@ -28,6 +28,7 @@ const GamemasterFooter = ({
   const {
     inProgress,
     finished,
+    allGmPlayersScoresSubmitted,
     allScoresSubmitted,
     newRoundReady,
   } = currentRound;
@@ -123,7 +124,7 @@ const GamemasterFooter = ({
       )}
 
       {/* ? 3.1. Let gamemaster submit their score here */}
-      {currentRound.winner && !allScoresSubmitted && (
+      {currentRound.winner && !allGmPlayersScoresSubmitted && (
         <ScoreSubmission
           currentRoundIsScored={currentRoundIsScored}
           currentRoundData={currentRound}
@@ -131,12 +132,12 @@ const GamemasterFooter = ({
       )}
 
       {/* 4. Wait for all players to submit scores */}
-      {/* {newRoundReady && !allScoresSubmitted && (
+      {newRoundReady && allGmPlayersScoresSubmitted && !allScoresSubmitted && (
         <Fragment>
           <button disabled>Next round!</button>
           <p>Waiting for all players to submit their scores...</p>
         </Fragment>
-      )} */}
+      )}
 
       {/* 5. Create/Go to next round */}
       {newRoundReady && allScoresSubmitted && (
