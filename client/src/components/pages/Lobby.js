@@ -92,11 +92,31 @@ const Lobby = ({
       {currentRoundData && infoTabIsOpen && (
         <InfoTab toggleInfoTab={toggleInfoTab} />
       )}
-      {newPlayerPopupIsOpen && (
-        <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
+      {isGamemaster && (
+        <Dialog
+          open={newPlayerPopupIsOpen}
+          TransitionComponent={Transition}
+          keepMounted
+          onBackdropClick={() => toggleNewPlayerPopup(false)}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          className="newPlayerPopup"
+        >
+          <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
+        </Dialog>
       )}
-      {endGamePopupIsOpen && (
-        <EndGamePopup toggleEndGamePopup={toggleEndGamePopup} />
+      {endGamePopupIsOpen && isGamemaster && (
+        <Dialog
+          open={endGamePopupIsOpen}
+          TransitionComponent={Transition}
+          keepMounted
+          onBackdropClick={() => toggleEndGamePopup(false)}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          className="endGamePopup"
+        >
+          <EndGamePopup toggleEndGamePopup={toggleEndGamePopup} />
+        </Dialog>
       )}
 
       <Nav toggleInfoTab={toggleInfoTab} currentRoundData={currentRoundData} />
@@ -117,18 +137,20 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      <Dialog
-        open={roundFinished && !currentRoundIsScored && !isGamemaster}
-        TransitionComponent={Transition}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <ScoreSubmission
-          currentRoundIsScored={currentRoundIsScored}
-          roundData={currentRoundData}
-        />
-      </Dialog>
+      {players && (
+        <Dialog
+          open={roundFinished && !currentRoundIsScored && !isGamemaster}
+          TransitionComponent={Transition}
+          keepMounted
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <ScoreSubmission
+            currentRoundIsScored={currentRoundIsScored}
+            currentRoundData={currentRoundData}
+          />
+        </Dialog>
+      )}
 
       {rounds && players && isGamemaster && (
         <GMFooter

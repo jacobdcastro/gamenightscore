@@ -18,6 +18,7 @@ const ScoreSubmission = ({
   currentRoundData,
   submitPlayerScore,
 }) => {
+  console.log(players);
   const [roundScore, setRoundScore] = useState(0);
   const [playerBeingScored, setPlayerBeingScored] = useState(playerId);
   let [index, setIndex] = useState(0);
@@ -71,7 +72,11 @@ const ScoreSubmission = ({
 };
 
 ScoreSubmission.propTypes = {
+  playerId: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired,
+  currentRoundIsScored: PropTypes.object.isRequired,
+  currentRoundData: PropTypes.object.isRequired,
+  submitPlayerScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

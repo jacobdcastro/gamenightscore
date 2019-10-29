@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createPlayer } from '../../../redux/actions/player';
 import xIcon from '../../../assets/x-icon.svg';
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+  Button,
+  TextField,
+} from '@material-ui/core';
 
 const NewPlayerPopup = ({ toggleNewPlayerPopup, createPlayer }) => {
   const [formData, setFormData] = useState({
@@ -22,39 +31,42 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup, createPlayer }) => {
   const onSubmit = e => {
     e.preventDefault();
     createPlayer(formData);
+    toggleNewPlayerPopup(false);
   };
 
   return (
-    <div className="createPlayerPopup">
-      <div className="popupContainer">
-        <img
-          src={xIcon}
-          title="exit new player popup"
-          alt="exit new player popup"
-          onClick={() => toggleNewPlayerPopup(false)}
+    <Fragment>
+      <DialogTitle>Create New Player</DialogTitle>
+      <DialogContent>
+        <TextField
+          id="name"
+          type="text"
+          label="Username"
+          name="name"
+          placeholder="Username"
+          value={name}
+          onChange={e => onChange(e)}
+          required
         />
-
-        <h1>Create New Player</h1>
-
-        <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
-          <div className="textInput">
-            <label htmlFor="title">Player's Username</label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              placeholder="Username"
-              value={name}
-              onChange={e => onChange(e)}
-              required
-            />
-            <small>Choose the new player's name.</small>
-          </div>
-
-          <button type="submit">Add New Player</button>
-        </form>
-      </div>
-    </div>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          size="medium"
+          color="primary"
+          onClick={() => toggleNewPlayerPopup(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          size="medium"
+          color="secondary"
+          onClick={e => onSubmit(e)}
+        >
+          Add New Player
+        </Button>
+      </DialogActions>
+    </Fragment>
   );
 };
 

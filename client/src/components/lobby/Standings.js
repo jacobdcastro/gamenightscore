@@ -16,7 +16,6 @@ const Standings = ({ players, hideScores }) => {
         <TableHead>
           <TableRow>
             <TableCell>Position</TableCell>
-            <TableCell>GM</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Total Score</TableCell>
           </TableRow>
@@ -24,22 +23,17 @@ const Standings = ({ players, hideScores }) => {
         <TableBody>
           {players.map((player, index) => (
             <TableRow key={index}>
-              {/* <TableCell component="th" scope="row">
-                {player.name}
-              </TableCell> */}
               <TableCell component="th" scope="row" align="left">
                 {index + 1}
               </TableCell>
-              <TableCell align="left">{player.isGamemaster}</TableCell>
               <TableCell align="left">{player.name}</TableCell>
-              <TableCell align="right">{player.totalScore}</TableCell>
+              <TableCell align="right">
+                {hideScores ? '???' : player.totalScore}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {/* {players.map((player, index) => (
-        <PlayerListing key={index} data={player} pos={index} />
-      ))} */}
     </StandingsWrapper>
   );
 };

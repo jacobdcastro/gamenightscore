@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createPlayer } from '../../../redux/actions/player';
+import {
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+  Button,
+} from '@material-ui/core';
 
 const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
   const currentRound = rounds.find(r => r._id === currentRoundId);
@@ -11,16 +18,32 @@ const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
   };
 
   return (
-    <div className="endGamePopup">
-      <div className="popupContainer">
-        <h3>
+    <Fragment>
+      <DialogTitle>Ending The Game</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
           Are you sure you'd like to end the game after{' '}
           {currentRound.roundNumber} rounds?
-        </h3>
-        <button onClick={() => toggleEndGamePopup(false)}>Cancel</button>
-        <button onClick={() => confirmEnd()}>End Game</button>
-      </div>
-    </div>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          size="medium"
+          color="primary"
+          onClick={() => toggleEndGamePopup(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          size="medium"
+          color="secondary"
+          onClick={() => confirmEnd()}
+        >
+          End Game
+        </Button>
+      </DialogActions>
+    </Fragment>
   );
 };
 
