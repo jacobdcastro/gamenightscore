@@ -236,13 +236,13 @@ const GamemasterFooter = ({
             <Button
               variant="contained"
               size="small"
-              color="error"
+              color="primary"
               onClick={() => toggleEndGamePopup(true)}
             >
               End Game
             </Button>
           ) : (
-            <Button variant="contained" size="small" color="error" disabled>
+            <Button variant="contained" size="small" color="primary" disabled>
               End Game
             </Button>
           )}

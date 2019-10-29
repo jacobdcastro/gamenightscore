@@ -16,6 +16,7 @@ import PageViewTab from '../lobby/PageViewTab';
 import ScoreSubmission from '../lobby/gamemaster/ScoreSubmission';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
+import InfoIcon from '@material-ui/icons/Info';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
@@ -35,7 +36,7 @@ const Lobby = ({
   getPlayerData,
 }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
-  const [infoTabIsOpen, toggleInfoTab] = useState(false);
+  const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
   const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
   const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
   const { players, rounds } = game;
@@ -89,9 +90,20 @@ const Lobby = ({
 
   return (
     <LobbyWrapper>
-      {currentRoundData && infoTabIsOpen && (
-        <InfoTab toggleInfoTab={toggleInfoTab} />
+      {currentRoundData && (
+        <Dialog
+          open={infoDialogIsOpen}
+          TransitionComponent={Transition}
+          keepMounted
+          onBackdropClick={() => toggleInfoDialog(false)}
+          aria-labelledby="game information popup"
+          aria-describedby="information about game such as game name and password, number of players"
+          className="infoDialog"
+        >
+          <InfoTab toggleInfoDialog={toggleInfoDialog} />
+        </Dialog>
       )}
+
       {isGamemaster && (
         <Dialog
           open={newPlayerPopupIsOpen}
@@ -105,7 +117,7 @@ const Lobby = ({
           <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
         </Dialog>
       )}
-      {endGamePopupIsOpen && isGamemaster && (
+      {isGamemaster && (
         <Dialog
           open={endGamePopupIsOpen}
           TransitionComponent={Transition}
@@ -119,7 +131,10 @@ const Lobby = ({
         </Dialog>
       )}
 
-      <Nav toggleInfoTab={toggleInfoTab} currentRoundData={currentRoundData} />
+      <Nav
+        toggleInfoDialog={toggleInfoDialog}
+        currentRoundData={currentRoundData}
+      />
 
       <div className="currentRound">
         {currentRoundData && (

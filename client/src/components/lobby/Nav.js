@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfoIcon from '../../assets/info-icon.svg';
+// import InfoIcon from '../../assets/info-icon.svg';
+import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
+
+import InfoIcon from '@material-ui/icons/Info';
 
 const NavWrapper = styled.nav`
   /* position: absolute; */
@@ -17,20 +20,20 @@ const NavWrapper = styled.nav`
   }
 
   h2 {
+    font-size: 1.5rem;
     margin: 0;
   }
 
   .infoIcon {
-    height: 30px;
-    width: auto;
+    height: 50px;
+    width: 50px;
     position: absolute;
     top: 20px;
     right: 20px;
   }
 `;
 
-const Nav = ({ currentRoundData, toggleInfoTab }) => {
-  // if (currentRoundData) console.log(currentRoundData);
+const Nav = ({ currentRoundData, toggleInfoDialog }) => {
   return (
     <NavWrapper>
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
@@ -39,19 +42,23 @@ const Nav = ({ currentRoundData, toggleInfoTab }) => {
         Current Round: {currentRoundData ? currentRoundData.roundNumber : '...'}
       </h2>
 
-      <img
+      {/* Add new player button */}
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="open drawer"
+        onClick={() => toggleInfoDialog(true)}
         className="infoIcon"
-        src={InfoIcon}
-        alt="information to view game title and password"
-        onClick={() => toggleInfoTab(true)}
-      />
+      >
+        <InfoIcon />
+      </IconButton>
     </NavWrapper>
   );
 };
 
 Nav.propTypes = {
   currentRoundData: PropTypes.object,
-  toggleInfoTab: PropTypes.func.isRequired,
+  toggleInfoDialog: PropTypes.func.isRequired,
 };
 
 export default Nav;

@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import xIcon from '../../assets/x-icon.svg';
+import {
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+  Button,
+} from '@material-ui/core';
 
-const InfoTab = ({ title, password, players, toggleInfoTab }) => {
-  console.log(players);
+const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
   const gamemaster = players.find(p => p.isGamemaster === true);
-  console.log(gamemaster);
   return (
-    <div className="infoTabWrapper">
-      <div className="infoTab">
-        <img
-          src={xIcon}
-          title="exit info tab"
-          alt="exit info tab"
-          onClick={() => toggleInfoTab(false)}
-        />
-        <h1>Title: {title}</h1>
-        <h1>Password: {password}</h1>
-        <h1>Gamemaster: {gamemaster.name}</h1>
-        <h1>Total Players: {players.length}</h1>
-      </div>
-    </div>
+    <Fragment>
+      <DialogTitle>Current Game Information</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <b>Title:</b> {title}
+        </DialogContentText>
+        <DialogContentText>
+          <b>Password:</b> {password}
+        </DialogContentText>
+        <DialogContentText>
+          <b>Gamemaster:</b> {gamemaster.name}
+        </DialogContentText>
+        <DialogContentText>
+          <b>Total Players:</b> {players.length}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          size="medium"
+          color="primary"
+          onClick={e => toggleInfoDialog(false)}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Fragment>
   );
 };
 
@@ -29,7 +45,7 @@ InfoTab.propTypes = {
   title: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired,
-  toggleInfoTab: PropTypes.func.isRequired,
+  toggleInfoDialog: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
