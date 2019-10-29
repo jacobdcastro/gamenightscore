@@ -84,7 +84,6 @@ export const setWinner = actionData => async dispatch => {
 
 export const newRound = actionData => async dispatch => {
   const { gameId } = actionData;
-  console.log('hi');
   try {
     const res = await axios.get(`${api_url}/${gameId}/newRound`, config);
     dispatch({
