@@ -121,7 +121,7 @@ const LobbyWrapper = styled.div`
     box-shadow: 0 0px 25px #888;
 
     h2 {
-      color: white;
+      color: black;
     }
 
     button:hover {
@@ -133,20 +133,6 @@ const LobbyWrapper = styled.div`
       text-align: center;
     }
 
-    .submitScoreBtn {
-      background-color: ${props => props.theme.yellow};
-      padding: 12px;
-      border-radius: 5px;
-      border: none;
-      margin: 0;
-      font-weight: 600;
-      height: 40px;
-    }
-    .submitScoreBtn:active {
-      height: 40px;
-      margin-top: 4px;
-      border-bottom: 4px solid #0e5b2c;
-    }
   }
 
   @keyframes slideUp {

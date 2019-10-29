@@ -12,15 +12,27 @@ import GamemasterFooterWrapper from '../../../styles/lobby/Gamemaster.sty.js';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
-import CancelIcon from '@material-ui/icons/Cancel';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import Button from '@material-ui/core/Button';
+
+import Dialog from '@material-ui/core/Dialog';
+import {
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
+import Slide from '@material-ui/core/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -66,10 +78,12 @@ const GamemasterFooter = ({
   toggleEndGamePopup,
 }) => {
   const [winner, setWinnerState] = useState('');
+  const [scoreDialogIsOpen, toggleScoreDialog] = useState(false);
   const classes = useStyles();
 
   const currentRound = rounds.find(r => r._id === currentRoundId);
   const {
+    roundNumber,
     inProgress,
     finished,
     allGmPlayersScoresSubmitted,
@@ -103,10 +117,19 @@ const GamemasterFooter = ({
     newRound(actionData);
   };
 
+  const handleDialogOpen = () => {
+    toggleScoreDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    toggleScoreDialog(false);
+  };
+
   return (
     <Fragment>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
         <Toolbar>
+          {/* Add new player button */}
           <IconButton
             edge="start"
             color="inherit"
@@ -115,77 +138,121 @@ const GamemasterFooter = ({
           >
             <PersonAddIcon />
           </IconButton>
-          <Fab
-            size="large"
-            color="primary"
-            aria-label="start"
-            className={classes.fabButton}
+
+          {/* 1. Start Round Button */}
+          {!inProgress && !finished && (
+            <Fab
+              size="large"
+              color="primary"
+              aria-label="start round"
+              variant="extended"
+              className={classes.fabButton}
+              onClick={() => runStartRoundAction()}
+            >
+              <PlayArrowIcon /> Start Round {roundNumber}
+            </Fab>
+          )}
+
+          {/* 2. End Round Button */}
+          {inProgress && !finished && (
+            <Fab
+              size="large"
+              color="primary"
+              aria-label="end round"
+              variant="extended"
+              className={classes.fabButton}
+              onClick={() => runEndRoundAction()}
+            >
+              <StopIcon /> End Round {roundNumber}
+            </Fab>
+          )}
+
+          {/* 3. Select Winner Button */}
+          <Dialog
+            open={!inProgress && finished && !newRoundReady}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleDialogClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
           >
-            <StopIcon />
-          </Fab>
+            <DialogTitle>Select The Winner!</DialogTitle>
+            <DialogContent>
+              {players.map(p => (
+                <button key={p._id} onClick={() => setWinnerState(p._id)}>
+                  {p.name}
+                </button>
+              ))}
+              <button onClick={() => submitWinner()}>Submit Winner</button>
+            </DialogContent>
+          </Dialog>
+
+          {/* ? 3.1. Let gamemaster submit their score here */}
+          <Dialog
+            open={currentRound.winner && !allGmPlayersScoresSubmitted}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleDialogClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <ScoreSubmission
+              currentRoundIsScored={currentRoundIsScored}
+              currentRoundData={currentRound}
+            />
+          </Dialog>
+
+          {/* 4. Wait for all players to submit scores */}
+          {newRoundReady && !allScoresSubmitted && (
+            <Fab
+              size="large"
+              color="primary"
+              aria-label="next round"
+              variant="extended"
+              className={classes.fabButton}
+              disabled
+            >
+              Go To Next Round <ArrowForwardIosIcon />
+            </Fab>
+          )}
+
+          {/* 5. Create/Go to next round */}
+          {newRoundReady && allScoresSubmitted && (
+            <Fab
+              size="large"
+              color="primary"
+              aria-label="next round"
+              variant="extended"
+              className={classes.fabButton}
+              onClick={() => initNextRound()}
+            >
+              Go To Next Round <ArrowForwardIosIcon />
+            </Fab>
+          )}
+
           <div className={classes.grow} />
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={() => toggleEndGamePopup(true)}
-          >
-            <CancelIcon />
-          </IconButton>
+
+          {newRoundReady && allScoresSubmitted ? (
+            <Button
+              variant="contained"
+              size="small"
+              color="error"
+              onClick={() => toggleEndGamePopup(true)}
+            >
+              End Game
+            </Button>
+          ) : (
+            <Button variant="contained" size="small" color="error" disabled>
+              End Game
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
+
       <GamemasterFooterWrapper
         id="gamemasterFooter"
         newRoundReady={newRoundReady}
       >
-        {/* Add new player button */}
-        <button
-          className="addPlayerBtn"
-          onClick={() => toggleNewPlayerPopup(true)}
-        >
-          Add New Player
-        </button>
-
-        {/* End Game button */}
-        {newRoundReady && allScoresSubmitted ? (
-          <button
-            className="endGameBtn"
-            onClick={() => toggleEndGamePopup(true)}
-          >
-            End Game
-          </button>
-        ) : (
-          <button className="endGameBtn disabled" disabled>
-            End Game
-          </button>
-        )}
-
-        {/* 1. Start Round Button */}
-        {!inProgress && !finished && (
-          <button
-            className="rndBtn startBtn"
-            onClick={() => runStartRoundAction()}
-          >
-            Start
-            <br />
-            Round
-          </button>
-        )}
-
-        {/* 2. End Round Button */}
-        {inProgress && !finished && (
-          <button
-            className="rndBtn endBtn"
-            onClick={() => {
-              actionData.endTime = Date.now();
-              runEndRoundAction();
-            }}
-          >
-            End
-            <br />
-            Round
-          </button>
-        )}
-
         {/* 3. Select Winner Button */}
         {!inProgress && finished && !newRoundReady && (
           <Fragment>
@@ -200,12 +267,12 @@ const GamemasterFooter = ({
         )}
 
         {/* ? 3.1. Let gamemaster submit their score here */}
-        {currentRound.winner && !allGmPlayersScoresSubmitted && (
+        {/* {currentRound.winner && !allGmPlayersScoresSubmitted && (
           <ScoreSubmission
             currentRoundIsScored={currentRoundIsScored}
             currentRoundData={currentRound}
           />
-        )}
+        )} */}
 
         {/* 4. Wait for all players to submit scores */}
         {newRoundReady && allGmPlayersScoresSubmitted && !allScoresSubmitted && (

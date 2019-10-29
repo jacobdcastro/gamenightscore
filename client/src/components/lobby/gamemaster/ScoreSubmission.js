@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { submitPlayerScore } from '../../../redux/actions/game';
 import ScoreForm from '../ScoreForm';
+import {
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+  Button,
+} from '@material-ui/core';
 
 const ScoreSubmission = ({
   playerId,
@@ -12,7 +19,6 @@ const ScoreSubmission = ({
   submitPlayerScore,
 }) => {
   const [roundScore, setRoundScore] = useState(0);
-  const [allGmPlayersScored, setAllGmPlayersScored] = useState(false);
   const [playerBeingScored, setPlayerBeingScored] = useState(playerId);
   let [index, setIndex] = useState(0);
 
@@ -39,19 +45,28 @@ const ScoreSubmission = ({
   };
 
   return (
-    <div>
-      <h3>
+    <Fragment>
+      <DialogTitle>
         {currentRoundIsScored && index < gmCreatedPlayers.length
           ? `Enter round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
           : `Enter your score for round ${currentRoundData.roundNumber}`}
-      </h3>
+      </DialogTitle>
 
-      <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
+      <DialogContent>
+        <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
+      </DialogContent>
 
-      <button type="submit" onClick={e => handleScoreSubmit(e)}>
-        Submit Score
-      </button>
-    </div>
+      <DialogActions>
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          onClick={e => handleScoreSubmit(e)}
+        >
+          Submit Score
+        </Button>
+      </DialogActions>
+    </Fragment>
   );
 };
 

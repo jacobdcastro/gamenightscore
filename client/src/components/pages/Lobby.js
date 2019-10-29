@@ -9,16 +9,21 @@ import Pusher from 'pusher-js';
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
-import SubmitScore from '../lobby/SubmitScore';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import InfoTab from '../lobby/InfoTab';
 import Nav from '../lobby/Nav';
 import PageViewTab from '../lobby/PageViewTab';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import NewPlayerPopup from '../lobby/gamemaster/NewPlayerPopup';
 import EndGamePopup from '../lobby/gamemaster/EndGamePopup';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const Lobby = ({
   isGamemaster,
@@ -38,17 +43,17 @@ const Lobby = ({
     getGameData(localStorage.gameId);
 
     // create connection to Pusher
-    // const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
-    //   cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
-    //   encrypted: false,
-    //   // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
-    // });
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+      cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+      encrypted: false,
+      // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
+    });
 
     // subscribe client to pusher channel, bind to events
-    // const channel = pusher.subscribe('games');
-    // channel.bind('inserted', () => getGameData(localStorage.gameId));
-    // channel.bind('deleted', () => getGameData(localStorage.gameId));
-    // channel.bind('updated', () => getGameData(localStorage.gameId));
+    const channel = pusher.subscribe('games');
+    channel.bind('inserted', () => getGameData(localStorage.gameId));
+    channel.bind('deleted', () => getGameData(localStorage.gameId));
+    channel.bind('updated', () => getGameData(localStorage.gameId));
   }, []);
 
   const updatePlayerState = () => {
@@ -111,12 +116,18 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      {roundFinished && !currentRoundIsScored && !isGamemaster && (
-        <SubmitScore
-          roundData={currentRoundData}
+      <Dialog
+        open={roundFinished && !currentRoundIsScored && !isGamemaster}
+        TransitionComponent={Transition}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <ScoreSubmission
           currentRoundIsScored={currentRoundIsScored}
+          roundData={currentRoundData}
         />
-      )}
+      </Dialog>
 
       {rounds && players && isGamemaster && (
         <GMFooter

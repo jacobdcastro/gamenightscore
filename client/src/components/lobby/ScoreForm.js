@@ -1,40 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ScoreFormWrapper from '../../styles/lobby/ScoreForm.sty.js';
+import Button from '@material-ui/core/Button';
 
 const ScoreForm = ({ roundScore, setRoundScore }) => {
   return (
     <ScoreFormWrapper className="scoreForm">
       <div className="editBtns subBtns">
-        <button className="sub1" onClick={() => setRoundScore(roundScore - 1)}>
+        <Button
+          variant="contained"
+          size="large"
+          className="sub1"
+          onClick={() => setRoundScore(roundScore - 1)}
+        >
           -1
-        </button>
-        <button className="sub5" onClick={() => setRoundScore(roundScore - 5)}>
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          className="sub5"
+          onClick={() => setRoundScore(roundScore - 5)}
+        >
           -5
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
           className="sub10"
           onClick={() => setRoundScore(roundScore - 10)}
         >
           -10
-        </button>
+        </Button>
       </div>
 
       <div className="number">{roundScore}</div>
 
       <div className="editBtns addBtns">
-        <button className="add1" onClick={() => setRoundScore(roundScore + 1)}>
+        <Button
+          variant="contained"
+          size="large"
+          className="add1"
+          onClick={() => setRoundScore(roundScore + 1)}
+        >
           +1
-        </button>
-        <button className="add5" onClick={() => setRoundScore(roundScore + 5)}>
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          className="add5"
+          onClick={() => setRoundScore(roundScore + 5)}
+        >
           +5
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
           className="add10"
           onClick={() => setRoundScore(roundScore + 10)}
         >
           +10
-        </button>
+        </Button>
       </div>
     </ScoreFormWrapper>
   );
