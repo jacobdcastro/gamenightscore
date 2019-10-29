@@ -2,68 +2,71 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
-import RoundListing from './RoundListing';
-import RoundsWrapper from '../../styles/lobby/Rounds.sty.js';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Paper } from '@material-ui/core';
 
 const Rounds = ({ rounds, players }) => {
   return (
-    <RoundsWrapper id="rounds">
+    <Paper>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Round #</TableCell>
-            <TableCell>Winner</TableCell>
-            <TableCell>Winner's Score</TableCell>
-            <TableCell>Time</TableCell>
+            <TableCell align="left">Rd.#</TableCell>
+            <TableCell align="left">Winner</TableCell>
+            <TableCell align="right">Winner's Score</TableCell>
+            <TableCell align="right">Time</TableCell>
           </TableRow>
         </TableHead>
-        {rounds.map((round, index) => {
-          const {
-            roundNumber,
-            inProgress,
-            winner,
-            playerScores,
-            startTime,
-            endTime,
-          } = round;
-          let winnerPlayerData;
-          let winnerRoundData;
-          if (winner) {
-            winnerPlayerData = players.find(p => p._id === winner);
-            winnerRoundData = playerScores.find(p => p.player === winner);
-          }
+        <TableBody>
+          {rounds.map((round, index) => {
+            const {
+              roundNumber,
+              inProgress,
+              winner,
+              playerScores,
+              startTime,
+              endTime,
+            } = round;
+            let winnerPlayerData;
+            let winnerRoundData;
+            if (winner) {
+              winnerPlayerData = players.find(p => p._id === winner);
+              winnerRoundData = playerScores.find(p => p.player === winner);
+            }
 
-          return (
-            <TableRow key={index}>
-              <TableCell component="th" scope="row" align="left">
-                {roundNumber}
-              </TableCell>
-              <TableCell>
-                {winner && !inProgress
-                  ? `${winnerPlayerData.name}`
-                  : 'No winner yet...'}
-                {!winner && inProgress && `Round currently in progress...`}
-              </TableCell>
-              <TableCell>
-                {winnerRoundData ? winnerRoundData.roundScore : 'TBD'}
-              </TableCell>
-              <TableCell>
-                {startTime && endTime ? (
-                  <Moment duration={startTime} date={endTime} />
-                ) : (
-                  'TBD'
-                )}
-              </TableCell>
-            </TableRow>
-          );
-        })}
+            return (
+              <TableRow key={index}>
+                <TableCell scope="row" align="left">
+                  {roundNumber}
+                </TableCell>
+                <TableCell align="left">
+                  <b>
+                    {winner && !inProgress
+                      ? `${winnerPlayerData.name}`
+                      : 'No winner yet...'}
+                    {!winner && inProgress && `Round currently in progress...`}
+                  </b>
+                </TableCell>
+                <TableCell align="right">
+                  <b>{winnerRoundData ? winnerRoundData.roundScore : 'TBD'}</b>
+                </TableCell>
+                <TableCell align="right">
+                  {startTime && endTime ? (
+                    <Moment duration={startTime} date={endTime} />
+                  ) : (
+                    'TBD'
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
-    </RoundsWrapper>
+    </Paper>
   );
 };
 

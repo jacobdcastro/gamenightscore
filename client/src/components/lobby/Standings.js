@@ -1,40 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import PlayerListing from './PlayerListing';
-import StandingsWrapper from '../../styles/lobby/Standings.sty.js';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Paper } from '@material-ui/core';
 
 const Standings = ({ players, hideScores }) => {
   return (
-    <StandingsWrapper id="standings">
+    <Paper>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Position</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Total Score</TableCell>
+            <TableCell align="left">Pos.</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="right">Total Score</TableCell>
+            <TableCell align="right">Worst Round Score</TableCell>
+            <TableCell align="right">Best Round Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {players.map((player, index) => (
-            <TableRow key={index}>
-              <TableCell component="th" scope="row" align="left">
-                {index + 1}
-              </TableCell>
-              <TableCell align="left">{player.name}</TableCell>
-              <TableCell align="right">
-                {hideScores ? '???' : player.totalScore}
-              </TableCell>
-            </TableRow>
-          ))}
+          {players.map((player, index) => {
+            // get sort all scores and display lowest/highest score
+            let allScores = [];
+            player.roundsPlayed.forEach(r => allScores.push(r.roundScore));
+            allScores.sort((a, b) => a - b);
+            return (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row" align="left">
+                  {index + 1}
+                </TableCell>
+                <TableCell align="left">
+                  <b>{player.name}</b>
+                </TableCell>
+                <TableCell align="right">
+                  <b>{hideScores ? '???' : player.totalScore}</b>
+                </TableCell>
+                <TableCell align="right">{allScores[0]}</TableCell>
+                <TableCell align="right">
+                  {allScores[allScores.length - 1]}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
-    </StandingsWrapper>
+    </Paper>
   );
 };
 
