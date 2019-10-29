@@ -13,6 +13,7 @@ import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import InfoTab from '../lobby/InfoTab';
 import Nav from '../lobby/Nav';
 import PageViewTab from '../lobby/PageViewTab';
+import ScoreSubmission from '../lobby/gamemaster/ScoreSubmission';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 
