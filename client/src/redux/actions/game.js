@@ -9,6 +9,8 @@ import {
   GET_GAME_DATA,
   SUBMIT_PLAYER_SCORE,
   SUBMIT_PLAYER_SCORE_FAIL,
+  END_GAME_SUCCESS,
+  END_GAME_FAIL,
 } from '../types';
 
 const config = {
@@ -106,6 +108,22 @@ export const submitPlayerScore = actionData => async dispatch => {
   } catch (error) {
     dispatch({
       type: SUBMIT_PLAYER_SCORE_FAIL,
+      payload: error,
+    });
+    console.log(error);
+  }
+};
+
+export const endGame = gameId => async dispatch => {
+  try {
+    const res = axios.put(`${api_url}/${gameId}/endGame`);
+    dispatch({
+      type: END_GAME_SUCCESS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: END_GAME_FAIL,
       payload: error,
     });
     console.log(error);

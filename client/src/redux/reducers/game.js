@@ -6,6 +6,8 @@ import {
   GET_ALL_GAMES,
   GET_GAME_DATA,
   // GET_GAME_DATA_FAIL,
+  END_GAME_SUCCESS,
+  END_GAME_FAIL,
   START_ROUND,
   START_ROUND_FAIL,
   END_ROUND,
@@ -47,6 +49,7 @@ export default function(state = initialState, action) {
     case SET_WINNER:
     case ADD_NEW_ROUND:
     case SUBMIT_PLAYER_SCORE:
+    case END_GAME_SUCCESS:
       return {
         ...gameData,
         loading: false,
@@ -59,6 +62,7 @@ export default function(state = initialState, action) {
     case SET_WINNER_FAIL:
     case ADD_NEW_ROUND_FAIL:
     case SUBMIT_PLAYER_SCORE_FAIL:
+    case END_GAME_FAIL:
       return {
         ...state,
         loading: false,

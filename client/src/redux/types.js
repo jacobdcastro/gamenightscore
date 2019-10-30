@@ -13,6 +13,8 @@ export const JOIN_GAME_SUCCESS = 'JOIN_GAME_SUCCESS';
 export const JOIN_GAME_FAIL = 'JOIN_GAME_FAIL';
 export const GET_GAME_DATA = 'GET_GAME_DATA';
 export const GET_GAME_DATA_FAIL = 'GET_GAME_DATA_FAIL';
+export const END_GAME_SUCCESS = 'END_GAME_SUCCESS';
+export const END_GAME_FAIL = 'END_GAME_FAIL';
 
 // player
 export const SET_INIT_PLAYER_STATE = 'SET_INIT_PLAYER_STATE';
