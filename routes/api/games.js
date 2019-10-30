@@ -284,9 +284,9 @@ router.put('/:game_id/startRound', auth, async (req, res) => {
 
     currentRound.inProgress = true;
     currentRound.startTime = startTime;
+    game.startTime = game.rounds[0].startTime;
 
     await game.save();
-    console.log(currentRound);
     res.json(game);
   } catch (error) {
     console.log('Server Error', error);
@@ -406,6 +406,10 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     // 7. check if all players have submitted scores
     if (game.players.length === round.playerScores.length) {
       round.allScoresSubmitted = true;
+      if (game.rounds.length === game.maxNumberOfRounds) {
+        game.endTime = game.rounds[game.rounds.length - 1].endTime;
+        game.expired = true;
+      }
     }
 
     await game.save();
@@ -420,24 +424,23 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 // @desc    End a game
 // access   Private
 router.put(':game_id/endGame', auth, async (req, res) => {
-  router.get('/:game_id', async (req, res) => {
-    const game = await Game.findById(req.params.game_id);
-    let round = game.rounds.id(game.currentRound);
+  const game = await Game.findById(req.params.game_id);
+  let round = game.rounds.id(game.currentRound);
 
-    // check for any players who haven't submitted scores
-    if (round.playerScores.length !== game.players.length)
-      res.status(406).send('Not all players have submitted their scores');
+  // check for any players who haven't submitted scores
+  if (round.playerScores.length !== game.players.length)
+    res.status(406).send('Not all players have submitted their scores');
 
-    try {
-      game.endTime = Date.now();
-      game.expired = true;
-      game.save();
-      res.json(game);
-    } catch (error) {
-      console.log('Server Error', error);
-      res.status(500).send('Error with server. Big oops.');
-    }
-  });
+  console.log('end game!!!');
+  try {
+    game.endTime = Date.now();
+    game.expired = true;
+    game.save();
+    res.json(game);
+  } catch (error) {
+    console.log('Server Error', error);
+    res.status(500).send('Error with server. Big oops.');
+  }
 });
 
 // @route   PUT api/games/:game_id/players/:player_id/postScore
