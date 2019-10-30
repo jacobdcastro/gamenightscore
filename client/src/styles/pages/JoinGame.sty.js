@@ -3,12 +3,11 @@ import styled from 'styled-components';
 const JoinGameWrapper = styled.div`
   position: absolute;
   top: 0;
+  left: 0;
+  text-align: center;
+  color: black;
   min-height: 100vh;
   width: 100vw;
-  background-color: ${props => props.theme.blue};
-  text-align: center;
-  color: white;
-  /* padding: 20px 20px 50px; */
 
   .backLink {
     position: absolute;
@@ -39,28 +38,12 @@ const JoinGameWrapper = styled.div`
     max-width: 800px;
     margin: auto;
     margin-top: 10px;
-    div {
+    .inputDiv {
       text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin: 15px;
-
-      input {
-        margin: 4px 0;
-        border: 3px solid #ef4423;
-        font-weight: 600;
-        letter-spacing: 1px;
-        font-size: 0.8rem;
-      }
+      margin: 0 15px;
 
       label {
         font-weight: 700;
-      }
-
-      input[type='text'] {
-        padding: 10px;
-        border-radius: 5px;
       }
     }
 
@@ -68,14 +51,6 @@ const JoinGameWrapper = styled.div`
       margin: 15px;
       padding: 10px 0;
       width: 80%;
-      border-radius: 5px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: white;
-      text-decoration: none;
-      text-transform: uppercase;
-      border: 3px solid #faed24;
-      background-color: #168f45;
     }
     button:hover {
       cursor: pointer;

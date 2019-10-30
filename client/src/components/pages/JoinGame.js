@@ -5,6 +5,8 @@ import { joinGame } from '../../redux/actions/game';
 import { setInitPlayerState } from '../../redux/actions/player';
 import PropTypes from 'prop-types';
 
+import TextField from '@material-ui/core/TextField';
+import { Paper, Container, Button } from '@material-ui/core';
 import JoinGameWrapper from '../../styles/pages/JoinGame.sty.js';
 
 const JoinGame = ({
@@ -35,46 +37,63 @@ const JoinGame = ({
   }
 
   return (
-    <JoinGameWrapper>
-      <Link className="backLink" to="/">
-        &#8592; Back
-      </Link>
-      <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
-      <h1>Join a live game!</h1>
-      <p>
-        Ask the Gamemaster (player who created the game) for the game title and
-        password. Title and password are displayed in game dashboard.
-      </p>
-      <form id="joinGameForm" onSubmit={e => onSubmit(e)}>
-        <div className="textInput">
-          <label htmlFor="title">Title of Game</label>
-          <input
-            id="title"
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={title}
-            onChange={e => onChange(e)}
-            required
-          />
-          <small>This is case sensitive!</small>
-        </div>
-        <div className="textInput">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="text"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => onChange(e)}
-            required
-          />
-          <small>This is also case sensitive!</small>
-        </div>
-        <button type="submit">Join Game</button>
-      </form>
-    </JoinGameWrapper>
+    <Paper>
+      <Container maxWidth="md">
+        <JoinGameWrapper>
+          <Link className="backLink" to="/">
+            &#8592; Back
+          </Link>
+          <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+          <h1>Join a live game!</h1>
+          <p>
+            Ask the Gamemaster (player who created the game) for the game title
+            and password. Title and password are displayed in game dashboard.
+          </p>
+          <form id="joinGameForm" onSubmit={e => onSubmit(e)}>
+            <div className="inputDiv textInput">
+              <TextField
+                required
+                fullWidth={true}
+                variant="outlined"
+                id="title"
+                name="title"
+                label="Title of Game"
+                margin="normal"
+                placeholder="Title"
+                value={title}
+                onChange={e => onChange(e)}
+                helpertext="This is case sensitive!"
+              />
+            </div>
+            <div className="inputDiv textInput">
+              <TextField
+                required
+                fullWidth={true}
+                variant="outlined"
+                id="password"
+                name="password"
+                label="Password"
+                margin="normal"
+                placeholder="password"
+                value={password}
+                onChange={e => onChange(e)}
+                helpertext="This is also case sensitive!"
+              />
+            </div>
+            <Button
+              type="submit"
+              className="joinGame"
+              variant="contained"
+              size="large"
+              color="primary"
+              fullWidth={true}
+            >
+              Join Game
+            </Button>
+          </form>
+        </JoinGameWrapper>
+      </Container>
+    </Paper>
   );
 };
 

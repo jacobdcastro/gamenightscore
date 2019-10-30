@@ -5,6 +5,8 @@ import { createPlayer } from '../../redux/actions/player';
 import { getGameData } from '../../redux/actions/game';
 import PropTypes from 'prop-types';
 
+import { Paper, Container, TextField, Button } from '@material-ui/core';
+
 // TODO add deck selection
 
 import CreatePlayerWrapper from '../../styles/pages/CreatePlayer.sty.js';
@@ -29,9 +31,10 @@ const CreatePlayer = ({
     if (localStorage.gameId && localStorage.token) {
       getGameData(localStorage.gameId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { name, pin } = formData;
+  const { name } = formData;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,31 +51,45 @@ const CreatePlayer = ({
   }
 
   return (
-    <CreatePlayerWrapper>
-      <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
-      <p>Create your player!</p>
-      <p>
-        If you're joining a game that's already begun, it's all good. You can
-        still join!
-      </p>
+    <Paper>
+      <Container maxWidth="md">
+        <CreatePlayerWrapper>
+          <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+          <h2>Create your player!</h2>
+          <p>
+            If you're joining a game that's already begun, it's all good. You
+            can still join!
+          </p>
 
-      <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
-        <div className="textInput">
-          <label htmlFor="title">Your Username</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Username"
-            value={name}
-            onChange={e => onChange(e)}
-            required
-          />
-          <small>How do you want to be known for this game?</small>
-        </div>
-        <button type="submit">Enter Game Lobby</button>
-      </form>
-    </CreatePlayerWrapper>
+          <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
+            <div className="inputDiv">
+              <TextField
+                required
+                fullWidth={true}
+                variant="outlined"
+                id="name"
+                name="name"
+                label="Your Username"
+                margin="normal"
+                value={name}
+                onChange={e => onChange(e)}
+                helperText="How do you want to be known for this game?"
+              />
+            </div>
+            <Button
+              type="submit"
+              className="joinGame"
+              variant="contained"
+              size="large"
+              color="primary"
+              fullWidth={true}
+            >
+              Enter Game Lobby
+            </Button>
+          </form>
+        </CreatePlayerWrapper>
+      </Container>
+    </Paper>
   );
 };
 
