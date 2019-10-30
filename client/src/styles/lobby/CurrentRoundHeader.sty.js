@@ -7,6 +7,7 @@ const CurrentRoundHeaderWrapper = styled.div`
   ${props => props.updated && 'animation: notif 0.5s'}
   background-color: ${props => props.theme.blue};
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 10px;

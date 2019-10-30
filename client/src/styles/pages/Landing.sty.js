@@ -3,9 +3,9 @@ import styled from 'styled-components';
 const LandingWrapper = styled.div`
   position: absolute;
   top: 0;
-  background-color: ${props => props.theme.blue};
+  /* background-color: ${props => props.theme.blue}; */
   text-align: center;
-  color: white;
+  color: black;
   height: 100%;
   padding: 0 0px;
   width: 100vw;
@@ -27,24 +27,17 @@ const LandingWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     a {
       margin: 15px;
-      padding: 10px 0;
       width: 100%;
-      border-radius: 5px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: white;
-      text-decoration: none;
-      text-transform: uppercase;
-      border: 3px solid ${props => props.theme.yellow};
+      
     }
     .createGame {
-      background-color: ${props => props.theme.green};
+      background-color: ${props => props.theme.blue};
     }
     .joinGame {
-      background-color: ${props => props.theme.orange};
+      color: white;
+      background-color: ${props => props.theme.green};
     }
   }
 `;

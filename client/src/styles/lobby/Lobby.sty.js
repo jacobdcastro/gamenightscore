@@ -9,6 +9,13 @@ const LobbyWrapper = styled.div`
   overflow: hidden;
   /* background-color: ${props => props.theme.yellow}; */
 
+  .endGameBtn {
+    background-color: ${props => props.theme.orange};
+  }
+  .endGameBtn:hover {
+    background-color: ${props => props.theme.yellow};
+  }
+
   .infoTabWrapper {
     transition: 0.5s;
     height: 100vh;
