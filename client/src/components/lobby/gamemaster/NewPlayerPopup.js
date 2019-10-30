@@ -2,10 +2,8 @@ import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createPlayer } from '../../../redux/actions/player';
-import xIcon from '../../../assets/x-icon.svg';
 import {
   DialogContent,
-  DialogContentText,
   DialogTitle,
   DialogActions,
   Button,

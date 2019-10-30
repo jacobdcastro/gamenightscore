@@ -56,6 +56,7 @@ const Rounds = ({ rounds, players }) => {
                 </TableCell>
                 <TableCell align="right">
                   {startTime && endTime ? (
+                    // TODO fix broken duration
                     <Moment duration={startTime} date={endTime} />
                   ) : (
                     'TBD'

@@ -16,7 +16,6 @@ import PageViewTab from '../lobby/PageViewTab';
 import ScoreSubmission from '../lobby/gamemaster/ScoreSubmission';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import InfoIcon from '@material-ui/icons/Info';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
@@ -56,11 +55,14 @@ const Lobby = ({
     channel.bind('inserted', () => getGameData(localStorage.gameId));
     channel.bind('deleted', () => getGameData(localStorage.gameId));
     channel.bind('updated', () => getGameData(localStorage.gameId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updatePlayerState = () => {
-    const playerData = players.find(p => p._id === localStorage.playerId);
-    getPlayerData(playerData);
+    if (!game.expired) {
+      const playerData = players.find(p => p._id === localStorage.playerId);
+      getPlayerData(playerData);
+    }
   };
 
   let currentRoundData;
@@ -104,7 +106,7 @@ const Lobby = ({
         </Dialog>
       )}
 
-      {isGamemaster && (
+      {isGamemaster && !game.expired && (
         <Dialog
           open={newPlayerPopupIsOpen}
           TransitionComponent={Transition}
@@ -117,7 +119,8 @@ const Lobby = ({
           <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
         </Dialog>
       )}
-      {isGamemaster && (
+
+      {isGamemaster && !game.expired && (
         <Dialog
           open={endGamePopupIsOpen}
           TransitionComponent={Transition}
@@ -141,6 +144,7 @@ const Lobby = ({
           <CurrentRoundHeader
             roundData={currentRoundData}
             players={players}
+            maxNumberOfRounds={game.maxNumberOfRounds}
             currentRoundIsScored={currentRoundIsScored}
           />
         )}
@@ -152,7 +156,7 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      {players && (
+      {players && !game.expired && (
         <Dialog
           open={roundFinished && !currentRoundIsScored && !isGamemaster}
           TransitionComponent={Transition}
@@ -167,7 +171,7 @@ const Lobby = ({
         </Dialog>
       )}
 
-      {rounds && players && isGamemaster && (
+      {rounds && players && isGamemaster && !game.expired && (
         <GMFooter
           currentRoundIsScored={currentRoundIsScored}
           toggleNewPlayerPopup={toggleNewPlayerPopup}

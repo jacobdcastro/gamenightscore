@@ -1,11 +1,10 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { submitPlayerScore } from '../../../redux/actions/game';
 import ScoreForm from '../ScoreForm';
 import {
   DialogContent,
-  DialogContentText,
   DialogTitle,
   DialogActions,
   Button,

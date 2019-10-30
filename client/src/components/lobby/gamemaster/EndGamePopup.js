@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createPlayer } from '../../../redux/actions/player';
+import { endGame } from '../../../redux/actions/game';
 import {
   DialogContent,
   DialogContentText,
@@ -10,11 +10,18 @@ import {
   Button,
 } from '@material-ui/core';
 
-const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
+const EndGamePopup = ({
+  gameId,
+  currentRoundId,
+  rounds,
+  toggleEndGamePopup,
+  endGame,
+}) => {
   const currentRound = rounds.find(r => r._id === currentRoundId);
 
   const confirmEnd = () => {
-    // endGame action
+    console.log('ended...');
+    endGame(gameId);
   };
 
   return (
@@ -23,7 +30,7 @@ const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
       <DialogContent>
         <DialogContentText>
           Are you sure you'd like to end the game after{' '}
-          {currentRound.roundNumber} rounds?
+          {currentRound.roundNumber} round{currentRound.roundNumber > 1 && 's'}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -48,15 +55,19 @@ const EndGamePopup = ({ currentRoundId, rounds, toggleEndGamePopup }) => {
 };
 
 EndGamePopup.propTypes = {
+  gameId: PropTypes.string.isRequired,
+  currentRoundId: PropTypes.string.isRequired,
+  rounds: PropTypes.array.isRequired,
   toggleEndGamePopup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  gameId: state.game._id,
   currentRoundId: state.game.currentRound,
   rounds: state.game.rounds,
 });
 
 export default connect(
   mapStateToProps,
-  { createPlayer }
+  { endGame }
 )(EndGamePopup);

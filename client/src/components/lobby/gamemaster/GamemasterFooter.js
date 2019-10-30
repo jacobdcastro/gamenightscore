@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -8,26 +8,25 @@ import {
   newRound,
 } from '../../../redux/actions/currentRound';
 import ScoreSubmission from './ScoreSubmission';
-import GamemasterFooterWrapper from '../../../styles/lobby/Gamemaster.sty.js';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 import Dialog from '@material-ui/core/Dialog';
-import {
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@material-ui/core';
+import { DialogContent, DialogTitle, DialogActions } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -78,7 +77,6 @@ const GamemasterFooter = ({
   toggleEndGamePopup,
 }) => {
   const [winner, setWinnerState] = useState('');
-  const [scoreDialogIsOpen, toggleScoreDialog] = useState(false);
   const classes = useStyles();
 
   const currentRound = rounds.find(r => r._id === currentRoundId);
@@ -117,12 +115,8 @@ const GamemasterFooter = ({
     newRound(actionData);
   };
 
-  const handleDialogOpen = () => {
-    toggleScoreDialog(true);
-  };
-
-  const handleDialogClose = () => {
-    toggleScoreDialog(false);
+  const handleSelectChange = e => {
+    setWinnerState(e.target.value);
   };
 
   return (
@@ -172,19 +166,40 @@ const GamemasterFooter = ({
             open={!inProgress && finished && !newRoundReady}
             TransitionComponent={Transition}
             keepMounted
-            onClose={handleDialogClose}
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
           >
             <DialogTitle>Select The Winner!</DialogTitle>
             <DialogContent>
-              {players.map(p => (
-                <button key={p._id} onClick={() => setWinnerState(p._id)}>
-                  {p.name}
-                </button>
-              ))}
-              <button onClick={() => submitWinner()}>Submit Winner</button>
+              <FormControl component="fieldset">
+                <FormLabel components="legend">Players</FormLabel>
+                <RadioGroup
+                  aria-label="all players"
+                  name="players"
+                  value={winner}
+                  onChange={handleSelectChange}
+                >
+                  {players.map(p => (
+                    <FormControlLabel
+                      key={p._id}
+                      value={p._id}
+                      control={<Radio color="primary" />}
+                      label={p.name}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
             </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                size="medium"
+                color="primary"
+                onClick={() => submitWinner()}
+              >
+                Submit
+              </Button>
+            </DialogActions>
           </Dialog>
 
           {/* ? 3.1. Let gamemaster submit their score here */}
@@ -192,7 +207,6 @@ const GamemasterFooter = ({
             open={currentRound.winner && !allGmPlayersScoresSubmitted}
             TransitionComponent={Transition}
             keepMounted
-            onClose={handleDialogClose}
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
           >
@@ -232,8 +246,9 @@ const GamemasterFooter = ({
 
           <div className={classes.grow} />
 
-          {newRoundReady && allScoresSubmitted ? (
+          {/* {newRoundReady && allScoresSubmitted ? (
             <Button
+              className="endGameBtn"
               variant="contained"
               size="small"
               color="primary"
@@ -242,51 +257,17 @@ const GamemasterFooter = ({
               End Game
             </Button>
           ) : (
-            <Button variant="contained" size="small" color="primary" disabled>
+            <Button
+              className="endGameBtn"
+              variant="contained"
+              size="small"
+              disabled
+            >
               End Game
             </Button>
-          )}
+          )} */}
         </Toolbar>
       </AppBar>
-
-      <GamemasterFooterWrapper
-        id="gamemasterFooter"
-        newRoundReady={newRoundReady}
-      >
-        {/* 3. Select Winner Button */}
-        {!inProgress && finished && !newRoundReady && (
-          <Fragment>
-            <p>Select the winner!</p>
-            {players.map(p => (
-              <button key={p._id} onClick={() => setWinnerState(p._id)}>
-                {p.name}
-              </button>
-            ))}
-            <button onClick={() => submitWinner()}>Submit Winner</button>
-          </Fragment>
-        )}
-
-        {/* ? 3.1. Let gamemaster submit their score here */}
-        {/* {currentRound.winner && !allGmPlayersScoresSubmitted && (
-          <ScoreSubmission
-            currentRoundIsScored={currentRoundIsScored}
-            currentRoundData={currentRound}
-          />
-        )} */}
-
-        {/* 4. Wait for all players to submit scores */}
-        {newRoundReady && allGmPlayersScoresSubmitted && !allScoresSubmitted && (
-          <Fragment>
-            <button disabled>Next round!</button>
-            <p>Waiting for all players to submit their scores...</p>
-          </Fragment>
-        )}
-
-        {/* 5. Create/Go to next round */}
-        {newRoundReady && allScoresSubmitted && (
-          <button onClick={() => initNextRound()}>Next round!</button>
-        )}
-      </GamemasterFooterWrapper>
     </Fragment>
   );
 };

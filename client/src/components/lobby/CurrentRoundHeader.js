@@ -2,8 +2,19 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CurrentRoundHeaderWrapper from '../../styles/lobby/CurrentRoundHeader.sty.js';
 
-const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
-  const { inProgress, finished, allScoresSubmitted, newRoundReady } = roundData;
+const CurrentRoundHeader = ({
+  roundData,
+  players,
+  maxNumberOfRounds,
+  currentRoundIsScored,
+}) => {
+  const {
+    roundNumber,
+    inProgress,
+    finished,
+    allScoresSubmitted,
+    newRoundReady,
+  } = roundData;
   const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
@@ -18,7 +29,9 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
 
   return (
     <CurrentRoundHeaderWrapper updated={updated}>
-      {!inProgress && !finished && (
+      {roundNumber === maxNumberOfRounds && <p>This is the last round!!!</p>}
+
+      {!inProgress && !finished && roundNumber < maxNumberOfRounds && (
         <p>
           New Round! <br />
           Waiting on Gamemaster to start round...
@@ -35,13 +48,18 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
           {!currentRoundIsScored && 'Please enter your score below.'}
         </p>
       )}
-      {newRoundReady && allScoresSubmitted && (
+      {newRoundReady && allScoresSubmitted && roundNumber < maxNumberOfRounds && (
         <p>
           All scores have been submitted!
           <br />
           Waiting on Gamemaster to go to next round...
         </p>
       )}
+
+      {newRoundReady &&
+        allScoresSubmitted &&
+        roundNumber === maxNumberOfRounds && <p>Game is over!</p>}
+      {allScoresSubmitted && roundNumber === maxNumberOfRounds && <p></p>}
     </CurrentRoundHeaderWrapper>
   );
 };
@@ -49,6 +67,7 @@ const CurrentRoundHeader = ({ roundData, players, currentRoundIsScored }) => {
 CurrentRoundHeader.propTypes = {
   roundData: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired,
+  maxNumberOfRounds: PropTypes.number.isRequired,
   currentRoundIsScored: PropTypes.object,
 };
 
