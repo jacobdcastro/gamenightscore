@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
+// import PrivateRoute from './PrivateRoute';
 import Landing from '../pages/Landing';
 import CreateGame from '../pages/CreateGame';
 import JoinGame from '../pages/JoinGame';
