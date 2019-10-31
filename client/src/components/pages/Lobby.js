@@ -75,12 +75,6 @@ const Lobby = ({
     );
   }
 
-  let roundFinished;
-  if (currentRoundData) {
-    roundFinished = currentRoundData.finished;
-    // roundStarted = currentRoundData;
-  }
-
   let pageViewComponent;
   // wait for rounds/players to load before rendering page view component
   if (players && rounds) {
@@ -162,11 +156,16 @@ const Lobby = ({
 
       {currentRoundData && players && !game.expired && (
         <Dialog
-          open={roundFinished && !currentRoundIsScored && !isGamemaster}
+          open={
+            currentRoundData.finished &&
+            !currentRoundData.newRoundReady &&
+            !currentRoundIsScored &&
+            !isGamemaster
+          }
           TransitionComponent={Transition}
           keepMounted
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
+          aria-labelledby="Submit your score"
+          aria-describedby="score submission for current round"
         >
           <ScoreSubmission
             currentRoundIsScored={currentRoundIsScored}
