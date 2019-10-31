@@ -157,10 +157,7 @@ const Lobby = ({
       {currentRoundData && players && !game.expired && (
         <Dialog
           open={
-            currentRoundData.finished &&
-            !currentRoundData.newRoundReady &&
-            !currentRoundIsScored &&
-            !isGamemaster
+            currentRoundData.finished && !currentRoundIsScored && !isGamemaster
           }
           TransitionComponent={Transition}
           keepMounted
