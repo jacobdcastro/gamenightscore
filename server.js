@@ -3,6 +3,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const mongoose = require('mongoose');
 const Pusher = require('pusher');
 const PORT = process.env.PORT;
@@ -37,15 +38,16 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   next();
 });
-app.use(express.static(path.join(__dirname, './client/build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '../client/build/index.html'));
-});
 
 // Define routes
 app.use('/api/games', require('./routes/api/games'));
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
 // app.use('/api/auth', require('./routes/api/auth'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + 'client', 'build', 'index.html'));
+});
 
 // Once mongo database is open, start listening at port
 // and connect the db collection to pusher to watch for changes
