@@ -24,7 +24,7 @@ export const setInitPlayerState = initData => async dispatch => {
   });
 
   try {
-    const res = await axios.post(`${api_url}/auth/sign`, body, config);
+    const res = await axios.post(`/api/games/auth/sign`, body, config);
 
     dispatch({
       type: SET_INIT_PLAYER_STATE,
@@ -51,7 +51,7 @@ export const createPlayer = formData => async dispatch => {
 
   try {
     const res = await axios.post(
-      `${api_url}/${gameId}/newPlayer`,
+      `/api/games/${gameId}/newPlayer`,
       body,
       config
     );

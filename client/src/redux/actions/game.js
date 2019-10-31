@@ -33,7 +33,7 @@ export const createGame = formData => async dispatch => {
 
   try {
     // res expects game data
-    const res = await axios.post(`${api_url}/new`, body, config);
+    const res = await axios.post(`/api/games/new`, body, config);
 
     dispatch({
       type: CREATE_GAME_SUCCESS,
@@ -58,7 +58,7 @@ export const joinGame = formData => async dispatch => {
   });
 
   try {
-    const res = await axios.post(`${api_url}/join`, body, config);
+    const res = await axios.post(`/api/games/join`, body, config);
 
     dispatch({
       type: JOIN_GAME_SUCCESS,
@@ -78,7 +78,7 @@ export const joinGame = formData => async dispatch => {
 
 export const getGameData = gameId => async dispatch => {
   try {
-    const res = await axios.get(`${api_url}/${gameId}`);
+    const res = await axios.get(`/api/games/${gameId}`);
 
     dispatch({
       type: GET_GAME_DATA,
@@ -96,7 +96,7 @@ export const submitPlayerScore = actionData => async dispatch => {
 
   try {
     const res = await axios.put(
-      `${api_url}/${gameId}/players/${playerId}/postScore`,
+      `/api/games/${gameId}/players/${playerId}/postScore`,
       body,
       config
     );
@@ -116,7 +116,7 @@ export const submitPlayerScore = actionData => async dispatch => {
 
 export const endGame = gameId => async dispatch => {
   try {
-    const res = axios.put(`${api_url}/${gameId}/endGame`);
+    const res = axios.put(`/api/games/${gameId}/endGame`);
     dispatch({
       type: END_GAME_SUCCESS,
       payload: res.data,
