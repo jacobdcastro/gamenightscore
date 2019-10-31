@@ -43,14 +43,14 @@ app.use((req, res, next) => {
 app.use('/api/games', require('./routes/api/games'));
 // app.use('/api/auth', require('./routes/api/auth'));
 
-if (process.env.NODE_ENV === 'production') {
-  // set static folder
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
+// if (process.env.NODE_ENV === 'production') {
+// set static folder
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
+// }
 
 // Once mongo database is open, start listening at port
 // and connect the db collection to pusher to watch for changes
