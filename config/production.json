@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://jacobdcastro:ChicagoHome14!@gamenight-score-jgs04.mongodb.net/game-data?retryWrites=true&w=majority",
+  "jwtsecret": "mysecrettoken"
+}
