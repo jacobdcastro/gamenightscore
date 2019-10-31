@@ -16,6 +16,7 @@ import PageViewTab from '../lobby/PageViewTab';
 import ScoreSubmission from '../lobby/gamemaster/ScoreSubmission';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
@@ -28,7 +29,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Lobby = ({
   isGamemaster,
-  isLoading,
   game,
   playerId,
   getGameData,
@@ -110,7 +110,7 @@ const Lobby = ({
         </Dialog>
       )}
 
-      {isGamemaster && !game.expired && (
+      {currentRoundData && isGamemaster && !game.expired && (
         <Dialog
           open={newPlayerPopupIsOpen}
           TransitionComponent={Transition}
@@ -124,7 +124,7 @@ const Lobby = ({
         </Dialog>
       )}
 
-      {isGamemaster && !game.expired && (
+      {currentRoundData && isGamemaster && !game.expired && (
         <Dialog
           open={endGamePopupIsOpen}
           TransitionComponent={Transition}
@@ -160,7 +160,7 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      {players && !game.expired && (
+      {currentRoundData && players && !game.expired && (
         <Dialog
           open={roundFinished && !currentRoundIsScored && !isGamemaster}
           TransitionComponent={Transition}
