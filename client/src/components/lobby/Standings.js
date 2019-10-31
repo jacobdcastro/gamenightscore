@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -18,8 +18,12 @@ const Standings = ({ players, hideScores }) => {
             <TableCell align="left">Pos.</TableCell>
             <TableCell align="left">Name</TableCell>
             <TableCell align="right">Total Score</TableCell>
-            <TableCell align="right">Worst Round Score</TableCell>
-            <TableCell align="right">Best Round Score</TableCell>
+            {!hideScores && (
+              <Fragment>
+                <TableCell align="right">Worst Round Score</TableCell>
+                <TableCell align="right">Best Round Score</TableCell>
+              </Fragment>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -39,10 +43,14 @@ const Standings = ({ players, hideScores }) => {
                 <TableCell align="right">
                   <b>{hideScores ? '???' : player.totalScore}</b>
                 </TableCell>
-                <TableCell align="right">{allScores[0]}</TableCell>
-                <TableCell align="right">
-                  {allScores[allScores.length - 1]}
-                </TableCell>
+                {!hideScores && (
+                  <Fragment>
+                    <TableCell align="right">{allScores[0]}</TableCell>
+                    <TableCell align="right">
+                      {allScores[allScores.length - 1]}
+                    </TableCell>
+                  </Fragment>
+                )}
               </TableRow>
             );
           })}
