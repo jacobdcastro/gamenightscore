@@ -87,7 +87,11 @@ const Lobby = ({
     if (pageView) pageViewComponent = <Rounds />;
     else pageViewComponent = <Standings />;
   } else {
-    pageViewComponent = <h2>Loading...</h2>;
+    pageViewComponent = (
+      <div style={{ margin: '60px' }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
