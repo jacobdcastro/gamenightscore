@@ -19,8 +19,6 @@ const config = {
   },
 };
 
-const api_url = process.env.REACT_APP_API_URL;
-
 export const createGame = formData => async dispatch => {
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
