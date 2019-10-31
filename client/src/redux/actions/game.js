@@ -115,6 +115,7 @@ export const submitPlayerScore = actionData => async dispatch => {
 export const endGame = gameId => async dispatch => {
   try {
     const res = axios.put(`/api/games/${gameId}/endGame`);
+
     dispatch({
       type: END_GAME_SUCCESS,
       payload: res.data,

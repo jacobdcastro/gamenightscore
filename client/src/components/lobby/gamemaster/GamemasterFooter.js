@@ -246,7 +246,7 @@ const GamemasterFooter = ({
 
           <div className={classes.grow} />
 
-          {/* {newRoundReady && allScoresSubmitted ? (
+          {newRoundReady && allScoresSubmitted ? (
             <Button
               className="endGameBtn"
               variant="contained"
@@ -265,7 +265,7 @@ const GamemasterFooter = ({
             >
               End Game
             </Button>
-          )} */}
+          )}
         </Toolbar>
       </AppBar>
     </Fragment>

@@ -10,7 +10,9 @@ import {
 } from '@material-ui/core';
 
 const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
-  const gamemaster = players.find(p => p.isGamemaster === true);
+  let gamemaster;
+  if (players) gamemaster = players.find(p => p.isGamemaster === true);
+
   return (
     <Fragment>
       <DialogTitle>Current Game Information</DialogTitle>
@@ -22,7 +24,7 @@ const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
           <b>Password:</b> {password}
         </DialogContentText>
         <DialogContentText>
-          <b>Gamemaster:</b> {gamemaster.name}
+          <b>Gamemaster:</b> {gamemaster && gamemaster.name}
         </DialogContentText>
         <DialogContentText>
           <b>Total Players:</b> {players.length}
@@ -54,4 +56,7 @@ const mapStateToProps = state => ({
   players: state.game.players,
 });
 
-export default connect(mapStateToProps)(InfoTab);
+export default connect(
+  mapStateToProps,
+  null
+)(InfoTab);

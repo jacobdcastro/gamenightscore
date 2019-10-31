@@ -8,10 +8,6 @@ const SubmitScore = ({ roundData, playerId, gameId, submitPlayerScore }) => {
   const [roundScore, setRoundScore] = useState(0);
   const { roundNumber } = roundData;
 
-  const handleChange = e => {
-    setRoundScore(e.target.value);
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
     const actionData = { gameId, playerId, roundScore };

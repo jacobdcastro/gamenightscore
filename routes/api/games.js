@@ -435,7 +435,7 @@ router.put(':game_id/endGame', auth, async (req, res) => {
   try {
     game.endTime = Date.now();
     game.expired = true;
-    game.save();
+    await game.save();
     res.json(game);
   } catch (error) {
     console.log('Server Error', error);

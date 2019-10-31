@@ -56,9 +56,9 @@ const CurrentRoundHeader = ({
         </p>
       )}
 
-      {newRoundReady &&
-        allScoresSubmitted &&
-        roundNumber === maxNumberOfRounds && <p>Game is over!</p>}
+      {allScoresSubmitted && roundNumber === maxNumberOfRounds && (
+        <p>Game is over!</p>
+      )}
       {allScoresSubmitted && roundNumber === maxNumberOfRounds && <p></p>}
     </CurrentRoundHeaderWrapper>
   );
