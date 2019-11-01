@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://jacobdcastro:ChicagoHome14!@gamenight-score-jgs04.mongodb.net/game-data?retryWrites=true&w=majority",
+  "mongoURI": "mongodb+srv://jacobdcastro:CgGaMcLy15WoMpqH@gamenight-score-jgs04.mongodb.net/game-data?retryWrites=true&w=majority",
   "jwtsecret": "mysecrettoken"
 }
