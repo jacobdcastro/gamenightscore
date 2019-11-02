@@ -474,8 +474,18 @@ router.get('/:game_id', async (req, res) => {
   }
 });
 
-// @route   DELETE api/games
-// @desc    Delete a game
-// access   Private
+// @route   DELETE api/games/all
+// @desc    Delete all games
+// access   Public
+router.delete('/all', async (req, res) => {
+  try {
+    const result = await Game.deleteMany();
+    console.log(result);
+    res.send('all game documents deleted successfully');
+  } catch (error) {
+    console.log('Server Error', error);
+    res.status(500).send('Error while trying to delete ');
+  }
+});
 
 module.exports = router;
