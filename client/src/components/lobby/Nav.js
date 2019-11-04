@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
 
+import RefreshIcon from '@material-ui/icons/Refresh';
 import InfoIcon from '@material-ui/icons/Info';
 
 const NavWrapper = styled.nav`
@@ -31,22 +32,41 @@ const NavWrapper = styled.nav`
     top: 20px;
     right: 20px;
   }
+
+  .refreshIcon {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
 `;
 
 const Nav = ({ currentRoundData, toggleInfoDialog }) => {
   return (
     <NavWrapper>
+      {/* Toggle info dialog button */}
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="refresh page"
+        onClick={() => window.location.reload()}
+        className="refreshIcon"
+      >
+        <RefreshIcon />
+      </IconButton>
+
       <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
 
       <h2>
         Current Round: {currentRoundData ? currentRoundData.roundNumber : '...'}
       </h2>
 
-      {/* Add new player button */}
+      {/* Toggle info dialog button */}
       <IconButton
         edge="start"
         color="inherit"
-        aria-label="open drawer"
+        aria-label="see game info"
         onClick={() => toggleInfoDialog(true)}
         className="infoIcon"
       >
