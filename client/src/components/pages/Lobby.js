@@ -9,10 +9,10 @@ import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/Standings';
 import Rounds from '../lobby/Rounds';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
+import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
 import InfoTab from '../lobby/InfoTab';
 import Nav from '../lobby/Nav';
 import PageViewTab from '../lobby/PageViewTab';
-import ScoreSubmission from '../lobby/gamemaster/ScoreSubmission';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -69,9 +69,14 @@ const Lobby = ({
   if (players && rounds) {
     updatePlayerState();
     currentRoundData = rounds.find(r => r._id === game.currentRound);
-    currentRoundIsScored = currentRoundData.playerScores.find(
+    const playersCurrentRoundScoreData = currentRoundData.playerScores.find(
       p => p.player === playerId
     );
+    if (playersCurrentRoundScoreData) {
+      currentRoundIsScored = true;
+    } else if (playersCurrentRoundScoreData === undefined) {
+      currentRoundIsScored = false;
+    }
   }
 
   let pageViewComponent;
@@ -153,19 +158,17 @@ const Lobby = ({
 
       {pageViewComponent}
 
-      {currentRoundData && players && !game.expired && (
+      {currentRoundData && players && !game.expired && !isGamemaster && (
         <Dialog
-          open={
-            currentRoundData.finished && !currentRoundIsScored && !isGamemaster
-          }
+          open={currentRoundData.finished && !currentRoundIsScored}
           TransitionComponent={Transition}
           keepMounted
           aria-labelledby="Submit your score"
           aria-describedby="score submission for current round"
         >
-          <ScoreSubmission
+          <PlayerSubmitScore
             currentRoundIsScored={currentRoundIsScored}
-            currentRoundData={currentRoundData}
+            roundData={currentRoundData}
           />
         </Dialog>
       )}
