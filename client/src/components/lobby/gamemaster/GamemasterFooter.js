@@ -7,7 +7,7 @@ import {
   setWinner,
   newRound,
 } from '../../../redux/actions/currentRound';
-import ScoreSubmission from './ScoreSubmission';
+import GMSubmitScores from './GMSubmitScores';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -76,7 +76,8 @@ const GamemasterFooter = ({
   toggleNewPlayerPopup,
   toggleEndGamePopup,
 }) => {
-  const [winner, setWinnerState] = useState('');
+  const [roundWinner, setWinnerState] = useState('');
+  const [winnerIsChosen, toggleWinnerIsChosen] = useState(false);
   const classes = useStyles();
 
   const currentRound = rounds.find(r => r._id === currentRoundId);
@@ -106,13 +107,15 @@ const GamemasterFooter = ({
   };
 
   const submitWinner = () => {
-    actionData.winnerId = winner;
+    actionData.winnerId = roundWinner;
     setWinner(actionData);
-    console.log(`${winner} has won!`);
+    toggleWinnerIsChosen(true);
+    console.log(`${roundWinner} has won!`);
   };
 
   const initNextRound = () => {
     newRound(actionData);
+    toggleWinnerIsChosen(false);
   };
 
   const handleSelectChange = e => {
@@ -176,7 +179,7 @@ const GamemasterFooter = ({
                 <RadioGroup
                   aria-label="all players"
                   name="players"
-                  value={winner}
+                  value={roundWinner}
                   onChange={handleSelectChange}
                 >
                   {players.map(p => (
@@ -204,15 +207,16 @@ const GamemasterFooter = ({
 
           {/* ? 3.1. Let gamemaster submit their score here */}
           <Dialog
-            open={currentRound.winner && !allGmPlayersScoresSubmitted}
+            open={winnerIsChosen && !allGmPlayersScoresSubmitted}
             TransitionComponent={Transition}
             keepMounted
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
           >
-            <ScoreSubmission
+            <GMSubmitScores
               currentRoundIsScored={currentRoundIsScored}
               currentRoundData={currentRound}
+              allGmPlayersScoresSubmitted={allGmPlayersScoresSubmitted}
             />
           </Dialog>
 
@@ -276,7 +280,7 @@ GamemasterFooter.propTypes = {
   rounds: PropTypes.array.isRequired,
   players: PropTypes.array.isRequired,
   currentRoundId: PropTypes.string.isRequired,
-  currentRoundIsScored: PropTypes.object,
+  currentRoundIsScored: PropTypes.bool.isRequired,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
   setWinner: PropTypes.func.isRequired,

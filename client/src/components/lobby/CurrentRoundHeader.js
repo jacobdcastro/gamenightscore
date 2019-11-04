@@ -68,7 +68,7 @@ CurrentRoundHeader.propTypes = {
   roundData: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired,
   maxNumberOfRounds: PropTypes.number.isRequired,
-  currentRoundIsScored: PropTypes.object,
+  currentRoundIsScored: PropTypes.bool.isRequired,
 };
 
 export default CurrentRoundHeader;
