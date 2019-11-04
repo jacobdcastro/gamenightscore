@@ -102,6 +102,7 @@ const GamemasterFooter = ({
   };
 
   const runEndRoundAction = () => {
+    actionData.endTime = Date.now();
     endRound(actionData);
     console.log('Round Ended!');
   };
