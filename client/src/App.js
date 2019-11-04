@@ -11,11 +11,11 @@ import store from './redux/store';
 import { Provider } from 'react-redux';
 import setAuthToken from './utils/setAuthToken';
 
-if (localStorage.token) {
-  setAuthToken(localStorage.token);
-}
-
 const App = () => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
   return (
     <Provider store={store}>
       <BrowserRouter>
