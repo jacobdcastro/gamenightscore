@@ -52,7 +52,7 @@ const GMSubmitScores = ({
   };
 
   const handleScoreSubmit = () => {
-    if (gmIsScored) {
+    if (gmIsScored && gmCreatedPlayers.length > 0) {
       submitCreatedPlayerScore();
     } else {
       submitGmScore();
