@@ -37,7 +37,7 @@ const Rounds = ({ rounds, players }) => {
               winnerPlayerData = players.find(p => p._id === winner);
               winnerRoundData = playerScores.find(p => p.player === winner);
             }
-
+            console.log(startTime, ' : ', endTime);
             return (
               <TableRow key={index}>
                 <TableCell scope="row" align="left">
