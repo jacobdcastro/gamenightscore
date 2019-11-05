@@ -6,11 +6,17 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const Pusher = require('pusher');
+const Sentry = require('@sentry/node');
 const PORT = process.env.PORT;
 
 const app = express();
 
-// Configure pusher to connect
+// Connect Sentry
+Sentry.init({
+  dsn: 'https://6e65f2d201604f81982f7b44aac823f1@sentry.io/1807897',
+});
+
+// Configure Pusher
 const channel = 'games';
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
@@ -24,11 +30,11 @@ const pusher = new Pusher({
 connectDB();
 
 // Init Middleware
+app.use(Sentry.Handlers.requestHandler());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -39,18 +45,24 @@ app.use((req, res, next) => {
   next();
 });
 
-// Define routes
+// Define API route
 app.use('/api/games', require('./routes/api/games'));
-// app.use('/api/auth', require('./routes/api/auth'));
 
-// if (process.env.NODE_ENV === 'production') {
 // set static folder
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+// Sentry test route, throws error
+app.get('/debug-sentry', (req, res) => {
+  throw new Error('My first Sentry error!');
+});
+
+// Catch all routes to index.html react app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
-// }
+
+// Sentry Error Handler
+app.use(Sentry.Handlers.errorHandler());
 
 // Once mongo database is open, start listening at port
 // and connect the db collection to pusher to watch for changes
