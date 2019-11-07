@@ -69,6 +69,7 @@ const GamemasterFooter = ({
   players,
   currentRoundId,
   currentRoundIsScored,
+  gmData,
   startRound,
   endRound,
   setWinner,
@@ -76,9 +77,16 @@ const GamemasterFooter = ({
   toggleNewPlayerPopup,
   toggleEndGamePopup,
 }) => {
+  const classes = useStyles();
   const [roundWinner, setWinnerState] = useState('');
   const [winnerIsChosen, toggleWinnerIsChosen] = useState(false);
-  const classes = useStyles();
+
+  // array of players who gamemaster created
+  let playersToScore = [gmData]; // set gamemaster as first item
+  let gmCreatedPlayers = players.filter(p => p.gmCreated === true); // find all created players
+  playersToScore.push(...gmCreatedPlayers); // add created players to array that gamemaster will score
+  let [index, setIndex] = useState(0); // index of array when cycling through scores
+  let playerBeingScored = playersToScore[index];
 
   const currentRound = rounds.find(r => r._id === currentRoundId);
   const {
@@ -98,13 +106,13 @@ const GamemasterFooter = ({
   const runStartRoundAction = () => {
     actionData.startTime = Date.now();
     startRound(actionData);
-    console.log('Round Start!');
   };
 
   const runEndRoundAction = () => {
     actionData.endTime = Date.now();
     endRound(actionData);
     console.log('Round Ended!');
+    console.log('Round Start!');
   };
 
   const submitWinner = () => {
@@ -207,19 +215,29 @@ const GamemasterFooter = ({
           </Dialog>
 
           {/* ? 3.1. Let gamemaster submit their score here */}
-          <Dialog
-            open={winnerIsChosen && !allGmPlayersScoresSubmitted}
-            TransitionComponent={Transition}
-            keepMounted
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
-          >
-            <GMSubmitScores
-              currentRoundIsScored={currentRoundIsScored}
-              currentRoundData={currentRound}
-              allGmPlayersScoresSubmitted={allGmPlayersScoresSubmitted}
-            />
-          </Dialog>
+          {playersToScore.map(player => {
+            return (
+              <Dialog
+                key={player._id}
+                open={
+                  winnerIsChosen &&
+                  playerBeingScored._id === player._id &&
+                  !allGmPlayersScoresSubmitted
+                }
+                TransitionComponent={Transition}
+                keepMounted
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <GMSubmitScores
+                  index={index}
+                  setIndex={setIndex}
+                  playerBeingScored={player}
+                  playersToScoreLength={playersToScore.length}
+                />
+              </Dialog>
+            );
+          })}
 
           {/* 4. Wait for all players to submit scores */}
           {newRoundReady && !allScoresSubmitted && (
@@ -281,6 +299,7 @@ GamemasterFooter.propTypes = {
   rounds: PropTypes.array.isRequired,
   players: PropTypes.array.isRequired,
   currentRoundId: PropTypes.string.isRequired,
+  gmData: PropTypes.object.isRequired,
   currentRoundIsScored: PropTypes.bool.isRequired,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
@@ -294,6 +313,7 @@ const mapStateToProps = state => ({
   rounds: state.game.rounds,
   players: state.game.players,
   currentRoundId: state.game.currentRound,
+  gmData: state.player,
 });
 
 export default connect(

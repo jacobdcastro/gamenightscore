@@ -11,69 +11,32 @@ import {
 } from '@material-ui/core';
 
 const GMSubmitScores = ({
-  gmPlayerId,
-  players,
-  currentRoundIsScored,
-  currentRoundData,
-  allGmPlayersScoresSubmitted,
+  index,
+  setIndex,
+  playerBeingScored,
   submitPlayerScore,
+  playersToScoreLength,
 }) => {
   const [roundScore, setRoundScore] = useState(0);
-  const [playerBeingScored, setPlayerBeingScored] = useState();
-  const [gmIsScored, setGmIsScored] = useState(false);
-  let [index, setIndex] = useState(0);
+  const playerId = playerBeingScored._id;
 
-  let gmCreatedPlayers = players.filter(p => p.gmCreated === true);
-
-  // object is added to/manipulated in handle_()'s
+  // object is added to/manipulated in submitScore()'s
   let actionData = {
     gameId: localStorage.gameId,
   };
 
-  // TODO fix dumb score lifecycle breaking
-
-  const submitGmScore = () => {
-    actionData.playerId = gmPlayerId;
-    actionData.roundScore = roundScore;
-    submitPlayerScore(actionData);
-    setGmIsScored(true);
-    setPlayerBeingScored(gmCreatedPlayers[index]._id);
-  };
-
-  const submitCreatedPlayerScore = () => {
-    actionData.playerId = playerBeingScored;
-    actionData.roundScore = roundScore;
-    submitPlayerScore(actionData);
-
-    if (index + 1 < gmCreatedPlayers.length) {
-      setIndex((index += 1));
-      setPlayerBeingScored(gmCreatedPlayers[index]._id);
-    }
-  };
-
   const handleScoreSubmit = () => {
-    if (gmIsScored && gmCreatedPlayers.length > 0) {
-      submitCreatedPlayerScore();
-    } else {
-      submitGmScore();
-    }
-
+    actionData.playerId = playerId;
+    actionData.roundScore = roundScore;
+    submitPlayerScore(actionData);
+    if (index + 1 === playersToScoreLength) setIndex(0);
+    else setIndex(index + 1);
     setRoundScore(0);
-
-    // reset state
-    if (allGmPlayersScoresSubmitted) {
-      setGmIsScored(false);
-      setIndex(0);
-    }
   };
 
   return (
     <Fragment>
-      <DialogTitle>
-        {gmIsScored && index < gmCreatedPlayers.length
-          ? `Enter round ${currentRoundData.roundNumber} score for ${gmCreatedPlayers[index].name}.`
-          : `Enter your score for round ${currentRoundData.roundNumber}`}
-      </DialogTitle>
+      <DialogTitle>Enter your score</DialogTitle>
 
       <DialogContent>
         <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
@@ -94,20 +57,13 @@ const GMSubmitScores = ({
 };
 
 GMSubmitScores.propTypes = {
-  gmPlayerId: PropTypes.string.isRequired,
-  players: PropTypes.array.isRequired,
-  currentRoundIsScored: PropTypes.bool.isRequired,
-  allGmPlayersScoresSubmitted: PropTypes.bool.isRequired,
-  currentRoundData: PropTypes.object,
+  index: PropTypes.number.isRequired,
+  setIndex: PropTypes.func.isRequired,
+  playerBeingScored: PropTypes.object.isRequired,
   submitPlayerScore: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  players: state.game.players,
-  gmPlayerId: state.player._id,
-});
-
 export default connect(
-  mapStateToProps,
+  null,
   { submitPlayerScore }
 )(GMSubmitScores);
