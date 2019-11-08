@@ -4,7 +4,6 @@ import {
   CREATE_PLAYER_FAIL,
   SET_INIT_PLAYER_STATE,
   SET_INIT_PLAYER_STATE_FAIL,
-  GET_PLAYER_DATA_SUCCESS,
 } from '../types';
 
 const config = {
@@ -65,16 +64,5 @@ export const createPlayer = formData => async dispatch => {
         error,
       },
     });
-  }
-};
-
-export const getPlayerData = playerData => async dispatch => {
-  try {
-    await dispatch({
-      type: GET_PLAYER_DATA_SUCCESS,
-      payload: playerData,
-    });
-  } catch (error) {
-    console.log(error);
   }
 };

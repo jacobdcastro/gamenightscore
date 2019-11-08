@@ -7,6 +7,8 @@ import {
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
   GET_GAME_DATA,
+  GET_GAME_DATA_FAIL,
+  GET_PLAYER_DATA,
   SUBMIT_PLAYER_SCORE,
   SUBMIT_PLAYER_SCORE_FAIL,
   END_GAME_SUCCESS,
@@ -30,7 +32,6 @@ export const createGame = formData => async dispatch => {
   });
 
   try {
-    // res expects game data
     const res = await axios.post(`/api/games/new`, body, config);
 
     dispatch({
@@ -78,12 +79,24 @@ export const getGameData = gameId => async dispatch => {
   try {
     const res = await axios.get(`/api/games/${gameId}`);
 
-    dispatch({
+    await dispatch({
       type: GET_GAME_DATA,
       payload: res.data,
     });
+
+    const playerData = await res.data.players.find(
+      p => p._id === localStorage.playerId
+    );
+
+    dispatch({
+      type: GET_PLAYER_DATA,
+      payload: playerData,
+    });
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: GET_GAME_DATA_FAIL,
+      payload: error,
+    });
   }
 };
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getGameData } from '../../redux/actions/game';
-import { getPlayerData } from '../../redux/actions/player';
 import Pusher from 'pusher-js';
 
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
@@ -26,13 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Lobby = ({
-  isGamemaster,
-  game,
-  playerId,
-  getGameData,
-  getPlayerData,
-}) => {
+const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
   const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
   const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
@@ -57,17 +50,9 @@ const Lobby = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updatePlayerState = () => {
-    if (!game.expired) {
-      const playerData = players.find(p => p._id === localStorage.playerId);
-      getPlayerData(playerData);
-    }
-  };
-
   let currentRoundData;
   let currentRoundIsScored;
   if (players && rounds) {
-    updatePlayerState();
     currentRoundData = rounds.find(r => r._id === game.currentRound);
     const playersCurrentRoundScoreData = currentRoundData.playerScores.find(
       p => p.player === playerId
@@ -189,7 +174,6 @@ Lobby.propTypes = {
   game: PropTypes.object,
   isGamemaster: PropTypes.bool,
   getGameData: PropTypes.func.isRequired,
-  getPlayerData: PropTypes.func.isRequired,
   playerId: PropTypes.string,
 };
 
@@ -202,5 +186,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getGameData, getPlayerData }
+  { getGameData }
 )(Lobby);
