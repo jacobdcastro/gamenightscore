@@ -50,7 +50,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...payload,
-        isCreated: false,
         loading: false,
       };
     default:

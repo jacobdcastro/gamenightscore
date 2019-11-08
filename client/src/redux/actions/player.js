@@ -60,9 +60,7 @@ export const createPlayer = formData => async dispatch => {
   } catch (error) {
     dispatch({
       type: CREATE_PLAYER_FAIL,
-      payload: {
-        error,
-      },
+      payload: error,
     });
   }
 };

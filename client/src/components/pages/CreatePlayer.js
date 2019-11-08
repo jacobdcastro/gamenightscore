@@ -29,7 +29,7 @@ const CreatePlayer = ({
 
   useEffect(() => {
     if (localStorage.gameId && localStorage.token) {
-      getGameData(localStorage.gameId);
+      return <Redirect to="/lobby" />;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
