@@ -173,7 +173,7 @@ const Lobby = ({
         </Dialog>
       )}
 
-      {rounds && players && isGamemaster && !game.expired && (
+      {isGamemaster && !game.expired && (
         <GMFooter
           currentRoundIsScored={currentRoundIsScored}
           toggleNewPlayerPopup={toggleNewPlayerPopup}

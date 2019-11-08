@@ -84,6 +84,14 @@ const GamemasterFooter = ({
   // array of players who gamemaster created
   let playersToScore = [gmData]; // set gamemaster as first item
   let gmCreatedPlayers = players.filter(p => p.gmCreated === true); // find all created players
+  gmCreatedPlayers.sort((a, b) => {
+    // sort players based on ID to prevent reordering
+    const idA = a._id.toUpperCase();
+    const idB = b._id.toUpperCase();
+    if (idA < idB) return -1;
+    if (idA > idB) return 1;
+    return 0;
+  });
   playersToScore.push(...gmCreatedPlayers); // add created players to array that gamemaster will score
   let [index, setIndex] = useState(0); // index of array when cycling through scores
   let playerBeingScored = playersToScore[index];
@@ -300,13 +308,13 @@ GamemasterFooter.propTypes = {
   players: PropTypes.array.isRequired,
   currentRoundId: PropTypes.string.isRequired,
   gmData: PropTypes.object.isRequired,
-  currentRoundIsScored: PropTypes.bool.isRequired,
+  currentRoundIsScored: PropTypes.bool,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
   setWinner: PropTypes.func.isRequired,
   newRound: PropTypes.func.isRequired,
-  toggleNewPlayerPopup: PropTypes.func.isRequired,
-  toggleEndGamePopup: PropTypes.func.isRequired,
+  toggleNewPlayerPopup: PropTypes.func,
+  toggleEndGamePopup: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

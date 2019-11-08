@@ -25,6 +25,8 @@ const GMSubmitScores = ({
     gameId: localStorage.gameId,
   };
 
+  console.log(playerBeingScored);
+
   const handleScoreSubmit = () => {
     actionData.playerId = playerId;
     actionData.roundScore = roundScore;
@@ -36,8 +38,11 @@ const GMSubmitScores = ({
 
   return (
     <Fragment>
-      <DialogTitle>Enter your score</DialogTitle>
-
+      <DialogTitle>
+        {playerBeingScored.isGamemaster
+          ? 'Enter your score'
+          : `Enter score for ${playerBeingScored.name}`}
+      </DialogTitle>
       <DialogContent>
         <ScoreForm roundScore={roundScore} setRoundScore={setRoundScore} />
       </DialogContent>
