@@ -216,7 +216,7 @@ router.post('/:game_id/newPlayer', async (req, res) => {
     await game.players.push(playerData);
     await game.save();
 
-    let newPlayer = game.players.find(p => p.name === name);
+    let newPlayer = await game.players.find(p => p.name === name);
 
     res.json(newPlayer);
   } catch (error) {
@@ -423,7 +423,7 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 // @route   PUT api/games/:game_id/endGame
 // @desc    End a game
 // access   Private
-router.put(':game_id/endGame', auth, async (req, res) => {
+router.put('/:game_id/endGame', auth, async (req, res) => {
   const game = await Game.findById(req.params.game_id);
   let round = game.rounds.id(game.currentRound);
 
