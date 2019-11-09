@@ -55,7 +55,7 @@ const PlayerSubmitScore = ({
 
 PlayerSubmitScore.propTypes = {
   roundData: PropTypes.object,
-  playerId: PropTypes.string.isRequired,
+  playerId: PropTypes.string,
   gameId: PropTypes.string.isRequired,
   submitPlayerScore: PropTypes.func.isRequired,
 };
