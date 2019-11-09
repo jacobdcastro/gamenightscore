@@ -5,8 +5,8 @@ import { getGameData } from '../../redux/actions/game';
 import Pusher from 'pusher-js';
 
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
-import Standings from '../lobby/Standings';
-import Rounds from '../lobby/Rounds';
+import Standings from '../lobby/pageviews/Standings';
+import Rounds from '../lobby/pageviews/Rounds';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
 import InfoTab from '../lobby/InfoTab';
