@@ -70,6 +70,7 @@ const GamemasterFooter = ({
   currentRoundId,
   currentRoundIsScored,
   gmData,
+  maxNumberOfRounds,
   startRound,
   endRound,
   setWinner,
@@ -262,16 +263,30 @@ const GamemasterFooter = ({
           )}
 
           {/* 5. Create/Go to next round */}
-          {newRoundReady && allScoresSubmitted && (
+          {newRoundReady &&
+            allScoresSubmitted &&
+            roundNumber < maxNumberOfRounds && (
+              <Fab
+                size="large"
+                color="primary"
+                aria-label="next round"
+                variant="extended"
+                className={classes.fabButton}
+                onClick={() => initNextRound()}
+              >
+                Go To Next Round <ArrowForwardIosIcon />
+              </Fab>
+            )}
+          {allScoresSubmitted && roundNumber === maxNumberOfRounds && (
             <Fab
               size="large"
               color="primary"
               aria-label="next round"
               variant="extended"
               className={classes.fabButton}
-              onClick={() => initNextRound()}
+              onClick={() => toggleEndGamePopup(true)}
             >
-              Go To Next Round <ArrowForwardIosIcon />
+              End Game!
             </Fab>
           )}
 
@@ -308,6 +323,7 @@ GamemasterFooter.propTypes = {
   players: PropTypes.array.isRequired,
   currentRoundId: PropTypes.string.isRequired,
   gmData: PropTypes.object.isRequired,
+  maxNumberOfRounds: PropTypes.number.isRequired,
   currentRoundIsScored: PropTypes.bool,
   startRound: PropTypes.func.isRequired,
   endRound: PropTypes.func.isRequired,
@@ -322,6 +338,7 @@ const mapStateToProps = state => ({
   players: state.game.players,
   currentRoundId: state.game.currentRound,
   gmData: state.player,
+  maxNumberOfRounds: state.game.maxNumberOfRounds,
 });
 
 export default connect(
