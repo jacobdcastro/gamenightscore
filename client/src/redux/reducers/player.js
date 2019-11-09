@@ -4,6 +4,8 @@ import {
   SET_INIT_PLAYER_STATE,
   SET_INIT_PLAYER_STATE_FAIL,
   GET_PLAYER_DATA,
+  GM_CREATE_PLAYER_SUCCESS,
+  GM_CREATE_PLAYER_FAIL,
 } from '../types';
 
 const initialState = {
@@ -36,6 +38,11 @@ export default function(state = initialState, action) {
         loading: false,
         isAuthenticated: true,
       };
+    case GM_CREATE_PLAYER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
     case GET_PLAYER_DATA:
       return {
         ...state,
@@ -46,6 +53,7 @@ export default function(state = initialState, action) {
         isAuthenticated: true,
       };
     case SET_INIT_PLAYER_STATE_FAIL:
+    case GM_CREATE_PLAYER_FAIL:
     case CREATE_PLAYER_FAIL:
       return {
         ...state,

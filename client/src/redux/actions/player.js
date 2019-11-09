@@ -4,6 +4,8 @@ import {
   CREATE_PLAYER_FAIL,
   SET_INIT_PLAYER_STATE,
   SET_INIT_PLAYER_STATE_FAIL,
+  GM_CREATE_PLAYER_SUCCESS,
+  GM_CREATE_PLAYER_FAIL,
 } from '../types';
 
 const config = {
@@ -52,15 +54,30 @@ export const createPlayer = formData => async dispatch => {
       body,
       config
     );
+    console.log(res);
 
-    dispatch({
-      type: CREATE_PLAYER_SUCCESS,
-      payload: res.data,
-    });
+    if (gmCreated) {
+      dispatch({
+        type: GM_CREATE_PLAYER_SUCCESS,
+        payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: CREATE_PLAYER_SUCCESS,
+        payload: res.data,
+      });
+    }
   } catch (error) {
-    dispatch({
-      type: CREATE_PLAYER_FAIL,
-      payload: error,
-    });
+    if (gmCreated) {
+      dispatch({
+        type: GM_CREATE_PLAYER_FAIL,
+        payload: error,
+      });
+    } else {
+      dispatch({
+        type: CREATE_PLAYER_FAIL,
+        payload: error,
+      });
+    }
   }
 };
