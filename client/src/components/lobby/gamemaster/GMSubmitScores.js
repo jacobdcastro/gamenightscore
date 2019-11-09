@@ -25,8 +25,6 @@ const GMSubmitScores = ({
     gameId: localStorage.gameId,
   };
 
-  console.log(playerBeingScored);
-
   const handleScoreSubmit = () => {
     actionData.playerId = playerId;
     actionData.roundScore = roundScore;

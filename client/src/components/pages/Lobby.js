@@ -47,6 +47,10 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
     channel.bind('inserted', () => getGameData(localStorage.gameId));
     channel.bind('deleted', () => getGameData(localStorage.gameId));
     channel.bind('updated', () => getGameData(localStorage.gameId));
+
+    return () => {
+      pusher.unsubscribe('games');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

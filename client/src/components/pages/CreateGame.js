@@ -31,7 +31,6 @@ const CreateGame = ({
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
   const onChange = e => {
-    console.log(e.target.name);
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
 

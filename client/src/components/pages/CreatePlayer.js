@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createPlayer } from '../../redux/actions/player';
@@ -26,14 +26,6 @@ const CreatePlayer = ({
     gmCreated: false,
     deck: '',
   });
-
-  useEffect(() => {
-    if (localStorage.gameId && localStorage.token) {
-      return <Redirect to="/lobby" />;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const { name } = formData;
 
   const onChange = e => {
@@ -42,11 +34,12 @@ const CreatePlayer = ({
 
   const onSubmit = e => {
     e.preventDefault();
+    console.log('onSubmit() run');
     createPlayer(formData);
   };
 
   if (isAuthenticated && isCreated) {
-    getGameData(gameId);
+    getGameData(localStorage.gameId);
     return <Redirect to="/lobby" />;
   }
 
