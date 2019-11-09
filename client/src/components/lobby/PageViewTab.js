@@ -16,6 +16,7 @@ const PageViewTabs = ({ pageView, setPageView }) => {
 
   const handleChange = (event, newValue) => {
     setPageView(newValue);
+    console.log('changed to ' + newValue);
   };
 
   return (
@@ -29,6 +30,7 @@ const PageViewTabs = ({ pageView, setPageView }) => {
       >
         <Tab label="Standings" />
         <Tab label="Rounds" />
+        <Tab label="Chart" />
       </Tabs>
     </Paper>
   );

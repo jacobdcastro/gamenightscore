@@ -7,6 +7,7 @@ import Pusher from 'pusher-js';
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
 import Standings from '../lobby/pageviews/Standings';
 import Rounds from '../lobby/pageviews/Rounds';
+import Chart from '../lobby/pageviews/Chart';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
 import InfoTab from '../lobby/InfoTab';
@@ -26,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
-  const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds
+  const [pageView, setPageView] = useState(2); // 0 = standings, 1 = rounds, 2 = chart
   const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
   const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
   const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
@@ -71,8 +72,9 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
   let pageViewComponent;
   // wait for rounds/players to load before rendering page view component
   if (players && rounds) {
-    if (pageView) pageViewComponent = <Rounds />;
-    else pageViewComponent = <Standings />;
+    if (pageView === 0) pageViewComponent = <Standings />;
+    else if (pageView === 1) pageViewComponent = <Rounds />;
+    else if (pageView === 2) pageViewComponent = <Chart />;
   } else {
     pageViewComponent = (
       <div style={{ margin: '60px' }}>
