@@ -1,31 +1,31 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator');
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const auth = require("../../middleware/auth");
+const { check, validationResult } = require("express-validator");
 // const _ = require('lodash');
 
-const Game = require('../../models/Game');
+const Game = require("../../models/Game");
 
 // TODO 1. add checks to see if game is expired. Deny write access if it is
 
 // @route   POST api/games/auth/sign
 // @desc    Sign JWT for init player state
 // access   Public
-router.post('/auth/sign', async (req, res) => {
+router.post("/auth/sign", async (req, res) => {
   const { gameId, isGamemaster } = req.body;
 
   try {
     const payload = {
       gameId: gameId,
-      isGamemaster: isGamemaster,
+      isGamemaster: isGamemaster
     };
 
     // once new game is created, return jwt to game creator so they can properly create player in private route
     jwt.sign(
       payload,
-      config.get('jwtsecret'),
+      config.get("jwtsecret"),
       { expiresIn: 60 * 60 },
       (err, token) => {
         if (err) throw err;
@@ -33,24 +33,24 @@ router.post('/auth/sign', async (req, res) => {
       }
     );
   } catch (error) {
-    console.log('Server error');
-    res.status(500).send('Error with the server. Big oops.');
+    console.log("Server error");
+    res.status(500).send("Error with the server. Big oops.");
   }
 });
 
 // @route   POST api/games/auth/pusher
 // @desc    Authenticate connected to pusher presence channel
 // access   Public
-router.post('/auth/pusher', async (req, res) => {
+router.post("/auth/pusher", async (req, res) => {
   const { socket_id, channel_name } = req.body;
 
   try {
     const presenceData = {
-      user_id: 'unique_user_id',
+      user_id: "unique_user_id",
       user_info: {
-        name: 'Mr Channels',
-        twitter_id: '@pusher',
-      },
+        name: "Mr Channels",
+        twitter_id: "@pusher"
+      }
     };
     const auth = await pusher.authenticate(
       socket_id,
@@ -59,8 +59,8 @@ router.post('/auth/pusher', async (req, res) => {
     );
     res.send(auth);
   } catch (error) {
-    console.log('Server error');
-    res.status(500).send('Error with the server. Big oops.');
+    console.log("Server error");
+    res.status(500).send("Error with the server. Big oops.");
   }
 });
 
@@ -68,19 +68,19 @@ router.post('/auth/pusher', async (req, res) => {
 // @desc    Create new game
 // access   Public
 router.post(
-  '/new',
+  "/new",
   [
-    check('title', 'Title is required')
+    check("title", "Title is required")
       .not()
       .isEmpty(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
+      "password",
+      "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
     check(
-      'maxNumberOfRounds',
-      'Please choose at least one round and at most 50'
-    ).isLength({ min: 1, max: 50 }),
+      "maxNumberOfRounds",
+      "Please choose at least one round and at most 50"
+    ).isLength({ min: 1, max: 50 })
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -102,7 +102,7 @@ router.post(
         hideScores,
         startTime: null,
         endTime: null,
-        expired: false,
+        expired: false
       });
 
       // create empty first round skeleton
@@ -116,15 +116,15 @@ router.post(
         finished: false,
         allGmPlayersScoresSubmitted: false,
         allScoresSubmitted: false,
-        newRoundReady: false,
+        newRoundReady: false
       };
       await game.rounds.push(firstRound); // add new round to [Rounds] to create id
       game.currentRound = game.rounds[0]._id; // grab first round id and set as currentRound
       await game.save(); // save it all
       res.json(game);
     } catch (error) {
-      console.log('Server error');
-      res.status(500).send('Error with the server. Big oops.');
+      console.log("Server error");
+      res.status(500).send("Error with the server. Big oops.");
     }
   }
 );
@@ -133,15 +133,15 @@ router.post(
 // @desc    Join a game
 // access   Public
 router.post(
-  '/join',
+  "/join",
   [
-    check('title', 'Title is required')
+    check("title", "Title is required")
       .not()
       .isEmpty(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 }),
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 })
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -156,22 +156,22 @@ router.post(
       const game = await Game.findOne({ title: title, password: password });
 
       if (!gameByTitle && !gameByPassword) {
-        return res.status(404).send('Both title and password are incorrect');
+        return res.status(404).send("Both title and password are incorrect");
       } else if (!gameByTitle && gameByPassword) {
-        return res.status(404).send('Title is incorrect');
+        return res.status(404).send("Title is incorrect");
       } else if (gameByTitle && !gameByPassword) {
-        return res.status(401).send('Password is incorrect');
+        return res.status(401).send("Password is incorrect");
       } else if (gameByTitle && gameByPassword && game.players.length === 8) {
-        return res.status(401).send('Game is full!');
+        return res.status(401).send("Game is full!");
       } else if (game) {
         res.json(game);
       } else {
-        console.log('Something went wrong...');
-        res.status(500).send('Error with the server. Big oops.');
+        console.log("Something went wrong...");
+        res.status(500).send("Error with the server. Big oops.");
       }
     } catch (error) {
-      console.log('Server error');
-      res.status(500).send('Error with the server. Big oops.');
+      console.log("Server error");
+      res.status(500).send("Error with the server. Big oops.");
     }
   }
 );
@@ -179,25 +179,25 @@ router.post(
 // @route   POST api/games/:game_id/newPlayer
 // @desc    Create new player in a game
 // access   Private
-router.post('/:game_id/newPlayer', async (req, res) => {
+router.post("/:game_id/newPlayer", async (req, res) => {
   let { isGamemaster, name, gmCreated, deck } = req.body;
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
 
   // if game is expired, deny acces
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   // check if game is full
   if (game.players.length === 8)
     return res
       .status(405)
-      .json({ errors: [{ msg: 'Already 8 players in this game' }] });
+      .json({ errors: [{ msg: "Already 8 players in this game" }] });
 
   // make sure username is unique
   const playerWithSameName = game.players.find(p => p.name === name);
   if (playerWithSameName) {
-    return res.status(400).json({ errors: [{ msg: 'Name taken' }] });
+    return res.status(400).json({ errors: [{ msg: "Name taken" }] });
   }
 
   const playerData = {
@@ -207,7 +207,7 @@ router.post('/:game_id/newPlayer', async (req, res) => {
     connected: true,
     gmCreated,
     deck,
-    roundsPlayed: [],
+    roundsPlayed: []
   };
 
   try {
@@ -220,26 +220,26 @@ router.post('/:game_id/newPlayer', async (req, res) => {
 
     res.json(newPlayer);
   } catch (error) {
-    console.log('Server error');
-    res.status(500).send('Error with the server. Big oops.');
+    console.log("Server error");
+    res.status(500).send("Error with the server. Big oops.");
   }
 });
 
 // @route   GET api/games/:game_id/newRound
 // @desc    Add new round to game ("go to next round")
 // access   Private
-router.get('/:game_id/newRound', auth, async (req, res) => {
+router.get("/:game_id/newRound", auth, async (req, res) => {
   const gameId = req.params.game_id;
   const game = await Game.findById(gameId);
   let round = game.rounds.id(game.currentRound);
 
   // if game is expired, deny acces
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   // check for any players who haven't submitted scores
   if (round.playerScores.length !== game.players.length)
-    res.status(406).send('Not all players have submitted their scores');
+    res.status(406).send("Not all players have submitted their scores");
 
   const roundData = {
     roundNumber: round.roundNumber + 1,
@@ -251,7 +251,7 @@ router.get('/:game_id/newRound', auth, async (req, res) => {
     finished: false,
     allGmPlayersScoresSubmitted: false,
     allScoresSubmitted: false,
-    newRoundReady: false,
+    newRoundReady: false
   };
 
   try {
@@ -262,22 +262,22 @@ router.get('/:game_id/newRound', auth, async (req, res) => {
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   PUT api/games/:game_id/startRound
 // @desc    Start new round
 // access   Private
-router.put('/:game_id/startRound', auth, async (req, res) => {
+router.put("/:game_id/startRound", auth, async (req, res) => {
   const gameId = req.params.game_id;
   const { startTime } = req.body;
   const game = await Game.findById(gameId);
 
   // if game is expired, deny acces
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   try {
     const currentRound = game.rounds.id(game.currentRound);
@@ -289,22 +289,22 @@ router.put('/:game_id/startRound', auth, async (req, res) => {
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   PUT api/games/:game_id/endRound
 // @desc    End current round
 // access   Private
-router.put('/:game_id/endRound', auth, async (req, res) => {
+router.put("/:game_id/endRound", auth, async (req, res) => {
   const gameId = req.params.game_id;
   const { endTime } = req.body;
   const game = await Game.findById(gameId);
 
   // if game is expired, deny access
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   try {
     const currentRound = game.rounds.id(game.currentRound);
@@ -316,22 +316,22 @@ router.put('/:game_id/endRound', auth, async (req, res) => {
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   PUT api/games/:game_id/setRoundWinner
 // @desc    Set winner in round data
 // access   Private
-router.put('/:game_id/setRoundWinner', auth, async (req, res) => {
+router.put("/:game_id/setRoundWinner", auth, async (req, res) => {
   const gameId = req.params.game_id;
   const { winnerId } = req.body;
   const game = await Game.findById(gameId);
 
   // if game is expired, deny access
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   try {
     const currentRound = game.rounds.id(game.currentRound);
@@ -342,15 +342,15 @@ router.put('/:game_id/setRoundWinner', auth, async (req, res) => {
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   PUT api/games/:game_id/players/:player_id/postScore
 // @desc    Update current player's score
 // access   Private
-router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
+router.put("/:game_id/players/:player_id/postScore", auth, async (req, res) => {
   const { roundScore } = req.body;
   const gameId = req.params.game_id;
   const playerId = req.params.player_id;
@@ -358,10 +358,10 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
 
   // if game is expired, deny acces
   if (game.expired)
-    return res.status(405).json({ errors: [{ msg: 'Game is expired' }] });
+    return res.status(405).json({ errors: [{ msg: "Game is expired" }] });
 
   if (!playerId)
-    return res.status(401).json({ errors: [{ msg: 'phantom request...' }] });
+    return res.status(401).json({ errors: [{ msg: "phantom request..." }] });
 
   try {
     const { currentRound } = game;
@@ -378,6 +378,7 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
       round: currentRound,
       roundNumber: round.roundNumber,
       roundScore,
+      totalScoreToRound: player.totalScore
     });
 
     // 4. update playerScores in Round document
@@ -415,31 +416,31 @@ router.put('/:game_id/players/:player_id/postScore', auth, async (req, res) => {
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   PUT api/games/:game_id/endGame
 // @desc    End a game
 // access   Private
-router.put('/:game_id/endGame', auth, async (req, res) => {
+router.put("/:game_id/endGame", auth, async (req, res) => {
   const game = await Game.findById(req.params.game_id);
   let round = game.rounds.id(game.currentRound);
 
   // check for any players who haven't submitted scores
   if (round.playerScores.length !== game.players.length)
-    res.status(406).send('Not all players have submitted their scores');
+    res.status(406).send("Not all players have submitted their scores");
 
-  console.log('end game!!!');
+  console.log("end game!!!");
   try {
     game.endTime = Date.now();
     game.expired = true;
     await game.save();
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
@@ -451,40 +452,40 @@ router.put('/:game_id/endGame', auth, async (req, res) => {
 // @route   GET api/games
 // @desc    Search all games
 // access   Public
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allGames = await Game.find();
     res.json(allGames);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   GET api/games/:game_id
 // @desc    Get single game data
 // access   Public
-router.get('/:game_id', async (req, res) => {
+router.get("/:game_id", async (req, res) => {
   try {
     const game = await Game.findById(req.params.game_id);
     res.json(game);
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error with server. Big oops.');
+    console.log("Server Error", error);
+    res.status(500).send("Error with server. Big oops.");
   }
 });
 
 // @route   DELETE api/games/all
 // @desc    Delete all games
 // access   Public
-router.delete('/all', async (req, res) => {
+router.delete("/all", async (req, res) => {
   try {
     const result = await Game.deleteMany();
     console.log(result);
-    res.send('all game documents deleted successfully');
+    res.send("all game documents deleted successfully");
   } catch (error) {
-    console.log('Server Error', error);
-    res.status(500).send('Error while trying to delete ');
+    console.log("Server Error", error);
+    res.status(500).send("Error while trying to delete ");
   }
 });
 

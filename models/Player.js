@@ -1,44 +1,48 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const PlayerSchema = new mongoose.Schema({
   isGamemaster: {
     type: Boolean,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   totalScore: {
     type: Number,
-    required: true,
+    required: true
   },
   connected: {
-    type: Boolean,
+    type: Boolean
   },
   gmCreated: {
     type: Boolean,
-    required: true,
+    required: true
   },
   deck: {
-    type: String,
+    type: String
   },
   roundsPlayed: [
     {
       round: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Round',
+        ref: "Round"
       },
       roundNumber: {
         type: Number,
-        required: true,
+        required: true
       },
       roundScore: {
         type: Number,
-        required: true,
+        required: true
       },
-    },
-  ],
+      totalScoreToRound: {
+        type: Number,
+        required: true
+      }
+    }
+  ]
 });
 
 module.exports = PlayerSchema;
