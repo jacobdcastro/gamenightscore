@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
-  const [pageView, setPageView] = useState(2); // 0 = standings, 1 = rounds, 2 = chart
+  const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds, 2 = chart
   const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
   const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
   const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
