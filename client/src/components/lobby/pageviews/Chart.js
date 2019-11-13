@@ -9,10 +9,8 @@ import {
   LineSeries
 } from "react-vis";
 import "react-vis/dist/style.css";
-import { flexbox } from "@material-ui/system";
 
-// TODO umm just finish this
-//  https://uber.github.io/react-vis/documentation/series-reference/line-series
+// TODO fix height issue on mobile
 
 const lineColors = [
   "red",
