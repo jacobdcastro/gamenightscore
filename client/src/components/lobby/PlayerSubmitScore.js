@@ -1,14 +1,14 @@
-import React, { useState, Fragment } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { submitPlayerScore } from "../../redux/actions/game";
-import ScoreForm from "./ScoreForm";
+import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { submitPlayerScore } from '../../redux/actions/game';
+import ScoreForm from './ScoreForm';
 import {
   DialogContent,
   DialogTitle,
   DialogActions,
-  Button
-} from "@material-ui/core";
+  Button,
+} from '@material-ui/core';
 
 // TODO fix broken player submit form
 
@@ -16,7 +16,7 @@ const PlayerSubmitScore = ({
   roundData,
   playerId,
   gameId,
-  submitPlayerScore
+  submitPlayerScore,
 }) => {
   const [roundScore, setRoundScore] = useState(0);
   const { roundNumber } = roundData;
@@ -41,11 +41,11 @@ const PlayerSubmitScore = ({
 
       <DialogActions>
         <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          className="submitScoreBtn"
-          type="submit"
+          variant='contained'
+          size='large'
+          color='primary'
+          className='submitScoreBtn'
+          type='submit'
           onClick={e => handleSubmit(e)}
         >
           Submit Score
@@ -59,12 +59,12 @@ PlayerSubmitScore.propTypes = {
   roundData: PropTypes.object,
   playerId: PropTypes.string,
   gameId: PropTypes.string.isRequired,
-  submitPlayerScore: PropTypes.func.isRequired
+  submitPlayerScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   playerId: state.player._id,
-  gameId: state.game._id
+  gameId: state.game._id,
 });
 
 export default connect(mapStateToProps, { submitPlayerScore })(
