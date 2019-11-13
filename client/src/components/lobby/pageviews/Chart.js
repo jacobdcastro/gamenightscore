@@ -28,7 +28,6 @@ const Chart = ({ players, currentRound }) => {
     width: window.innerWidth,
     height: window.innerHeight
   });
-  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -38,10 +37,13 @@ const Chart = ({ players, currentRound }) => {
     });
   }, [players]);
 
+  const { width, height } = windowSizes;
+  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
+
   return (
     <Paper style={{ textAlign: "center" }}>
       <h1>Stats</h1>
-      <XYPlot width={windowSizes.width - 80} height={windowSizes.height - 560}>
+      <XYPlot width={width - 80} height={height - 560}>
         <HorizontalGridLines />
         {players.map((p, index) => {
           let data = [{ x: 0, y: 0 }]; // set 'round 0'
