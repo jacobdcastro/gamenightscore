@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getGameData } from '../../redux/actions/game';
-import Pusher from 'pusher-js';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getGameData } from "../../redux/actions/game";
+import Pusher from "pusher-js";
 
-import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
-import Standings from '../lobby/pageviews/Standings';
-import Rounds from '../lobby/pageviews/Rounds';
-import Chart from '../lobby/pageviews/Chart';
-import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
-import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
-import InfoTab from '../lobby/InfoTab';
-import Nav from '../lobby/Nav';
-import PageViewTab from '../lobby/PageViewTab';
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LobbyWrapper from "../../styles/lobby/Lobby.sty.js";
+import Standings from "../lobby/pageviews/Standings";
+import Rounds from "../lobby/pageviews/Rounds";
+import Chart from "../lobby/pageviews/Chart";
+import CurrentRoundHeader from "../lobby/CurrentRoundHeader";
+import PlayerSubmitScore from "../lobby/PlayerSubmitScore";
+import InfoTab from "../lobby/InfoTab";
+import Nav from "../lobby/Nav";
+import PageViewTab from "../lobby/PageViewTab";
+import Dialog from "@material-ui/core/Dialog";
+import Slide from "@material-ui/core/Slide";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // gamemaster specific components
-import GMFooter from '../lobby/gamemaster/GamemasterFooter';
-import NewPlayerPopup from '../lobby/gamemaster/NewPlayerPopup';
-import EndGamePopup from '../lobby/gamemaster/EndGamePopup';
+import GMFooter from "../lobby/gamemaster/GamemasterFooter";
+import NewPlayerPopup from "../lobby/gamemaster/NewPlayerPopup";
+import EndGamePopup from "../lobby/gamemaster/EndGamePopup";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -39,18 +39,18 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
     // create connection to Pusher
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
       cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
-      encrypted: false,
+      encrypted: false
       // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
     });
 
     // subscribe client to pusher channel, bind to events
-    const channel = pusher.subscribe('games');
-    channel.bind('inserted', () => getGameData(localStorage.gameId));
-    channel.bind('deleted', () => getGameData(localStorage.gameId));
-    channel.bind('updated', () => getGameData(localStorage.gameId));
+    const channel = pusher.subscribe("games");
+    channel.bind("inserted", () => getGameData(localStorage.gameId));
+    channel.bind("deleted", () => getGameData(localStorage.gameId));
+    channel.bind("updated", () => getGameData(localStorage.gameId));
 
     return () => {
-      pusher.unsubscribe('games');
+      pusher.unsubscribe("games");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -74,10 +74,11 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
   if (players && rounds) {
     if (pageView === 0) pageViewComponent = <Standings />;
     else if (pageView === 1) pageViewComponent = <Rounds />;
-    else if (pageView === 2) pageViewComponent = <Chart />;
+    else if (pageView === 2)
+      pageViewComponent = <Chart currentRound={currentRoundData.roundNumber} />;
   } else {
     pageViewComponent = (
-      <div style={{ margin: '60px' }}>
+      <div style={{ margin: "60px" }}>
         <CircularProgress />
       </div>
     );
@@ -180,17 +181,14 @@ Lobby.propTypes = {
   game: PropTypes.object,
   isGamemaster: PropTypes.bool,
   getGameData: PropTypes.func.isRequired,
-  playerId: PropTypes.string,
+  playerId: PropTypes.string
 };
 
 const mapStateToProps = state => ({
   isLoading: state.game.isLoading,
   game: state.game,
   isGamemaster: state.player.isGamemaster,
-  playerId: state.player._id,
+  playerId: state.player._id
 });
 
-export default connect(
-  mapStateToProps,
-  { getGameData }
-)(Lobby);
+export default connect(mapStateToProps, { getGameData })(Lobby);

@@ -9,6 +9,7 @@ import {
   LineSeries
 } from "react-vis";
 import "react-vis/dist/style.css";
+import { flexbox } from "@material-ui/system";
 
 // TODO umm just finish this
 //  https://uber.github.io/react-vis/documentation/series-reference/line-series
@@ -24,27 +25,32 @@ const lineColors = [
   "#ffc0cb" // pink
 ];
 
-const Chart = ({ players, rounds, maxNumberOfRounds }) => {
-  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
-  const [playerScores, setPlayerScores] = useState({
-    players: [],
-    scores: []
+const Chart = ({ players, currentRound }) => {
+  const [windowSizes, setWindowSizes] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
   });
+  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
 
   useEffect(() => {
-    console.log("Chart updated");
+    window.addEventListener("resize", () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      setWindowSizes({ width: w, height: h });
+    });
   }, [players]);
 
   return (
-    <Paper>
+    <Paper style={{ textAlign: "center" }}>
       <h1>Stats</h1>
-      <XYPlot width={300} height={300}>
+      <XYPlot width={windowSizes.width - 80} height={windowSizes.height - 560}>
         <HorizontalGridLines />
         {players.map((p, index) => {
           let data = [{ x: 0, y: 0 }]; // set 'round 0'
           p.roundsPlayed.forEach(r =>
-            data.push({ x: r.roundNumber, y: r.roundScore })
+            data.push({ x: r.roundNumber, y: r.totalScoreToRound })
           );
+
           return (
             <LineSeries
               key={p._id}
@@ -55,20 +61,44 @@ const Chart = ({ players, rounds, maxNumberOfRounds }) => {
           );
         })}
 
-        <XAxis title="round" position="middle" />
+        <XAxis title="round" position="middle" tickTotal={currentRound} />
         <YAxis title="score" position="middle" />
       </XYPlot>
 
-      <div></div>
+      <div
+        className="chartLegend"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly"
+        }}
+      >
+        {players.map((p, index) => {
+          return (
+            <div
+              className="playerLabel"
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              <div
+                className="color"
+                style={{
+                  height: "20px",
+                  width: "40px",
+                  backgroundColor: lineColors[index],
+                  marginRight: "5px"
+                }}
+              />
+              <span className="label"> {p.name}</span>
+            </div>
+          );
+        })}
+      </div>
     </Paper>
   );
 };
 
 const mapStateToProps = state => ({
-  players: state.game.players,
-  rounds: state.game.rounds,
-  currentRound: state.game.currentRound,
-  maxNumberOfRounds: state.game.maxNumberOfRounds
+  players: state.game.players
 });
 
 export default connect(mapStateToProps, null)(Chart);
