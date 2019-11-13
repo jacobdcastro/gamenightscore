@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { getGameData } from "../../redux/actions/game";
-import Pusher from "pusher-js";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getGameData } from '../../redux/actions/game';
+import Pusher from 'pusher-js';
 
-import LobbyWrapper from "../../styles/lobby/Lobby.sty.js";
-import Standings from "../lobby/pageviews/Standings";
-import Rounds from "../lobby/pageviews/Rounds";
-import Chart from "../lobby/pageviews/Chart";
-import CurrentRoundHeader from "../lobby/CurrentRoundHeader";
-import PlayerSubmitScore from "../lobby/PlayerSubmitScore";
-import InfoTab from "../lobby/InfoTab";
-import Nav from "../lobby/Nav";
-import PageViewTab from "../lobby/PageViewTab";
-import Dialog from "@material-ui/core/Dialog";
-import Slide from "@material-ui/core/Slide";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
+import Standings from '../lobby/pageviews/Standings';
+import Rounds from '../lobby/pageviews/Rounds';
+import Chart from '../lobby/pageviews/Chart';
+import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
+import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
+import InfoTab from '../lobby/InfoTab';
+import Nav from '../lobby/Nav';
+import PageViewTab from '../lobby/PageViewTab';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // gamemaster specific components
-import GMFooter from "../lobby/gamemaster/GamemasterFooter";
-import NewPlayerPopup from "../lobby/gamemaster/NewPlayerPopup";
-import EndGamePopup from "../lobby/gamemaster/EndGamePopup";
+import GMFooter from '../lobby/gamemaster/GamemasterFooter';
+import NewPlayerPopup from '../lobby/gamemaster/NewPlayerPopup';
+import EndGamePopup from '../lobby/gamemaster/EndGamePopup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
 const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
-  const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds, 2 = chart
+  const [pageView, setPageView] = useState(2); // 0 = standings, 1 = rounds, 2 = chart
   const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
   const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
   const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
@@ -39,18 +39,18 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
     // create connection to Pusher
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
       cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
-      encrypted: false
+      encrypted: false,
       // authEndpoint: `${process.env.REACT_APP_API_URL}/auth/pusher`,
     });
 
     // subscribe client to pusher channel, bind to events
-    const channel = pusher.subscribe("games");
-    channel.bind("inserted", () => getGameData(localStorage.gameId));
-    channel.bind("deleted", () => getGameData(localStorage.gameId));
-    channel.bind("updated", () => getGameData(localStorage.gameId));
+    const channel = pusher.subscribe('games');
+    channel.bind('inserted', () => getGameData(localStorage.gameId));
+    channel.bind('deleted', () => getGameData(localStorage.gameId));
+    channel.bind('updated', () => getGameData(localStorage.gameId));
 
     return () => {
-      pusher.unsubscribe("games");
+      pusher.unsubscribe('games');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -78,7 +78,7 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
       pageViewComponent = <Chart currentRound={currentRoundData.roundNumber} />;
   } else {
     pageViewComponent = (
-      <div style={{ margin: "60px" }}>
+      <div style={{ margin: '60px' }}>
         <CircularProgress />
       </div>
     );
@@ -92,9 +92,9 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
           TransitionComponent={Transition}
           keepMounted
           onBackdropClick={() => toggleInfoDialog(false)}
-          aria-labelledby="game information popup"
-          aria-describedby="information about game such as game name and password, number of players"
-          className="infoDialog"
+          aria-labelledby='game information popup'
+          aria-describedby='information about game such as game name and password, number of players'
+          className='infoDialog'
         >
           <InfoTab toggleInfoDialog={toggleInfoDialog} />
         </Dialog>
@@ -106,9 +106,9 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
           TransitionComponent={Transition}
           keepMounted
           onBackdropClick={() => toggleNewPlayerPopup(false)}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-          className="newPlayerPopup"
+          aria-labelledby='alert-dialog-slide-title'
+          aria-describedby='alert-dialog-slide-description'
+          className='newPlayerPopup'
         >
           <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
         </Dialog>
@@ -120,9 +120,9 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
           TransitionComponent={Transition}
           keepMounted
           onBackdropClick={() => toggleEndGamePopup(false)}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-          className="endGamePopup"
+          aria-labelledby='alert-dialog-slide-title'
+          aria-describedby='alert-dialog-slide-description'
+          className='endGamePopup'
         >
           <EndGamePopup toggleEndGamePopup={toggleEndGamePopup} />
         </Dialog>
@@ -133,7 +133,7 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
         currentRoundData={currentRoundData}
       />
 
-      <div className="currentRound">
+      <div className='currentRound'>
         {currentRoundData && (
           <CurrentRoundHeader
             roundData={currentRoundData}
@@ -144,7 +144,7 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
         )}
       </div>
 
-      <div className="pageViewMenu">
+      <div className='pageViewMenu'>
         <PageViewTab pageView={pageView} setPageView={setPageView} />
       </div>
 
@@ -155,8 +155,8 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
           open={currentRoundData.finished && !currentRoundIsScored}
           TransitionComponent={Transition}
           keepMounted
-          aria-labelledby="Submit your score"
-          aria-describedby="score submission for current round"
+          aria-labelledby='Submit your score'
+          aria-describedby='score submission for current round'
         >
           <PlayerSubmitScore
             currentRoundIsScored={currentRoundIsScored}
@@ -181,14 +181,14 @@ Lobby.propTypes = {
   game: PropTypes.object,
   isGamemaster: PropTypes.bool,
   getGameData: PropTypes.func.isRequired,
-  playerId: PropTypes.string
+  playerId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   isLoading: state.game.isLoading,
   game: state.game,
   isGamemaster: state.player.isGamemaster,
-  playerId: state.player._id
+  playerId: state.player._id,
 });
 
 export default connect(mapStateToProps, { getGameData })(Lobby);

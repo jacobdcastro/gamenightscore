@@ -24,26 +24,20 @@ const lineColors = [
 ];
 
 const Chart = ({ players, currentRound }) => {
-  const [windowSizes, setWindowSizes] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  });
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
 
   useEffect(() => {
     window.addEventListener("resize", () => {
       const w = window.innerWidth;
-      const h = window.innerHeight;
-      setWindowSizes({ width: w, height: h });
+      setWindowWidth(w);
     });
   }, [players]);
-
-  const { width, height } = windowSizes;
-  players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
 
   return (
     <Paper style={{ textAlign: "center" }}>
       <h1>Stats</h1>
-      <XYPlot width={width - 80} height={height - 560}>
+      <XYPlot width={windowWidth - 80} height={400}>
         <HorizontalGridLines />
         {players.map((p, index) => {
           let data = [{ x: 0, y: 0 }]; // set 'round 0'
