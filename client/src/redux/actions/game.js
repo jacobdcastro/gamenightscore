@@ -34,7 +34,7 @@ export const createGame = formData => async dispatch => {
   try {
     const res = await axios.post(`/api/games/new`, body, config);
 
-    dispatch({
+    await dispatch({
       type: CREATE_GAME_SUCCESS,
       payload: res.data,
     });
@@ -45,6 +45,8 @@ export const createGame = formData => async dispatch => {
         error,
       },
     });
+
+    console.log(error);
   }
 };
 
@@ -112,10 +114,12 @@ export const submitPlayerScore = actionData => async dispatch => {
       config
     );
 
-    dispatch({
+    await dispatch({
       type: SUBMIT_PLAYER_SCORE,
       payload: res.data,
     });
+
+    return res;
   } catch (error) {
     dispatch({
       type: SUBMIT_PLAYER_SCORE_FAIL,

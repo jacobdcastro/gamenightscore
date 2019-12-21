@@ -28,6 +28,5 @@
     "nodemon": "^1.19.1"
   },
   "author": "Jacob Daniel Castro",
-  "license": "MIT",
-  "proxy": "http://localhost:1111"
+  "license": "MIT"
 }

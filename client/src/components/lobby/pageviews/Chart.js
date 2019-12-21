@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Paper } from "@material-ui/core";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Paper } from '@material-ui/core';
 import {
   XYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
-  LineSeries
-} from "react-vis";
-import "react-vis/dist/style.css";
+  LineSeries,
+} from 'react-vis';
+import 'react-vis/dist/style.css';
 
 // TODO fix height issue on mobile
 
 const lineColors = [
-  "red",
-  "blue",
-  "yellow",
-  "#800080", // purple
-  "green",
-  "#add8e6", // lightblue
-  "black",
-  "#ffc0cb" // pink
+  'red',
+  'blue',
+  'yellow',
+  '#800080', // purple
+  'green',
+  '#add8e6', // lightblue
+  'black',
+  '#ffc0cb', // pink
 ];
 
 const Chart = ({ players, currentRound }) => {
@@ -28,14 +28,14 @@ const Chart = ({ players, currentRound }) => {
   players.sort((a, b) => a._id - b._id); // sort by id to prevent reordering
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       const w = window.innerWidth;
       setWindowWidth(w);
     });
   }, [players]);
 
   return (
-    <Paper style={{ textAlign: "center" }}>
+    <Paper style={{ textAlign: 'center' }}>
       <h1>Stats</h1>
       <XYPlot width={windowWidth - 80} height={400}>
         <HorizontalGridLines />
@@ -55,34 +55,35 @@ const Chart = ({ players, currentRound }) => {
           );
         })}
 
-        <XAxis title="round" position="middle" tickTotal={currentRound} />
-        <YAxis title="score" position="middle" />
+        <XAxis title='round' position='middle' tickTotal={currentRound} />
+        <YAxis title='score' position='middle' />
       </XYPlot>
 
       <div
-        className="chartLegend"
+        className='chartLegend'
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly"
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
         }}
       >
         {players.map((p, index) => {
           return (
             <div
-              className="playerLabel"
-              style={{ display: "flex", flexDirection: "row" }}
+              key={index}
+              className='playerLabel'
+              style={{ display: 'flex', flexDirection: 'row' }}
             >
               <div
-                className="color"
+                className='color'
                 style={{
-                  height: "20px",
-                  width: "40px",
+                  height: '20px',
+                  width: '40px',
                   backgroundColor: lineColors[index],
-                  marginRight: "5px"
+                  marginRight: '5px',
                 }}
               />
-              <span className="label"> {p.name}</span>
+              <span className='label'> {p.name}</span>
             </div>
           );
         })}
@@ -92,7 +93,7 @@ const Chart = ({ players, currentRound }) => {
 };
 
 const mapStateToProps = state => ({
-  players: state.game.players
+  players: state.game.players,
 });
 
 export default connect(mapStateToProps, null)(Chart);
