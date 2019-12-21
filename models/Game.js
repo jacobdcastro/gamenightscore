@@ -38,6 +38,4 @@ const GameSchema = new mongoose.Schema({
   },
 });
 
-// GameSchema.methods.addPlayer(function(playerId) {});
-
 module.exports = Game = mongoose.model('Game', GameSchema);
