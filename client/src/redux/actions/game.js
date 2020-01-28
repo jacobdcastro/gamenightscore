@@ -114,10 +114,12 @@ export const submitPlayerScore = actionData => async dispatch => {
       config
     );
 
-    await dispatch({
+    const action = {
       type: SUBMIT_PLAYER_SCORE,
       payload: res.data,
-    });
+    };
+
+    await dispatch(action);
 
     return res;
   } catch (error) {
