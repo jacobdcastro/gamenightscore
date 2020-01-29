@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
-  // GET_CURRENT_ROUND_DATA,
-  // GET_CURRENT_ROUND_DATA_FAIL,
+  SET_CURRENT_ROUND_DATA,
+  SET_CURRENT_ROUND_DATA_FAIL,
   START_ROUND,
   START_ROUND_FAIL,
   END_ROUND,
@@ -16,6 +16,13 @@ const config = {
   headers: {
     'Content-Type': 'application/json',
   },
+};
+
+export const setCurrentRoundData = roundData => dispatch => {
+  dispatch({
+    type: SET_CURRENT_ROUND_DATA,
+    payload: roundData,
+  });
 };
 
 export const startRound = actionData => async dispatch => {
