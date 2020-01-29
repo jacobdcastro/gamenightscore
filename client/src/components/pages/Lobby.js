@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getGameData } from '../../redux/actions/game';
+import { setCurrentRoundData } from '../../redux/actions/currentRound';
 import Pusher from 'pusher-js';
 
 import LobbyWrapper from '../../styles/lobby/Lobby.sty.js';
@@ -9,28 +10,20 @@ import Standings from '../lobby/pageviews/Standings';
 import Rounds from '../lobby/pageviews/Rounds';
 import Chart from '../lobby/pageviews/Chart';
 import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
-import PlayerSubmitScore from '../lobby/PlayerSubmitScore';
-import InfoTab from '../lobby/InfoTab';
+
 import Nav from '../lobby/Nav';
 import PageViewTab from '../lobby/PageViewTab';
 import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
+import Transition from '../lobby/Transition';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // gamemaster specific components
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
-import NewPlayerPopup from '../lobby/gamemaster/NewPlayerPopup';
-import EndGamePopup from '../lobby/gamemaster/EndGamePopup';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />;
-});
+import Dialogs from '../lobby/Dialogs';
 
 const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds, 2 = chart
-  const [infoDialogIsOpen, toggleInfoDialog] = useState(false);
-  const [newPlayerPopupIsOpen, toggleNewPlayerPopup] = useState(false);
-  const [endGamePopupIsOpen, toggleEndGamePopup] = useState(false);
+
   const { players, rounds } = game;
 
   useEffect(() => {
@@ -59,6 +52,7 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
   let currentRoundIsScored;
   if (players && rounds) {
     currentRoundData = rounds.find(r => r._id === game.currentRound);
+    setCurrentRoundData(currentRoundData);
     const playersCurrentRoundScoreData = currentRoundData.playerScores.find(
       p => p.player === playerId
     );
@@ -86,51 +80,11 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
 
   return (
     <LobbyWrapper>
-      {currentRoundData && (
-        <Dialog
-          open={infoDialogIsOpen}
-          TransitionComponent={Transition}
-          keepMounted
-          onBackdropClick={() => toggleInfoDialog(false)}
-          aria-labelledby='game information popup'
-          aria-describedby='information about game such as game name and password, number of players'
-          className='infoDialog'
-        >
-          <InfoTab toggleInfoDialog={toggleInfoDialog} />
-        </Dialog>
-      )}
-
-      {currentRoundData && isGamemaster && !game.expired && (
-        <Dialog
-          open={newPlayerPopupIsOpen}
-          TransitionComponent={Transition}
-          keepMounted
-          onBackdropClick={() => toggleNewPlayerPopup(false)}
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'
-          className='newPlayerPopup'
-        >
-          <NewPlayerPopup toggleNewPlayerPopup={toggleNewPlayerPopup} />
-        </Dialog>
-      )}
-
-      {currentRoundData && isGamemaster && !game.expired && (
-        <Dialog
-          open={endGamePopupIsOpen}
-          TransitionComponent={Transition}
-          keepMounted
-          onBackdropClick={() => toggleEndGamePopup(false)}
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'
-          className='endGamePopup'
-        >
-          <EndGamePopup toggleEndGamePopup={toggleEndGamePopup} />
-        </Dialog>
-      )}
+      {currentRoundData && <Dialogs currentRoundData={currentRoundData} />}
 
       <Nav
-        toggleInfoDialog={toggleInfoDialog}
         currentRoundData={currentRoundData}
+        currentRoundIsScored={currentRoundIsScored}
       />
 
       <div className='currentRound'>
@@ -151,27 +105,8 @@ const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
       {/* changed conditionally above return */}
       {pageViewComponent}
 
-      {currentRoundData && players && !game.expired && !isGamemaster && (
-        <Dialog
-          open={currentRoundData.finished && !currentRoundIsScored}
-          TransitionComponent={Transition}
-          keepMounted
-          aria-labelledby='Submit your score'
-          aria-describedby='score submission for current round'
-        >
-          <PlayerSubmitScore
-            currentRoundIsScored={currentRoundIsScored}
-            roundData={currentRoundData}
-          />
-        </Dialog>
-      )}
-
       {isGamemaster && !game.expired && (
-        <GMFooter
-          currentRoundIsScored={currentRoundIsScored}
-          toggleNewPlayerPopup={toggleNewPlayerPopup}
-          toggleEndGamePopup={toggleEndGamePopup}
-        />
+        <GMFooter currentRoundIsScored={currentRoundIsScored} />
       )}
     </LobbyWrapper>
   );
@@ -192,4 +127,6 @@ const mapStateToProps = state => ({
   playerId: state.player._id,
 });
 
-export default connect(mapStateToProps, { getGameData })(Lobby);
+export default connect(mapStateToProps, { getGameData, setCurrentRoundData })(
+  Lobby
+);

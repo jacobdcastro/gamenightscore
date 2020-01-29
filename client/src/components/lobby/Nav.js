@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 // import InfoIcon from '../../assets/info-icon.svg';
 import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
+import { toggleInfoPopup } from '../../redux/actions/popups';
 
 import RefreshIcon from '@material-ui/icons/Refresh';
 import InfoIcon from '@material-ui/icons/Info';
@@ -42,21 +44,21 @@ const NavWrapper = styled.nav`
   }
 `;
 
-const Nav = ({ currentRoundData, toggleInfoDialog }) => {
+const Nav = ({ currentRoundData, toggleInfoPopup }) => {
   return (
     <NavWrapper>
       {/* Toggle info dialog button */}
       <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="refresh page"
+        edge='start'
+        color='inherit'
+        aria-label='refresh page'
         onClick={() => window.location.reload()}
-        className="refreshIcon"
+        className='refreshIcon'
       >
         <RefreshIcon />
       </IconButton>
 
-      <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+      <h1 className='dutchBlitzLogo'>Dutch Blitz</h1>
 
       <h2>
         Current Round: {currentRoundData ? currentRoundData.roundNumber : '...'}
@@ -64,11 +66,11 @@ const Nav = ({ currentRoundData, toggleInfoDialog }) => {
 
       {/* Toggle info dialog button */}
       <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="see game info"
-        onClick={() => toggleInfoDialog(true)}
-        className="infoIcon"
+        edge='start'
+        color='inherit'
+        aria-label='see game info'
+        onClick={() => toggleInfoPopup(true)}
+        className='infoIcon'
       >
         <InfoIcon />
       </IconButton>
@@ -78,7 +80,7 @@ const Nav = ({ currentRoundData, toggleInfoDialog }) => {
 
 Nav.propTypes = {
   currentRoundData: PropTypes.object,
-  toggleInfoDialog: PropTypes.func.isRequired,
+  toggleInfoPopup: PropTypes.func.isRequired,
 };
 
-export default Nav;
+export default connect(null, { toggleInfoPopup })(Nav);

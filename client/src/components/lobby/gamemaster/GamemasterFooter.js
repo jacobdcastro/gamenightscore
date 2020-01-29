@@ -7,6 +7,10 @@ import {
   setWinner,
   newRound,
 } from '../../../redux/actions/currentRound';
+import {
+  toggleNewPlayerPopup,
+  toggleEndGamePopup,
+} from '../../../redux/actions/popups';
 import GMSubmitScores from './GMSubmitScores';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,7 +34,7 @@ import { DialogContent, DialogTitle, DialogActions } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
 const useStyles = makeStyles(theme => ({
@@ -142,13 +146,13 @@ const GamemasterFooter = ({
 
   return (
     <Fragment>
-      <AppBar position="fixed" color="primary" className={classes.appBar}>
+      <AppBar position='fixed' color='primary' className={classes.appBar}>
         <Toolbar>
           {/* Add new player button */}
           <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
             onClick={() => toggleNewPlayerPopup(true)}
           >
             <PersonAddIcon />
@@ -157,10 +161,10 @@ const GamemasterFooter = ({
           {/* 1. Start Round Button */}
           {!inProgress && !finished && (
             <Fab
-              size="large"
-              color="primary"
-              aria-label="start round"
-              variant="extended"
+              size='large'
+              color='primary'
+              aria-label='start round'
+              variant='extended'
               className={classes.fabButton}
               onClick={() => runStartRoundAction()}
             >
@@ -171,10 +175,10 @@ const GamemasterFooter = ({
           {/* 2. End Round Button */}
           {inProgress && !finished && (
             <Fab
-              size="large"
-              color="primary"
-              aria-label="end round"
-              variant="extended"
+              size='large'
+              color='primary'
+              aria-label='end round'
+              variant='extended'
               className={classes.fabButton}
               onClick={() => runEndRoundAction()}
             >
@@ -187,16 +191,16 @@ const GamemasterFooter = ({
             open={!inProgress && finished && !newRoundReady}
             TransitionComponent={Transition}
             keepMounted
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
+            aria-labelledby='alert-dialog-slide-title'
+            aria-describedby='alert-dialog-slide-description'
           >
             <DialogTitle>Select The Winner!</DialogTitle>
             <DialogContent>
-              <FormControl component="fieldset">
-                <FormLabel components="legend">Players</FormLabel>
+              <FormControl component='fieldset'>
+                <FormLabel components='legend'>Players</FormLabel>
                 <RadioGroup
-                  aria-label="all players"
-                  name="players"
+                  aria-label='all players'
+                  name='players'
                   value={roundWinner}
                   onChange={handleSelectChange}
                 >
@@ -204,7 +208,7 @@ const GamemasterFooter = ({
                     <FormControlLabel
                       key={p._id}
                       value={p._id}
-                      control={<Radio color="primary" />}
+                      control={<Radio color='primary' />}
                       label={p.name}
                     />
                   ))}
@@ -213,9 +217,9 @@ const GamemasterFooter = ({
             </DialogContent>
             <DialogActions>
               <Button
-                variant="contained"
-                size="medium"
-                color="primary"
+                variant='contained'
+                size='medium'
+                color='primary'
                 onClick={() => submitWinner()}
               >
                 Submit
@@ -235,8 +239,8 @@ const GamemasterFooter = ({
                 }
                 TransitionComponent={Transition}
                 keepMounted
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
+                aria-labelledby='alert-dialog-slide-title'
+                aria-describedby='alert-dialog-slide-description'
               >
                 <GMSubmitScores
                   index={index}
@@ -251,10 +255,10 @@ const GamemasterFooter = ({
           {/* 4. Wait for all players to submit scores */}
           {newRoundReady && !allScoresSubmitted && (
             <Fab
-              size="large"
-              color="primary"
-              aria-label="next round"
-              variant="extended"
+              size='large'
+              color='primary'
+              aria-label='next round'
+              variant='extended'
               className={classes.fabButton}
               disabled
             >
@@ -267,10 +271,10 @@ const GamemasterFooter = ({
             allScoresSubmitted &&
             roundNumber < maxNumberOfRounds && (
               <Fab
-                size="large"
-                color="primary"
-                aria-label="next round"
-                variant="extended"
+                size='large'
+                color='primary'
+                aria-label='next round'
+                variant='extended'
                 className={classes.fabButton}
                 onClick={() => initNextRound()}
               >
@@ -279,10 +283,10 @@ const GamemasterFooter = ({
             )}
           {allScoresSubmitted && roundNumber === maxNumberOfRounds && (
             <Fab
-              size="large"
-              color="primary"
-              aria-label="next round"
-              variant="extended"
+              size='large'
+              color='primary'
+              aria-label='next round'
+              variant='extended'
               className={classes.fabButton}
               onClick={() => toggleEndGamePopup(true)}
             >
@@ -294,19 +298,19 @@ const GamemasterFooter = ({
 
           {newRoundReady && allScoresSubmitted ? (
             <Button
-              className="endGameBtn"
-              variant="contained"
-              size="small"
-              color="primary"
+              className='endGameBtn'
+              variant='contained'
+              size='small'
+              color='primary'
               onClick={() => toggleEndGamePopup(true)}
             >
               End Game
             </Button>
           ) : (
             <Button
-              className="endGameBtn"
-              variant="contained"
-              size="small"
+              className='endGameBtn'
+              variant='contained'
+              size='small'
               disabled
             >
               End Game
@@ -341,7 +345,11 @@ const mapStateToProps = state => ({
   maxNumberOfRounds: state.game.maxNumberOfRounds,
 });
 
-export default connect(
-  mapStateToProps,
-  { startRound, endRound, setWinner, newRound }
-)(GamemasterFooter);
+export default connect(mapStateToProps, {
+  startRound,
+  endRound,
+  setWinner,
+  newRound,
+  toggleNewPlayerPopup,
+  toggleEndGamePopup,
+})(GamemasterFooter);

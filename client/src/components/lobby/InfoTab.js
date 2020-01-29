@@ -32,8 +32,8 @@ const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
       </DialogContent>
       <DialogActions>
         <Button
-          size="medium"
-          color="primary"
+          size='medium'
+          color='primary'
           onClick={e => toggleInfoDialog(false)}
         >
           Close
@@ -56,7 +56,4 @@ const mapStateToProps = state => ({
   players: state.game.players,
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(InfoTab);
+export default connect(mapStateToProps, null)(InfoTab);
