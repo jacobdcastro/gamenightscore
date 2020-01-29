@@ -21,7 +21,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import GMFooter from '../lobby/gamemaster/GamemasterFooter';
 import Dialogs from '../lobby/Dialogs';
 
-const Lobby = ({ isGamemaster, game, playerId, getGameData }) => {
+const Lobby = ({
+  isGamemaster,
+  game,
+  playerId,
+  getGameData,
+  setCurrentRoundData,
+}) => {
   const [pageView, setPageView] = useState(0); // 0 = standings, 1 = rounds, 2 = chart
 
   const { players, rounds } = game;

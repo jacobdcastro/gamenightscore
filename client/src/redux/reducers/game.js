@@ -44,8 +44,6 @@ export default function(state = initialState, action) {
 
     case GET_GAME_DATA:
     case GET_ALL_GAMES:
-    case START_ROUND:
-    case END_ROUND:
     case SET_WINNER:
     case ADD_NEW_ROUND:
     case SUBMIT_PLAYER_SCORE:
@@ -57,8 +55,6 @@ export default function(state = initialState, action) {
 
     case CREATE_GAME_FAIL:
     case JOIN_GAME_FAIL:
-    case START_ROUND_FAIL:
-    case END_ROUND_FAIL:
     case SET_WINNER_FAIL:
     case ADD_NEW_ROUND_FAIL:
     case SUBMIT_PLAYER_SCORE_FAIL:
