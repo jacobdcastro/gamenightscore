@@ -6,7 +6,7 @@ import {
 } from '../types';
 
 const initialState = {
-  infoDialogIsOpen: false,
+  infoPopupIsOpen: false,
   newPlayerPopupIsOpen: false,
   endGamePopupIsOpen: false,
   playerSubmitScorePopupIsOpen: false,
@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
     case TOGGLE_INFO_POPUP:
       return {
         ...state,
-        infoDialogIsOpen: newState,
+        infoPopupIsOpen: newState,
       };
 
     case TOGGLE_NEW_PLAYER_POPUP:
@@ -28,16 +28,16 @@ export default function(state = initialState, action) {
         newPlayerPopupIsOpen: newState,
       };
 
-    case TOGGLE_END_GAME_POPUP:
-      return {
-        ...state,
-        endGamePopupIsOpen: newState,
-      };
-
     case TOGGLE_PLAYER_SUBMIT_SCORE_POPUP:
       return {
         ...state,
         playerSubmitScorePopupIsOpen: newState,
+      };
+
+    case TOGGLE_END_GAME_POPUP:
+      return {
+        ...state,
+        endGamePopupIsOpen: newState,
       };
 
     default:

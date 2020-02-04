@@ -1,23 +1,13 @@
 import {
+  GET_ALL_GAMES_SUCCESS,
   CREATE_GAME_SUCCESS,
   CREATE_GAME_FAIL,
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
-  GET_ALL_GAMES,
-  GET_GAME_DATA,
-  // GET_GAME_DATA_FAIL,
+  GET_GAME_DATA_SUCCESS,
+  GET_GAME_DATA_FAIL,
   END_GAME_SUCCESS,
   END_GAME_FAIL,
-  START_ROUND,
-  START_ROUND_FAIL,
-  END_ROUND,
-  END_ROUND_FAIL,
-  ADD_NEW_ROUND,
-  ADD_NEW_ROUND_FAIL,
-  SET_WINNER,
-  SET_WINNER_FAIL,
-  SUBMIT_PLAYER_SCORE,
-  SUBMIT_PLAYER_SCORE_FAIL,
 } from '../types';
 
 const initialState = {
@@ -42,11 +32,8 @@ export default function(state = initialState, action) {
         loading: false,
       };
 
-    case GET_GAME_DATA:
-    case GET_ALL_GAMES:
-    case SET_WINNER:
-    case ADD_NEW_ROUND:
-    case SUBMIT_PLAYER_SCORE:
+    case GET_GAME_DATA_SUCCESS:
+    case GET_ALL_GAMES_SUCCESS:
     case END_GAME_SUCCESS:
       return {
         ...gameData,
@@ -55,9 +42,7 @@ export default function(state = initialState, action) {
 
     case CREATE_GAME_FAIL:
     case JOIN_GAME_FAIL:
-    case SET_WINNER_FAIL:
-    case ADD_NEW_ROUND_FAIL:
-    case SUBMIT_PLAYER_SCORE_FAIL:
+    case GET_GAME_DATA_FAIL:
     case END_GAME_FAIL:
       return {
         ...state,

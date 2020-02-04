@@ -1,15 +1,19 @@
 import { combineReducers } from 'redux';
-import alert from './alert';
-import game from './game';
-import player from './player';
+import alerts from './alert';
 import currentRound from './currentRound';
+import game from './game';
+import players from './players';
 import popups from './popups';
+import rounds from './rounds';
+import user from './user';
 
 const rootReducer = combineReducers({
-  alert,
   game,
-  player,
+  user,
+  players,
   currentRound,
+  rounds,
+  alerts,
   popups,
 });
 

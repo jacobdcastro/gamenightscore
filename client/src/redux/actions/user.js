@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  GET_PLAYER_DATA,
   CREATE_PLAYER_SUCCESS,
   CREATE_PLAYER_FAIL,
   SET_INIT_PLAYER_STATE,
@@ -7,11 +8,17 @@ import {
   GM_CREATE_PLAYER_SUCCESS,
   GM_CREATE_PLAYER_FAIL,
 } from '../types';
+import store from '../store';
+const { dispatch } = store;
 
 const config = {
   headers: {
     'Content-Type': 'application/json',
   },
+};
+
+export const getUserData = async players => {
+  const userData = await players.find(p => p._id === localStorage.playerId);
 };
 
 export const setInitPlayerState = initData => async dispatch => {

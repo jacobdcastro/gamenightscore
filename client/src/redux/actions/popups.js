@@ -18,17 +18,16 @@ export const toggleNewPlayerPopup = newState => dispatch => {
     newState,
   });
 };
-
-export const toggleEndGamePopup = newState => dispatch => {
+export const togglePlayerSubmitScorePopup = newState => dispatch => {
   dispatch({
-    type: TOGGLE_END_GAME_POPUP,
+    type: TOGGLE_PLAYER_SUBMIT_SCORE_POPUP,
     newState,
   });
 };
 
-export const togglePlayerSubmitScorePopup = newState => dispatch => {
+export const toggleEndGamePopup = newState => dispatch => {
   dispatch({
-    type: TOGGLE_PLAYER_SUBMIT_SCORE_POPUP,
+    type: TOGGLE_END_GAME_POPUP,
     newState,
   });
 };

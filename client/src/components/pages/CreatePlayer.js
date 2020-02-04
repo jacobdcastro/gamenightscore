@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createPlayer } from '../../redux/actions/player';
+import { createPlayer } from '../../redux/actions/user';
 import { getGameData } from '../../redux/actions/game';
 import PropTypes from 'prop-types';
 
@@ -40,41 +40,41 @@ const CreatePlayer = ({
 
   if (isAuthenticated && isCreated) {
     getGameData(localStorage.gameId);
-    return <Redirect to="/lobby" />;
+    return <Redirect to='/lobby' />;
   }
 
   return (
     <Paper>
-      <Container maxWidth="md">
+      <Container maxWidth='md'>
         <CreatePlayerWrapper>
-          <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+          <h1 className='dutchBlitzLogo'>Dutch Blitz</h1>
           <h2>Create your player!</h2>
           <p>
             If you're joining a game that's already begun, it's all good. You
             can still join!
           </p>
 
-          <form id="createPlayerForm" onSubmit={e => onSubmit(e)}>
-            <div className="inputDiv">
+          <form id='createPlayerForm' onSubmit={e => onSubmit(e)}>
+            <div className='inputDiv'>
               <TextField
                 required
                 fullWidth={true}
-                variant="outlined"
-                id="name"
-                name="name"
-                label="Your Username"
-                margin="normal"
+                variant='outlined'
+                id='name'
+                name='name'
+                label='Your Username'
+                margin='normal'
                 value={name}
                 onChange={e => onChange(e)}
-                helperText="How do you want to be known for this game?"
+                helperText='How do you want to be known for this game?'
               />
             </div>
             <Button
-              type="submit"
-              className="joinGame"
-              variant="contained"
-              size="large"
-              color="primary"
+              type='submit'
+              className='joinGame'
+              variant='contained'
+              size='large'
+              color='primary'
               fullWidth={true}
             >
               Enter Game Lobby
@@ -104,7 +104,6 @@ const mapStateToProps = state => ({
   getGameData,
 });
 
-export default connect(
-  mapStateToProps,
-  { createPlayer, getGameData }
-)(CreatePlayer);
+export default connect(mapStateToProps, { createPlayer, getGameData })(
+  CreatePlayer
+);

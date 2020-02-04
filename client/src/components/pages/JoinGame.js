@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { joinGame } from '../../redux/actions/game';
-import { setInitPlayerState } from '../../redux/actions/player';
+import { setInitPlayerState } from '../../redux/actions/user';
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
@@ -33,59 +33,59 @@ const JoinGame = ({
   if (gameId) setInitPlayerState({ gameId, isGamemaster: false });
 
   if (isAuthenticated) {
-    return <Redirect to="/create-player" />;
+    return <Redirect to='/create-player' />;
   }
 
   return (
     <Paper>
-      <Container maxWidth="md">
+      <Container maxWidth='md'>
         <JoinGameWrapper>
-          <Link className="backLink" to="/">
+          <Link className='backLink' to='/'>
             &#8592; Back
           </Link>
-          <h1 className="dutchBlitzLogo">Dutch Blitz</h1>
+          <h1 className='dutchBlitzLogo'>Dutch Blitz</h1>
           <h1>Join a live game!</h1>
           <p>
             Ask the Gamemaster (player who created the game) for the game title
             and password. Title and password are displayed in game dashboard.
           </p>
-          <form id="joinGameForm" onSubmit={e => onSubmit(e)}>
-            <div className="inputDiv textInput">
+          <form id='joinGameForm' onSubmit={e => onSubmit(e)}>
+            <div className='inputDiv textInput'>
               <TextField
                 required
                 fullWidth={true}
-                variant="outlined"
-                id="title"
-                name="title"
-                label="Title of Game"
-                margin="normal"
-                placeholder="Title"
+                variant='outlined'
+                id='title'
+                name='title'
+                label='Title of Game'
+                margin='normal'
+                placeholder='Title'
                 value={title}
                 onChange={e => onChange(e)}
-                helpertext="This is case sensitive!"
+                helpertext='This is case sensitive!'
               />
             </div>
-            <div className="inputDiv textInput">
+            <div className='inputDiv textInput'>
               <TextField
                 required
                 fullWidth={true}
-                variant="outlined"
-                id="password"
-                name="password"
-                label="Password"
-                margin="normal"
-                placeholder="password"
+                variant='outlined'
+                id='password'
+                name='password'
+                label='Password'
+                margin='normal'
+                placeholder='password'
                 value={password}
                 onChange={e => onChange(e)}
-                helpertext="This is also case sensitive!"
+                helpertext='This is also case sensitive!'
               />
             </div>
             <Button
-              type="submit"
-              className="joinGame"
-              variant="contained"
-              size="large"
-              color="primary"
+              type='submit'
+              className='joinGame'
+              variant='contained'
+              size='large'
+              color='primary'
               fullWidth={true}
             >
               Join Game
@@ -109,7 +109,6 @@ const mapStateToProps = state => ({
   gameId: state.game._id,
 });
 
-export default connect(
-  mapStateToProps,
-  { joinGame, setInitPlayerState }
-)(JoinGame);
+export default connect(mapStateToProps, { joinGame, setInitPlayerState })(
+  JoinGame
+);

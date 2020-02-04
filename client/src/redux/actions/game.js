@@ -14,6 +14,7 @@ import {
   END_GAME_SUCCESS,
   END_GAME_FAIL,
 } from '../types';
+import { getUserData } from './user';
 
 const config = {
   headers: {
@@ -79,21 +80,26 @@ export const joinGame = formData => async dispatch => {
 
 export const getGameData = gameId => async dispatch => {
   try {
-    const res = await axios.get(`/api/games/${gameId}`);
+    const { data } = await axios.get(`/api/games/${gameId}`);
+    console.log(data);
+    const gameData = {
+      _id: data._id,
+      currentRound: data.currentRound,
+      endTime: data.endTime,
+      expired: data.expired,
+      hideScores: data.hideScores,
+      maxNumberOfRounds: data.maxNumberOfRounds,
+      password: data.password,
+      startTime: data.startTime,
+      title: data.title,
+    };
 
     await dispatch({
       type: GET_GAME_DATA,
-      payload: res.data,
+      payload: gameData,
     });
 
-    const playerData = await res.data.players.find(
-      p => p._id === localStorage.playerId
-    );
-
-    dispatch({
-      type: GET_PLAYER_DATA,
-      payload: playerData,
-    });
+    getUserData(data.players);
   } catch (error) {
     dispatch({
       type: GET_GAME_DATA_FAIL,

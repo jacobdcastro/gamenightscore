@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createGame } from '../../redux/actions/game';
-import { setInitPlayerState } from '../../redux/actions/player';
+import { setInitPlayerState } from '../../redux/actions/user';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
