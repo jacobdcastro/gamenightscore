@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createPlayer } from '../../../redux/actions/player';
+import { createPlayer } from '../../../redux/actions/user';
 import {
   DialogContent,
   DialogTitle,
@@ -36,11 +36,11 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup, createPlayer }) => {
       <DialogTitle>Create New Player</DialogTitle>
       <DialogContent>
         <TextField
-          id="name"
-          type="text"
-          label="Username"
-          name="name"
-          placeholder="Username"
+          id='name'
+          type='text'
+          label='Username'
+          name='name'
+          placeholder='Username'
           value={name}
           onChange={e => onChange(e)}
           required
@@ -48,16 +48,16 @@ const NewPlayerPopup = ({ toggleNewPlayerPopup, createPlayer }) => {
       </DialogContent>
       <DialogActions>
         <Button
-          size="medium"
-          color="primary"
+          size='medium'
+          color='primary'
           onClick={() => toggleNewPlayerPopup(false)}
         >
           Cancel
         </Button>
         <Button
-          variant="contained"
-          size="medium"
-          color="secondary"
+          variant='contained'
+          size='medium'
+          color='secondary'
           onClick={e => onSubmit(e)}
         >
           Add New Player
@@ -72,7 +72,4 @@ NewPlayerPopup.propTypes = {
   createPlayer: PropTypes.func.isRequired,
 };
 
-export default connect(
-  null,
-  { createPlayer }
-)(NewPlayerPopup);
+export default connect(null, { createPlayer })(NewPlayerPopup);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,7 +17,7 @@ import {
 } from '../../redux/actions/popups';
 
 const Dialogs = ({
-  infoDialogIsOpen,
+  infoPopupIsOpen,
   toggleInfoPopup,
   newPlayerPopupIsOpen,
   toggleNewPlayerPopup,
@@ -32,7 +32,7 @@ const Dialogs = ({
     <>
       {/* info popup */}
       <Dialog
-        open={infoDialogIsOpen}
+        open={infoPopupIsOpen}
         TransitionComponent={Transition}
         keepMounted
         onBackdropClick={() => toggleInfoPopup(false)}
@@ -73,6 +73,7 @@ const Dialogs = ({
         </Dialog>
       )}
 
+      {/* submit score popup */}
       {!isExpired && !isGamemaster && (
         <Dialog
           open={currentRoundData.finished && !currentRoundIsScored}
@@ -96,7 +97,7 @@ Dialogs.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  infoDialogIsOpen: state.popups.infoDialogIsOpen,
+  infoPopupIsOpen: state.popups.infoPopupIsOpen,
   newPlayerPopupIsOpen: state.popups.newPlayerPopupIsOpen,
   endGamePopupIsOpen: state.popups.endGamePopupIsOpen,
   isGamemaster: state.player.isGamemaster,

@@ -13,8 +13,6 @@ import CurrentRoundHeader from '../lobby/CurrentRoundHeader';
 
 import Nav from '../lobby/Nav';
 import PageViewTab from '../lobby/PageViewTab';
-import Dialog from '@material-ui/core/Dialog';
-import Transition from '../lobby/Transition';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // gamemaster specific components

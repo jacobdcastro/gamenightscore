@@ -9,7 +9,7 @@ import {
   Button,
 } from '@material-ui/core';
 
-const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
+const InfoTab = ({ title, password, players, toggleInfoPopup }) => {
   let gamemaster;
   if (players) gamemaster = players.find(p => p.isGamemaster === true);
 
@@ -34,7 +34,7 @@ const InfoTab = ({ title, password, players, toggleInfoDialog }) => {
         <Button
           size='medium'
           color='primary'
-          onClick={e => toggleInfoDialog(false)}
+          onClick={e => toggleInfoPopup(false)}
         >
           Close
         </Button>
@@ -47,7 +47,7 @@ InfoTab.propTypes = {
   title: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired,
-  toggleInfoDialog: PropTypes.func.isRequired,
+  toggleInfoPopup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
