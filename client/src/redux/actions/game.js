@@ -1,15 +1,13 @@
 import axios from 'axios';
+import { dispatch } from '../store';
 import {
-  // GET_ALL_GAMES,
-  // GET_GAMES_ERROR,
   CREATE_GAME_SUCCESS,
   CREATE_GAME_FAIL,
   JOIN_GAME_SUCCESS,
   JOIN_GAME_FAIL,
-  GET_GAME_DATA,
+  GET_GAME_DATA_SUCCESS,
   GET_GAME_DATA_FAIL,
-  GET_PLAYER_DATA,
-  SUBMIT_PLAYER_SCORE,
+  SUBMIT_PLAYER_SCORE_SUCCESS,
   SUBMIT_PLAYER_SCORE_FAIL,
   END_GAME_SUCCESS,
   END_GAME_FAIL,
@@ -22,7 +20,9 @@ const config = {
   },
 };
 
-export const createGame = formData => async dispatch => {
+const initializeState = () => {};
+
+export const createGame = async formData => {
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
   const body = JSON.stringify({
@@ -51,7 +51,7 @@ export const createGame = formData => async dispatch => {
   }
 };
 
-export const joinGame = formData => async dispatch => {
+export const joinGame = async formData => {
   const { title, password } = formData;
 
   const body = JSON.stringify({
@@ -78,7 +78,7 @@ export const joinGame = formData => async dispatch => {
   }
 };
 
-export const getGameData = gameId => async dispatch => {
+export const getGameData = async gameId => {
   try {
     const { data } = await axios.get(`/api/games/${gameId}`);
     console.log(data);
@@ -95,7 +95,7 @@ export const getGameData = gameId => async dispatch => {
     };
 
     await dispatch({
-      type: GET_GAME_DATA,
+      type: GET_GAME_DATA_SUCCESS,
       payload: gameData,
     });
 
@@ -108,7 +108,7 @@ export const getGameData = gameId => async dispatch => {
   }
 };
 
-export const submitPlayerScore = actionData => async dispatch => {
+export const submitPlayerScore = async actionData => {
   const { gameId, playerId, roundScore } = actionData;
 
   const body = JSON.stringify({ roundScore });
@@ -121,7 +121,7 @@ export const submitPlayerScore = actionData => async dispatch => {
     );
 
     const action = {
-      type: SUBMIT_PLAYER_SCORE,
+      type: SUBMIT_PLAYER_SCORE_SUCCESS,
       payload: res.data,
     };
 
@@ -137,7 +137,7 @@ export const submitPlayerScore = actionData => async dispatch => {
   }
 };
 
-export const endGame = gameId => async dispatch => {
+export const endGame = async gameId => {
   try {
     const res = await axios.put(`/api/games/${gameId}/endGame`);
 

@@ -14,19 +14,22 @@ import {
 const initialState = {};
 
 export default function(state = initialState, action) {
-  const currentRoundData = action.payload;
+  const { payload, type } = action;
 
-  switch (action.type) {
+  switch (type) {
     case SET_CURRENT_ROUND_DATA_SUCCESS:
     case START_ROUND_SUCCESS:
     case END_ROUND_SUCCESS:
-    case SET_WINNER_SUCCESS:
     case SUBMIT_PLAYER_SCORE_SUCCESS:
       return {
         ...state,
-        ...currentRoundData,
+        ...payload,
       };
-
+    case SET_WINNER_SUCCESS:
+      return {
+        ...state,
+        winner: payload.winnerId,
+      };
     case SET_CURRENT_ROUND_DATA_FAIL:
     case START_ROUND_FAIL:
     case END_ROUND_FAIL:

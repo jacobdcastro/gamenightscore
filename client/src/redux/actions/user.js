@@ -1,15 +1,15 @@
 import axios from 'axios';
+import { dispatch } from '../store';
 import {
-  GET_PLAYER_DATA,
-  CREATE_PLAYER_SUCCESS,
-  CREATE_PLAYER_FAIL,
-  SET_INIT_PLAYER_STATE,
-  SET_INIT_PLAYER_STATE_FAIL,
-  GM_CREATE_PLAYER_SUCCESS,
-  GM_CREATE_PLAYER_FAIL,
+  SET_INIT_USER_STATE_SUCCESS,
+  SET_INIT_USER_STATE_FAIL,
+  GET_USER_DATA_SUCCESS,
+  GET_USER_DATA_FAIL,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_FAIL,
+  SUBMIT_USER_SCORE_SUCCESS,
+  SUBMIT_USER_SCORE_FAIL,
 } from '../types';
-import store from '../store';
-const { dispatch } = store;
 
 const config = {
   headers: {
@@ -21,7 +21,7 @@ export const getUserData = async players => {
   const userData = await players.find(p => p._id === localStorage.playerId);
 };
 
-export const setInitPlayerState = initData => async dispatch => {
+export const setInitPlayerState = async initData => {
   const { gameId, isGamemaster } = initData;
 
   const body = JSON.stringify({
@@ -33,18 +33,18 @@ export const setInitPlayerState = initData => async dispatch => {
     const res = await axios.post(`/api/games/auth/sign`, body, config);
 
     dispatch({
-      type: SET_INIT_PLAYER_STATE,
+      type: SET_INIT_USER_STATE_SUCCESS,
       payload: res.data,
     });
   } catch (error) {
     dispatch({
-      type: SET_INIT_PLAYER_STATE_FAIL,
+      type: SET_INIT_USER_STATE_FAIL,
       payload: { msg: 'player state did not init' },
     });
   }
 };
 
-export const createPlayer = formData => async dispatch => {
+export const createPlayer = async formData => {
   const { isGamemaster, gameId, name, gmCreated, deck } = formData;
 
   const body = JSON.stringify({
@@ -61,30 +61,14 @@ export const createPlayer = formData => async dispatch => {
       body,
       config
     );
-    console.log(res);
-
-    if (gmCreated) {
-      dispatch({
-        type: GM_CREATE_PLAYER_SUCCESS,
-        payload: res.data,
-      });
-    } else {
-      dispatch({
-        type: CREATE_PLAYER_SUCCESS,
-        payload: res.data,
-      });
-    }
+    dispatch({
+      type: CREATE_USER_SUCCESS,
+      payload: res.data,
+    });
   } catch (error) {
-    if (gmCreated) {
-      dispatch({
-        type: GM_CREATE_PLAYER_FAIL,
-        payload: error,
-      });
-    } else {
-      dispatch({
-        type: CREATE_PLAYER_FAIL,
-        payload: error,
-      });
-    }
+    dispatch({
+      type: CREATE_USER_FAIL,
+      payload: error,
+    });
   }
 };
