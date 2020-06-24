@@ -15,10 +15,10 @@ const Rounds = ({ rounds, players }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="left">Rd.#</TableCell>
-            <TableCell align="left">Winner</TableCell>
-            <TableCell align="right">Winner's Score</TableCell>
-            <TableCell align="right">Time</TableCell>
+            <TableCell align='left'>Rd.#</TableCell>
+            <TableCell align='left'>Winner</TableCell>
+            <TableCell align='right'>Winner's Score</TableCell>
+            <TableCell align='right'>Time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,13 +37,12 @@ const Rounds = ({ rounds, players }) => {
               winnerPlayerData = players.find(p => p._id === winner);
               winnerRoundData = playerScores.find(p => p.player === winner);
             }
-            console.log(startTime, ' : ', endTime);
             return (
               <TableRow key={index}>
-                <TableCell scope="row" align="left">
+                <TableCell scope='row' align='left'>
                   {roundNumber}
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align='left'>
                   <b>
                     {winner && !inProgress
                       ? `${winnerPlayerData.name}`
@@ -51,10 +50,10 @@ const Rounds = ({ rounds, players }) => {
                     {!winner && inProgress && `Round currently in progress...`}
                   </b>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align='right'>
                   <b>{winnerRoundData ? winnerRoundData.roundScore : 'TBD'}</b>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align='right'>
                   {startTime && endTime ? (
                     // TODO fix broken duration
                     <Moment duration={startTime} date={endTime} />

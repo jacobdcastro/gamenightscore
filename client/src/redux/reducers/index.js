@@ -4,9 +4,11 @@ import game from './game';
 import player from './player';
 // import currentRound from './currentRound';
 
-export default combineReducers({
+const rootReducer = combineReducers({
   alert,
   game,
   player,
   // currentRound,
 });
+
+export default rootReducer;

@@ -48,15 +48,15 @@ app.use((req, res, next) => {
 // Define API route
 app.use('/api/games', require('./routes/api/games'));
 
-// set static folder
+// point to static folder
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-// Sentry test route, throws error
+// Sentry test route, purposely throws error
 app.get('/debug-sentry', (req, res) => {
-  throw new Error('My first Sentry error!');
+  throw new Error('Sentry error test');
 });
 
-// Catch all routes to index.html react app
+// Catch all routes to index.html in react app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
@@ -79,19 +79,13 @@ db.once('open', () => {
 
   changeStream.on('change', change => {
     if (change.operationType === 'insert') {
-      // console.log('INSERT TYPE ===================================');
-      // console.log(change);
       const game = change.fullDocument;
       pusher.trigger(channel, 'inserted', {
         game,
       });
     } else if (change.operationType === 'delete') {
-      // console.log('DELETE TYPE ===================================');
-      // console.log(change);
       pusher.trigger(channel, 'deleted', change.documentKey._id);
     } else if (change.operationType === 'update') {
-      // console.log('UPDATE TYPE ===================================');
-      // console.log(change);
       const { updateDescription } = change;
       pusher.trigger(channel, 'updated', updateDescription);
     }
