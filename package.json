@@ -8,6 +8,9 @@
     "server": "nodemon server.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
+  "engines": {
+    "node": "v10.17.0"
+  },
   "dependencies": {
     "@sentry/node": "^5.11.1",
     "bcryptjs": "^2.4.3",
