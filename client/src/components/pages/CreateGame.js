@@ -30,14 +30,14 @@ const CreateGame = ({
   });
   const { title, password, maxNumberOfRounds, hideScores } = formData;
 
-  const onChange = e => {
+  const onChange = (e) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
 
     setFormData({ ...formData, [e.target.name]: value });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const res = createGame(formData);
     console.log(res);
@@ -65,7 +65,7 @@ const CreateGame = ({
             easy, memorable, and sharable.
           </p>
 
-          <form id='createGameForm' onSubmit={e => onSubmit(e)}>
+          <form id='createGameForm' onSubmit={(e) => onSubmit(e)}>
             <div className='inputDiv textInput'>
               <TextField
                 required
@@ -77,7 +77,7 @@ const CreateGame = ({
                 margin='normal'
                 placeholder='Title'
                 value={title}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
                 helpertext='Can be anything, to be honest. Your friends need it to login.'
               />
             </div>
@@ -92,7 +92,7 @@ const CreateGame = ({
                 margin='normal'
                 placeholder='password'
                 value={password}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
                 helpertext='Do not use a password you use on other accounts. It will displayed on game dashboard for others to see.'
               />
             </div>
@@ -106,11 +106,11 @@ const CreateGame = ({
                 label='How many rounds?'
                 margin='normal'
                 value={maxNumberOfRounds}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
                 helpertext='Game will automatically end after this many rounds.'
               />
             </div>
-            <div className='inputDiv checkInput'>
+            {/* <div className='inputDiv checkInput'>
               <div className='container'>
                 <FormControlLabel
                   control={
@@ -130,7 +130,7 @@ const CreateGame = ({
                   game.
                 </FormHelperText>
               </div>
-            </div>
+            </div> */}
             <Button
               type='submit'
               className='joinGame'
@@ -155,7 +155,7 @@ CreateGame.propTypes = {
   gameId: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.player.isAuthenticated,
   gameId: state.game._id,
 });

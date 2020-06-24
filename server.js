@@ -7,7 +7,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Pusher = require('pusher');
 const Sentry = require('@sentry/node');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 1111;
 
 const app = express();
 
@@ -77,7 +77,7 @@ db.once('open', () => {
   const changeStream = taskCollection.watch();
   if (changeStream) console.log('Pusher connected!!');
 
-  changeStream.on('change', change => {
+  changeStream.on('change', (change) => {
     if (change.operationType === 'insert') {
       const game = change.fullDocument;
       pusher.trigger(channel, 'inserted', {
